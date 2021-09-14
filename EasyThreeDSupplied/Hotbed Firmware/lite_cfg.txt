@@ -1,0 +1,185 @@
+######### MKS Robin Lite configuration #########
+#-------------------------------------------------------------
+#此选项只在出厂测试使用
+#>cfg_hardware_test_enable	1			#硬件测试使能。
+
+#============================= Basic Settings =========================
+
+>MACHINETPYE  0		# 0:Cartesian; 1:DELTA ; 2:COREXY
+
+
+>HAS_TEMP_BED 1        # whether enable the heated bed (disable: 0, enable: 1)
+
+# Travel limits after homing (units are in mm)
+>X_MIN_POS 0
+>Y_MIN_POS 0
+>Z_MIN_POS 0
+>X_MAX_POS 100
+>Y_MAX_POS 100
+>Z_MAX_POS 100
+
+# position of hotend  for filament change and pause print
+>FILAMENT_CHANGE_X_POS 5	 # X position of hotend  for filament change and pause print
+>FILAMENT_CHANGE_Y_POS 5	 # Y position of hotend  for filament change and pause print
+>FILAMENT_CHANGE_Z_ADD 5	 # Z addition of hotend (lift)	for filament change and pause print 
+
+#============================== Stepper Motor Settings ============================
+
+#Set stepper current 
+>CURRENT_VREF_XY                900	#Default motor current for XY in mA，range (0~1000)
+>CURRENT_VREF_Z                 1000	#Default motor current for Z  in mA，range (0~1000)
+>CURRENT_VREF_E                 950     #Default motor current for E  in mA，range (0~1000)
+
+#Invert the stepper direction.
+>INVERT_X_DIR 	                1	
+>INVERT_Y_DIR 	                0
+>INVERT_Z_DIR                	1
+>INVERT_E0_DIR           	1
+
+#Movement setting
+>DEFAULT_X_STEPS_PER_UNIT	606	#Default Axis-X Steps Per Unit (steps/mm)	
+>DEFAULT_Y_STEPS_PER_UNIT	606	#Default Axis-Y Steps Per Unit (steps/mm)	
+>DEFAULT_Z_STEPS_PER_UNIT	1167	#Default Axis-Z Steps Per Unit (steps/mm)	
+>DEFAULT_E_STEPS_PER_UNIT	1040	#Default Axis-E Steps Per Unit (steps/mm)	
+
+>DEFAULT_X_MAX_FEEDRATE		40	#Default Axis-X Max Feed Rate (mm/s)		
+>DEFAULT_Y_MAX_FEEDRATE		40	#Default Axis-Y Max Feed Rate (mm/s)		
+>DEFAULT_Z_MAX_FEEDRATE		10	#Default Axis-Z Max Feed Rate (mm/s)		
+>DEFAULT_E_MAX_FEEDRATE		70	#Default Axis-E Max Feed Rate (mm/s)		
+
+>DEFAULT_X_MAX_ACCELERATION	1000	#Default Axis-X Max Acceleration (change/s) change = mm/s
+>DEFAULT_Y_MAX_ACCELERATION	1000	#Default Axis-Y Max Acceleration (change/s) change = mm/s
+>DEFAULT_Z_MAX_ACCELERATION	200	#Default Axis-Z Max Acceleration (change/s) change = mm/s
+>DEFAULT_E_MAX_ACCELERATION	1000	#Default Axis-E Max Acceleration (change/s) change = mm/s
+
+>DEFAULT_ACCELERATION		300	#X, Y, Z and E acceleration for printing moves		
+>DEFAULT_RETRACT_ACCELERATION	300	#X, Y, Z and E acceleration for retracts		
+>DEFAULT_TRAVEL_ACCELERATION	300	#X, Y, Z acceleration for travel (non printing) moves	
+>DEFAULT_MINIMUMFEEDRATE	0.0	#minimum feedrate						
+>DEFAULT_MINSEGMENTTIME		20000	#minimum time in microseconds that a movement needs to take if the buffer is emptied. 
+>DEFAULT_MINTRAVELFEEDRATE	0.0	#		
+
+>DEFAULT_XJERK 			2.0	#Default Axis-X Jerk (mm/s)	
+>DEFAULT_YJERK 			2.0	#Default Axis-Y Jerk (mm/s)	
+>DEFAULT_ZJERK 			0.4	#Default Axis-Z Jerk (mm/s)	
+>DEFAULT_EJERK 			0.5	#Default Axis-E Jerk (mm/s)	
+
+
+#============================= Thermal Settings ============================
+
+>EXTRUDE_MINTEMP 	170
+>HEATER_0_MAXTEMP 	275
+>BED_MAXTEMP 		70
+
+>PREHEAT_1_TEMP_HOTEND 180	#Preheat PLA conf
+>PREHEAT_1_TEMP_BED     70
+>PREHEAT_1_FAN_SPEED     255 	
+
+>PREHEAT_2_TEMP_HOTEND 240	#Preheat ABS conf
+>PREHEAT_2_TEMP_BED    70
+>PREHEAT_2_FAN_SPEED     255
+
+#======================== Thermal Runaway Protection =======================
+>THERMAL_PROTECTION_PERIOD 		40     	#Seconds
+>THERMAL_PROTECTION_HYSTERESIS 		4     	#Degrees Celsius
+>WATCH_TEMP_PERIOD 			20	#Seconds
+>WATCH_TEMP_INCREASE 			2	#Degrees Celsius
+>THERMAL_PROTECTION_BED_PERIOD 		20    	#Seconds
+>THERMAL_PROTECTION_BED_HYSTERESIS 	2 	#Degrees Celsius
+>WATCH_BED_TEMP_PERIOD 			60      #Seconds
+>WATCH_BED_TEMP_INCREASE 		2       #Degrees Celsius
+
+
+# Type of heat manager for extruder.
+>PIDTEMP			1	# 1:PID	; 0:bang-bang
+>DEFAULT_Kp			22.2	#	--default
+>DEFAULT_Ki			1.08	#	--default
+>DEFAULT_Kd			114	#	--default
+
+#Type of heat manager for this heatedBed.
+>PIDTEMPBED			0	# 1:PID	; 0:bang-bang
+>DEFAULT_bedKp			10.00	#	--default
+>DEFAULT_bedKi			0.023	#	--default
+>DEFAULT_bedKd			305.4	#	--default
+
+
+#============================== Endstop  Settings ===========================
+
+>MIN_SOFTWARE_ENDSTOPS	 1              # 0:axes can move below MIN_POS;  1:axes won't move below MIN_POS.
+>MAX_SOFTWARE_ENDSTOPS 	 1              # 0:axes can move below  MAX_POS;  1:axes won't move below MIN_POS.
+
+# Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
+>X_MIN_ENDSTOP_INVERTING 1		# set to true to invert the logic of the endstop.
+>Y_MIN_ENDSTOP_INVERTING 1		# set to true to invert the logic of the endstop.
+>Z_MIN_ENDSTOP_INVERTING 1		# set to true to invert the logic of the endstop.
+>X_MAX_ENDSTOP_INVERTING 1		# set to true to invert the logic of the endstop.
+>Y_MAX_ENDSTOP_INVERTING 1		# set to true to invert the logic of the endstop.
+>Z_MAX_ENDSTOP_INVERTING 1		# set to true to invert the logic of the endstop.
+>Z_MIN_PROBE_ENDSTOP_INVERTING 1	# set to true to invert the logic of the probe.
+>FIL_RUNOUT_INVERTING 	0		# set to true to invert the logic of the Filament Runout Sensor.
+
+# Specify here all the endstop connectors that are connected to any endstop or probe.
+>USE_XMIN_PLUG	0			# 1:used; 0:noused
+>USE_YMIN_PLUG	1			# 1:used; 0:noused
+>USE_ZMIN_PLUG	1			# 1:used; 0:noused
+>USE_XMAX_PLUG	1			# 1:used; 0:noused
+>USE_YMAX_PLUG	0			# 1:used; 0:noused
+>USE_ZMAX_PLUG	1			# 1:used; 0:noused
+
+
+#==============================  Home Settings ==============================
+
+>X_HOME_DIR -1				# Direction of endstops when homing; 1=MAX, -1=MIN :[-1,1]
+>Y_HOME_DIR -1				# Direction of endstops when homing; 1=MAX, -1=MIN :[-1,1]
+>Z_HOME_DIR -1				# Direction of endstops when homing; 1=MAX, -1=MIN :[-1,1]
+>HOMING_FEEDRATE_XY 2400                # Homing X Y speeds (mm/m)
+>HOMING_FEEDRATE_Z  300                 # Homing Z speeds (mm/m)
+>HOME_Y_BEFORE_X	0       	# When G28 is called,0: X home before Y; 1: Y home before X
+
+
+#============================= Z Probe Options =============================
+
+#Select for a probe connected to Z-Min or Z-Max.
+>Z_MIN_PROBE_PIN_MODE		2	# 0 : NULL; 1: ZMIN; 2: ZMAX
+
+>Z_PROBE_OFFSET_FROM_EXTRUDER	0	# Z offset: -below +above  [the nozzle]		
+>X_PROBE_OFFSET_FROM_EXTRUDER	0	# X offset: -left  +right  [of the nozzle]
+>Y_PROBE_OFFSET_FROM_EXTRUDER	0	# Y offset: -front +behind [the nozzle]
+>XY_PROBE_SPEED 		4000	# X and Y axis travel speed (mm/m) between probes
+>Z_PROBE_SPEED_FAST 		6000	# Speed for the first approach when double-probing (with PROBE_DOUBLE_TOUCH)
+>Z_PROBE_SPEED_SLOW 		3000	# Speed for the "accurate" probe of each point
+
+
+#=============================== Bed Leveling ==============================
+
+>BED_LEVELING_METHOD 		0	# 0:NULL_BED_LEVELING; 3:AUTO_BED_LEVELING_BILINEAR; 5:MESH_BED_LEVELING	
+
+>GRID_MAX_POINTS_X 		5	# the number of grid points per dimension. <= 15
+>GRID_MAX_POINTS_Y 		5	# the number of grid points per dimension. <= 15	
+>Z_CLEARANCE_DEPLOY_PROBE	20	# Z Clearance for Deploy/Stow	   > 0
+>Z_CLEARANCE_BETWEEN_PROBES	10	# Z Clearance between probe points  > 0
+
+# Set the boundaries for probing (where the probe can reach).
+>LEFT_PROBE_BED_POSITION 	30	
+>RIGHT_PROBE_BED_POSITION 	180
+>FRONT_PROBE_BED_POSITION 	30	
+>BACK_PROBE_BED_POSITION 	180
+
+>MESH_INSET			20	# Mesh inset margin on print area for MESH_BED_LEVELING
+
+
+#============================== Delta Settings =============================
+>DELTA_SEGMENTS_PER_SECOND	40      #--default
+>DELTA_DIAGONAL_ROD		346.75	#Center-to-center distance of the holes in the diagonal push rods.	
+>DELTA_SMOOTH_ROD_OFFSET	211.5	#Horizontal offset from middle of printer to smooth rod center.
+>DELTA_EFFECTOR_OFFSET		28	#Horizontal offset of the universal joints on the end effector.
+>DELTA_CARRIAGE_OFFSET		14.5	#Horizontal offset of the universal joints on the carriages.
+>DELTA_RADIUS			169	#Horizontal distance bridged by diagonal push rods when effector is centered.	
+>DELTA_HEIGHT			302	#height from z=0.00 to home position
+>DELTA_PRINTABLE_RADIUS		125	#Print surface diameter/2 minus unreachable space (avoid collisions with vertical towers).
+>DELTA_CALIBRATION_RADIUS	100	#set the radius for the calibration probe points - max 0.8 * DELTA_PRINTABLE_RADIUS 
+
+
+
+
+#end.

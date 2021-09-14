@@ -1,0 +1,1031 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.30.1.114/W32 for ARM         07/Apr/2021  11:05:14
+# Copyright 1999-2018 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\u8glib_arm_v1.17\src\U8glib.cpp
+#    Command line =  
+#        -f C:\Users\PLT\AppData\Local\Temp\EWA99D.tmp
+#        (C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\u8glib_arm_v1.17\src\U8glib.cpp
+#        -D USE_HAL_DRIVER -D STM32F103xE -D MKS_ROBIN -D MARLIN -D __arm__ -D
+#        USE_MKS_WIFI --preprocess=s
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM\mksRobinLite\List -lC
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM\mksRobinLite\List -lA
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM\mksRobinLite\List
+#        --diag_suppress Pa050 -o
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM\mksRobinLite\Obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M3 -e --char_is_signed --fpu=None
+#        --dlib_config "D:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.1\arm\inc\c\DLib_Config_Full.h" -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Inc\ -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Src\ -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/STM32F10x_StdPeriph_Driver/Inc\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/CMSIS/Device/ST/STM32F1xx/Include\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/CMSIS/Include\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/BSP/STM32MKS-3dPrinter\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/BSP/Components/Common\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/BSP/Components/l6474\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/BSP/Components/at24cxx\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/BSP/Components/w25qxx\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/BSP/MotorControl\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/Third_Party/FatFs/src\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/Third_Party/FatFs/src/drivers\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/Third_Party/Marlin\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/Third_Party/u8glib_arm_v1.17/src\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/arduino\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/arduino/avr\
+#        -I C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Inc/Logo\ -Om --c++
+#        --no_exceptions --no_rtti -I "D:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.1\arm\CMSIS\Core\Include\" -I "D:\Program
+#        Files (x86)\IAR Systems\Embedded Workbench
+#        8.1\arm\CMSIS\DSP\Include\")
+#    Locale       =  C
+#    List file    =  
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM\mksRobinLite\List\U8glib.lst
+#    Object file  =  
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM\mksRobinLite\Obj\U8glib.o
+#
+###############################################################################
+
+C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\u8glib_arm_v1.17\src\U8glib.cpp
+      1          /*
+      2          
+      3            U8glib.cpp
+      4          
+      5            C++ Interface
+      6          
+      7            Universal 8bit Graphics Library
+      8            
+      9            Copyright (c) 2011, olikraus@gmail.com
+     10            All rights reserved.
+     11          
+     12            Redistribution and use in source and binary forms, with or without modification, 
+     13            are permitted provided that the following conditions are met:
+     14          
+     15            * Redistributions of source code must retain the above copyright notice, this list 
+     16              of conditions and the following disclaimer.
+     17              
+     18            * Redistributions in binary form must reproduce the above copyright notice, this 
+     19              list of conditions and the following disclaimer in the documentation and/or other 
+     20              materials provided with the distribution.
+     21          
+     22            THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND 
+     23            CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+     24            INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+     25            MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+     26            DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
+     27            CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+     28            SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+     29            NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+     30            LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+     31            CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+     32            STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+     33            ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+     34            ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
+     35          
+     36          */
+     37          
+     38          #include "U8glib.h"
+
+  class U8GLIB : public Print
+        ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\u8glib_arm_v1.17\src\U8glib.h",50  Warning[Pe611]: 
+          overloaded virtual function "Print::write" is only partially
+          overridden in class "U8GLIB"
+
+   \                                 In section .text, align 2
+   \   __interwork __softfp void U8GLIB::prepare()
+   \                     _ZN6U8GLIB7prepareEv: (+1)
+   \        0x0   0x3054             ADDS     R0,R0,#+84
+   \        0x2   0x2100             MOVS     R1,#+0
+   \        0x4   0x7001             STRB     R1,[R0, #+0]
+   \        0x6   0x7041             STRB     R1,[R0, #+1]
+   \        0x8   0x7081             STRB     R1,[R0, #+2]
+   \        0xA   0x4770             BX       LR               ;; return
+     39          #if defined(MKS_ROBIN)
+     40          #include "Marlin.h"
+
+  #define pgm_read_word_near(addr) (*(const uint16_t *)(addr))
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\Marlin_export.h",65  Warning[Pa181]: 
+          incompatible redefinition of macro "pgm_read_word_near" (declared at
+          line 36 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/arduino
+          \avr/pgmspace.h")
+
+  #define strcpy_P strcpy
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\Marlin_export.h",93  Warning[Pa181]: 
+          incompatible redefinition of macro "strcpy_P" (declared at line 23 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/arduino
+          \avr/pgmspace.h")
+
+  #define strstr_P strstr
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\Marlin_export.h",94  Warning[Pa181]: 
+          incompatible redefinition of macro "strstr_P" (declared at line 26 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/arduino
+          \avr/pgmspace.h")
+
+  #define sprintf_P sprintf
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\Marlin_export.h",95  Warning[Pa181]: 
+          incompatible redefinition of macro "sprintf_P" (declared at line 28
+          of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/arduino
+          \avr/pgmspace.h")
+
+  #define UNUSED(x) (void) (x)
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\macros.h",88  Warning[Pa181]: 
+          incompatible redefinition of macro "UNUSED" (declared at line 87 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F1xx_HAL_Driver
+          \Inc\stm32f1xx_hal_def.h")
+
+    #define SDSS   18
+            ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\pins_MKS_ROBIN_LITE.h",161  Warning[Pa181]: 
+          incompatible redefinition of macro "SDSS" (declared at line 62)
+
+  #define PRINT_LED_PIN         PDout(2)
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\BSP\STM32MKS-3dPrinter\mks_fastio.h",14  Warning[Pa181]: 
+          incompatible redefinition of macro "PRINT_LED_PIN" (declared at line
+          146 of "C:\Users\PLT\Desktop\mksRobinLite_nano\Inc\main.h")
+
+  #define PSTR(x)          (x)
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\Marlin.h",59  Warning[Pa181]: 
+          incompatible redefinition of macro "PSTR" (declared at line 8 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/arduino
+          \avr/pgmspace.h")
+     41          #include "Marlin_export.h"
+     42          #include "spi.h"
+     43          #include "stm32f10x_spi.h"
+
+  #define IS_SPI_DIRECTION_MODE(MODE) (((MODE) == SPI_Direction_2Lines_FullDuplex) || \
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F10x_StdPeriph_Driver\Inc\stm32f10x_spi.h",132  Warning[Pa181]: 
+          incompatible redefinition of macro "IS_SPI_DIRECTION_MODE" (declared
+          at line 466 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F1xx_HAL_Driver
+          \Inc\stm32f1xx_hal_spi.h")
+
+  #define IS_SPI_MODE(MODE) (((MODE) == SPI_Mode_Master) || \
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F10x_StdPeriph_Driver\Inc\stm32f10x_spi.h",146  Warning[Pa181]: 
+          incompatible redefinition of macro "IS_SPI_MODE" (declared at line
+          459 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F1xx_HAL_Driver
+          \Inc\stm32f1xx_hal_spi.h")
+
+  #define IS_SPI_DATASIZE(DATASIZE) (((DATASIZE) == SPI_DataSize_16b) || \
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F10x_StdPeriph_Driver\Inc\stm32f10x_spi.h",158  Warning[Pa181]: 
+          incompatible redefinition of macro "IS_SPI_DATASIZE" (declared at
+          line 488 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F1xx_HAL_Driver
+          \Inc\stm32f1xx_hal_spi.h")
+
+  #define IS_SPI_CPOL(CPOL) (((CPOL) == SPI_CPOL_Low) || \
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F10x_StdPeriph_Driver\Inc\stm32f10x_spi.h",170  Warning[Pa181]: 
+          incompatible redefinition of macro "IS_SPI_CPOL" (declared at line
+          496 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F1xx_HAL_Driver
+          \Inc\stm32f1xx_hal_spi.h")
+
+  #define IS_SPI_CPHA(CPHA) (((CPHA) == SPI_CPHA_1Edge) || \
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F10x_StdPeriph_Driver\Inc\stm32f10x_spi.h",182  Warning[Pa181]: 
+          incompatible redefinition of macro "IS_SPI_CPHA" (declared at line
+          504 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F1xx_HAL_Driver
+          \Inc\stm32f1xx_hal_spi.h")
+
+  #define IS_SPI_NSS(NSS) (((NSS) == SPI_NSS_Soft) || \
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F10x_StdPeriph_Driver\Inc\stm32f10x_spi.h",194  Warning[Pa181]: 
+          incompatible redefinition of macro "IS_SPI_NSS" (declared at line 512
+          of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F1xx_HAL_Driver
+          \Inc\stm32f1xx_hal_spi.h")
+
+  #define IS_SPI_BAUDRATE_PRESCALER(PRESCALER) (((PRESCALER) == SPI_BaudRatePrescaler_2) || \
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F10x_StdPeriph_Driver\Inc\stm32f10x_spi.h",212  Warning[Pa181]: 
+          incompatible redefinition of macro "IS_SPI_BAUDRATE_PRESCALER"
+          (declared at line 521 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F1xx_HAL_Driver
+          \Inc\stm32f1xx_hal_spi.h")
+
+  #define IS_SPI_FIRST_BIT(BIT) (((BIT) == SPI_FirstBit_MSB) || \
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F10x_StdPeriph_Driver\Inc\stm32f10x_spi.h",230  Warning[Pa181]: 
+          incompatible redefinition of macro "IS_SPI_FIRST_BIT" (declared at
+          line 535 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F1xx_HAL_Driver
+          \Inc\stm32f1xx_hal_spi.h")
+
+  #define SPI_FLAG_CRCERR                 ((uint16_t)0x0010)
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F10x_StdPeriph_Driver\Inc\stm32f10x_spi.h",408  Warning[Pa181]: 
+          incompatible redefinition of macro "SPI_FLAG_CRCERR" (declared at
+          line 308 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F1xx_HAL_Driver
+          \Inc\stm32f1xx_hal_spi.h")
+
+  #define SPI_FLAG_MODF                   ((uint16_t)0x0020)
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F10x_StdPeriph_Driver\Inc\stm32f10x_spi.h",409  Warning[Pa181]: 
+          incompatible redefinition of macro "SPI_FLAG_MODF" (declared at line
+          309 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F1xx_HAL_Driver
+          \Inc\stm32f1xx_hal_spi.h")
+
+  #define IS_SPI_CRC_POLYNOMIAL(POLYNOMIAL) ((POLYNOMIAL) >= 0x1)
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F10x_StdPeriph_Driver\Inc\stm32f10x_spi.h",425  Warning[Pa181]: 
+          incompatible redefinition of macro "IS_SPI_CRC_POLYNOMIAL" (declared
+          at line 558 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F1xx_HAL_Driver
+          \Inc\stm32f1xx_hal_spi.h")
+     44          
+     45          //extern void spiSend(uint8_t b);
+     46          extern  void spiSend(uint8_t b);
+     47          extern void SystemClock_Config(void);
+     48          
+
+   \                                 In section .bss, align 1
+     49          volatile unsigned char lcd_hal_delay_enable = 0;
+   \                     lcd_hal_delay_enable:
+   \        0x0                      DS8 1
+     50          
+
+   \                                 In section .bss, align 2
+     51          volatile uint16_t u8g_delay_cnt = 0;
+   \                     u8g_delay_cnt:
+   \        0x0                      DS8 2
+     52          #if ENABLED(MINIPANEL)    
+     53           void u8g_Delay(uint16_t val)  
+     54           {  
+     55             for(int i=0;i<val;i++)
+     56             {
+     57               u8g_delay_cnt = 0;
+     58               for(int j = 0; j<100;j++)
+     59               {
+     60                 u8g_delay_cnt++;
+     61               }
+     62             }
+     63            //HAL_Delay(val);  
+     64           }  
+     65          #else
+
+   \                                 In section .text, align 2, keep-with-next
+     66          void u8g_Delay(uint16_t val)  
+     67          {  
+     68          	if(lcd_hal_delay_enable)
+   \                     u8g_Delay: (+1)
+   \        0x0   0x....             LDR.N    R1,??DataTable8
+   \        0x2   0x7809             LDRB     R1,[R1, #+0]
+   \        0x4   0x2900             CMP      R1,#+0
+   \        0x6   0xD001             BEQ.N    ??u8g_Delay_0
+     69           		HAL_Delay(val);	
+   \        0x8   0x.... 0x....      B.W      HAL_Delay
+     70          }  
+   \                     ??u8g_Delay_0: (+1)
+   \        0xC   0x4770             BX       LR               ;; return
+     71          
+
+   \                                 In section .text, align 2, keep-with-next
+     72          void u8g_MicroDelay(void)
+     73          {
+     74          	if(lcd_hal_delay_enable)
+   \                     u8g_MicroDelay: (+1)
+   \        0x0   0x....             LDR.N    R0,??DataTable8
+   \        0x2   0x7800             LDRB     R0,[R0, #+0]
+   \        0x4   0x2800             CMP      R0,#+0
+   \        0x6   0xD002             BEQ.N    ??u8g_MicroDelay_0
+     75          		HAL_Delay_us(1);
+   \        0x8   0x2001             MOVS     R0,#+1
+   \        0xA   0x.... 0x....      B.W      HAL_Delay_us
+     76          }
+   \                     ??u8g_MicroDelay_0: (+1)
+   \        0xE   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+     77          void u8g_10MicroDelay(void)
+     78          {
+     79          	if(lcd_hal_delay_enable)
+   \                     u8g_10MicroDelay: (+1)
+   \        0x0   0x....             LDR.N    R0,??DataTable8
+   \        0x2   0x7800             LDRB     R0,[R0, #+0]
+   \        0x4   0x2800             CMP      R0,#+0
+   \        0x6   0xD002             BEQ.N    ??u8g_10MicroDelay_0
+     80          		HAL_Delay_us(10);
+   \        0x8   0x200A             MOVS     R0,#+10
+   \        0xA   0x.... 0x....      B.W      HAL_Delay_us
+     81          }
+   \                     ??u8g_10MicroDelay_0: (+1)
+   \        0xE   0x4770             BX       LR               ;; return
+     82          #endif
+     83          
+
+   \                                 In section .text, align 4, keep-with-next
+     84          uint8_t u8g_com_hw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr)
+     85          {
+   \                     _Z17u8g_com_hw_spi_fnP6_u8g_thhPv: (+1)
+   \        0x0   0xB538             PUSH     {R3-R5,LR}
+   \        0x2   0x4614             MOV      R4,R2
+   \        0x4   0x461D             MOV      R5,R3
+     86            switch(msg)
+   \        0x6   0x1E89             SUBS     R1,R1,#+2
+   \        0x8   0x2905             CMP      R1,#+5
+   \        0xA   0xD820             BHI.N    ??u8g_com_hw_spi_fn_1
+   \        0xC   0xE8DF 0xF001      TBB      [PC, R1]
+   \                     ??u8g_com_hw_spi_fn_0:
+   \       0x10   0x03 0x0B          DC8      0x3,0xB,0x1F,0x12
+   \              0x1F 0x12    
+   \       0x14   0x1B 0x1B          DC8      0x1B,0x1B
+     87            {
+     88              case U8G_COM_MSG_STOP:
+     89                break;
+     90              
+     91              case U8G_COM_MSG_INIT:
+     92          	//MX_SPI2_Init();
+     93          	//SPI_Cmd(SPI2, ENABLE);
+     94                break;
+     95              
+     96              case U8G_COM_MSG_ADDRESS:                     /* define cmd (arg_val = 0) or data mode (arg_val = 1) */
+     97          	  //u8g_Delay(1);
+     98          	  //WRITE(DOGLCD_A0,arg_val);
+     99          	  if(arg_val == 0) LCD_RS_OP = 0;
+   \                     ??u8g_com_hw_spi_fn_2: (+1)
+   \       0x16   0x4620             MOV      R0,R4
+   \       0x18   0x1E40             SUBS     R0,R0,#+1
+   \       0x1A   0x4180             SBCS     R0,R0,R0
+   \       0x1C   0x43C0             MVNS     R0,R0
+   \       0x1E   0x0FC0             LSRS     R0,R0,#+31
+   \       0x20   0x....             LDR.N    R1,??DataTable8_1  ;; 0x422101b0
+   \       0x22   0x6008             STR      R0,[R1, #+0]
+   \       0x24   0xE013             B.N      ??u8g_com_hw_spi_fn_1
+    100          	  else LCD_RS_OP = 1;
+    101          	  //u8g_Delay(1);
+    102          	  
+    103               break;
+    104          
+    105              case U8G_COM_MSG_CHIP_SELECT:
+    106                if ( arg_val == 0 )
+   \                     ??u8g_com_hw_spi_fn_3: (+1)
+   \       0x26   0x4620             MOV      R0,R4
+   \       0x28   0x1E40             SUBS     R0,R0,#+1
+   \       0x2A   0x4180             SBCS     R0,R0,R0
+   \       0x2C   0x0FC0             LSRS     R0,R0,#+31
+   \       0x2E   0x....             LDR.N    R1,??DataTable8_1  ;; 0x422101b0
+   \       0x30   0x6008             STR      R0,[R1, #+0]
+   \       0x32   0xE00C             B.N      ??u8g_com_hw_spi_fn_1
+    107                {
+    108                  /* disable */
+    109          		//WRITE(DOGLCD_CS,1);
+    110          		LCD_CS_OP = 1;
+    111          		//u8g_Delay(1);
+    112                }
+    113                else
+    114                {
+    115                  /* enable */
+    116          		//WRITE(DOGLCD_CS,0);
+    117          		LCD_CS_OP = 0;
+    118                }
+    119                break;
+    120                
+    121              case U8G_COM_MSG_RESET:
+    122                //WRITE(DOGLCD_RST,arg_val);
+    123                break;
+    124                
+    125              case U8G_COM_MSG_WRITE_BYTE:
+    126          	  spiSend(arg_val);
+   \                     ??u8g_com_hw_spi_fn_4: (+1)
+   \       0x34   0x4620             MOV      R0,R4
+   \       0x36   0x.... 0x....      BL       _Z7spiSendh
+    127                break;
+   \       0x3A   0xE008             B.N      ??u8g_com_hw_spi_fn_1
+    128              
+    129              case U8G_COM_MSG_WRITE_SEQ:
+    130              case U8G_COM_MSG_WRITE_SEQ_P:
+    131                {
+    132                  register uint8_t *ptr = (uint8_t *)arg_ptr;
+    133                  while( arg_val > 0 )
+    134                  {
+    135                    spiSend(*ptr++);
+   \                     ??u8g_com_hw_spi_fn_5: (+1)
+   \       0x3C   0xF815 0x0B01      LDRB     R0,[R5], #+1
+   \       0x40   0x.... 0x....      BL       _Z7spiSendh
+    136                    arg_val--;
+   \       0x44   0x1E64             SUBS     R4,R4,#+1
+    137                  }
+   \                     ??u8g_com_hw_spi_fn_6: (+1)
+   \       0x46   0x4620             MOV      R0,R4
+   \       0x48   0xB2C0             UXTB     R0,R0
+   \       0x4A   0x2800             CMP      R0,#+0
+   \       0x4C   0xD1F6             BNE.N    ??u8g_com_hw_spi_fn_5
+    138          		
+    139                }
+    140                break;
+    141            }
+    142            return 1;
+   \                     ??u8g_com_hw_spi_fn_1: (+1)
+   \       0x4E   0x2001             MOVS     R0,#+1
+   \       0x50   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+    143          }
+    144          
+    145          //MKS OLED
+    146          
+
+   \                                 In section .text, align 2, keep-with-next
+    147          static void send_data(uint8_t data)
+    148          {	
+    149          	uint8_t i;
+    150          	for(i=0;i<8;i++)
+   \                     _ZN32_INTERNAL_10_U8glib_cpp_cc7a8c079send_dataEh: (+1)
+   \        0x0   0x2100             MOVS     R1,#+0
+   \        0x2   0xE00D             B.N      ??send_data_0
+    151          	{			  
+    152          		OLED_SCK = 0;
+   \                     ??send_data_1: (+1)
+   \        0x4   0x....             LDR.N    R2,??DataTable8_1  ;; 0x422101b0
+   \        0x6   0x2300             MOVS     R3,#+0
+   \        0x8   0x6013             STR      R3,[R2, #+0]
+    153          		if(data&0x80) OLED_MOSI = 1;
+   \        0xA   0xF000 0x0380      AND      R3,R0,#0x80
+   \        0xE   0x1E5B             SUBS     R3,R3,#+1
+   \       0x10   0x419B             SBCS     R3,R3,R3
+   \       0x12   0x43DB             MVNS     R3,R3
+   \       0x14   0x0FDB             LSRS     R3,R3,#+31
+   \       0x16   0x6013             STR      R3,[R2, #+0]
+    154          		else OLED_MOSI = 0;
+    155          		OLED_SCK = 1;
+   \       0x18   0x2301             MOVS     R3,#+1
+   \       0x1A   0x6013             STR      R3,[R2, #+0]
+    156          		data<<=1;  
+   \       0x1C   0x0040             LSLS     R0,R0,#+1
+    157          	}
+   \       0x1E   0x1C49             ADDS     R1,R1,#+1
+   \                     ??send_data_0: (+1)
+   \       0x20   0x460A             MOV      R2,R1
+   \       0x22   0xB2D2             UXTB     R2,R2
+   \       0x24   0x2A08             CMP      R2,#+8
+   \       0x26   0xDBED             BLT.N    ??send_data_1
+    158          }
+   \       0x28   0x4770             BX       LR               ;; return
+    159          
+
+   \                                 In section .text, align 4, keep-with-next
+    160          uint8_t u8g_com_sw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr)
+    161          {
+   \                     _Z17u8g_com_sw_spi_fnP6_u8g_thhPv: (+1)
+   \        0x0   0xB538             PUSH     {R3-R5,LR}
+   \        0x2   0x4614             MOV      R4,R2
+   \        0x4   0x461D             MOV      R5,R3
+    162            switch(msg)
+   \        0x6   0x1E49             SUBS     R1,R1,#+1
+   \        0x8   0x2905             CMP      R1,#+5
+   \        0xA   0xD845             BHI.N    ??u8g_com_sw_spi_fn_1
+   \        0xC   0xE8DF 0xF001      TBB      [PC, R1]
+   \                     ??u8g_com_sw_spi_fn_0:
+   \       0x10   0x03 0x24          DC8      0x3,0x24,0x2C,0x44
+   \              0x2C 0x44    
+   \       0x14   0x33 0x37          DC8      0x33,0x37
+    163            {
+    164              case U8G_COM_MSG_STOP:
+    165                break;
+    166              
+    167              case U8G_COM_MSG_INIT:
+    168                uint8_t i,n;		    
+    169          	for(i=0;i<8;i++)  
+   \                     ??u8g_com_sw_spi_fn_2: (+1)
+   \       0x16   0x2400             MOVS     R4,#+0
+   \       0x18   0xE008             B.N      ??u8g_com_sw_spi_fn_3
+    170          	{  
+    171                          OLED_DC = 0;//cmd
+    172          		send_data(0xb0+i);
+    173          		send_data(0x0f);/* set lower 4 bit of the col adr to 0  */
+    174          		send_data(0x17);/* set upper 4 bit of the col adr to 0 */
+    175                          OLED_DC = 1;//data
+    176          		for(n=0;n<128;n++) send_data(0x00); 
+   \                     ??u8g_com_sw_spi_fn_4: (+1)
+   \       0x1A   0x2000             MOVS     R0,#+0
+   \       0x1C   0x.... 0x....      BL       _ZN32_INTERNAL_10_U8glib_cpp_cc7a8c079send_dataEh
+   \       0x20   0x1C6D             ADDS     R5,R5,#+1
+   \                     ??u8g_com_sw_spi_fn_5: (+1)
+   \       0x22   0x4628             MOV      R0,R5
+   \       0x24   0xB2C0             UXTB     R0,R0
+   \       0x26   0x2880             CMP      R0,#+128
+   \       0x28   0xDBF7             BLT.N    ??u8g_com_sw_spi_fn_4
+   \       0x2A   0x1C64             ADDS     R4,R4,#+1
+   \                     ??u8g_com_sw_spi_fn_3: (+1)
+   \       0x2C   0x4620             MOV      R0,R4
+   \       0x2E   0xB2C0             UXTB     R0,R0
+   \       0x30   0x2808             CMP      R0,#+8
+   \       0x32   0xDA31             BGE.N    ??u8g_com_sw_spi_fn_1
+   \       0x34   0x....             LDR.N    R5,??DataTable8_1  ;; 0x422101b0
+   \       0x36   0x2000             MOVS     R0,#+0
+   \       0x38   0x6028             STR      R0,[R5, #+0]
+   \       0x3A   0xF1A4 0x0050      SUB      R0,R4,#+80
+   \       0x3E   0xB2C0             UXTB     R0,R0
+   \       0x40   0x.... 0x....      BL       _ZN32_INTERNAL_10_U8glib_cpp_cc7a8c079send_dataEh
+   \       0x44   0x200F             MOVS     R0,#+15
+   \       0x46   0x.... 0x....      BL       _ZN32_INTERNAL_10_U8glib_cpp_cc7a8c079send_dataEh
+   \       0x4A   0x2017             MOVS     R0,#+23
+   \       0x4C   0x.... 0x....      BL       _ZN32_INTERNAL_10_U8glib_cpp_cc7a8c079send_dataEh
+   \       0x50   0x2001             MOVS     R0,#+1
+   \       0x52   0x6028             STR      R0,[R5, #+0]
+   \       0x54   0x2500             MOVS     R5,#+0
+   \       0x56   0xE7E4             B.N      ??u8g_com_sw_spi_fn_5
+    177          	} 
+    178                break;
+    179              
+    180              case U8G_COM_MSG_ADDRESS:                     /* define cmd (arg_val = 0) or data mode (arg_val = 1) */
+    181          	  //u8g_Delay(1);
+    182          	  //WRITE(DOGLCD_A0,arg_val);
+    183          	  if(arg_val == 0) OLED_DC = 0;
+   \                     ??u8g_com_sw_spi_fn_6: (+1)
+   \       0x58   0x4620             MOV      R0,R4
+   \       0x5A   0x1E40             SUBS     R0,R0,#+1
+   \       0x5C   0x4180             SBCS     R0,R0,R0
+   \       0x5E   0x43C0             MVNS     R0,R0
+   \       0x60   0x0FC0             LSRS     R0,R0,#+31
+   \       0x62   0x....             LDR.N    R1,??DataTable8_1  ;; 0x422101b0
+   \       0x64   0x6008             STR      R0,[R1, #+0]
+   \       0x66   0xE017             B.N      ??u8g_com_sw_spi_fn_1
+    184          	  else OLED_DC = 1;
+    185          	  //u8g_Delay(1);
+    186          	  
+    187               break;
+    188          
+    189              case U8G_COM_MSG_CHIP_SELECT:
+    190                if ( arg_val == 0 )
+   \                     ??u8g_com_sw_spi_fn_7: (+1)
+   \       0x68   0x4620             MOV      R0,R4
+   \       0x6A   0x1E40             SUBS     R0,R0,#+1
+   \       0x6C   0x4180             SBCS     R0,R0,R0
+   \       0x6E   0x0FC0             LSRS     R0,R0,#+31
+   \       0x70   0x....             LDR.N    R1,??DataTable8_1  ;; 0x422101b0
+   \       0x72   0x6008             STR      R0,[R1, #+0]
+   \       0x74   0xE010             B.N      ??u8g_com_sw_spi_fn_1
+    191                {
+    192                  /* disable */
+    193          		//WRITE(DOGLCD_CS,1);
+    194          		OLED_CS = 1;
+    195          		//u8g_Delay(1);
+    196                }
+    197                else
+    198                {
+    199                  /* enable */
+    200          		//WRITE(DOGLCD_CS,0);
+    201          		OLED_CS = 0;
+    202                }
+    203                break;
+    204                
+    205              case U8G_COM_MSG_RESET:
+    206                //WRITE(DOGLCD_RST,arg_val);
+    207                break;
+    208                
+    209              case U8G_COM_MSG_WRITE_BYTE:
+    210          	  send_data(arg_val);
+   \                     ??u8g_com_sw_spi_fn_8: (+1)
+   \       0x76   0x4620             MOV      R0,R4
+   \       0x78   0x.... 0x....      BL       _ZN32_INTERNAL_10_U8glib_cpp_cc7a8c079send_dataEh
+    211                break;
+   \       0x7C   0xE00C             B.N      ??u8g_com_sw_spi_fn_1
+    212              
+    213              case U8G_COM_MSG_WRITE_SEQ:
+    214                send_data(arg_val);
+   \                     ??u8g_com_sw_spi_fn_9: (+1)
+   \       0x7E   0x4620             MOV      R0,R4
+   \       0x80   0x.... 0x....      BL       _ZN32_INTERNAL_10_U8glib_cpp_cc7a8c079send_dataEh
+    215                {
+    216                  register uint8_t *ptr = (uint8_t *)arg_ptr;
+   \       0x84   0xE004             B.N      ??u8g_com_sw_spi_fn_10
+    217                  while( arg_val > 0 )//data mode
+    218                  {
+    219                    send_data(*ptr++);
+   \                     ??u8g_com_sw_spi_fn_11: (+1)
+   \       0x86   0xF815 0x0B01      LDRB     R0,[R5], #+1
+   \       0x8A   0x.... 0x....      BL       _ZN32_INTERNAL_10_U8glib_cpp_cc7a8c079send_dataEh
+    220                    arg_val--;
+   \       0x8E   0x1E64             SUBS     R4,R4,#+1
+    221                  }
+   \                     ??u8g_com_sw_spi_fn_10: (+1)
+   \       0x90   0x4620             MOV      R0,R4
+   \       0x92   0xB2C0             UXTB     R0,R0
+   \       0x94   0x2800             CMP      R0,#+0
+   \       0x96   0xD1F6             BNE.N    ??u8g_com_sw_spi_fn_11
+    222          		
+    223                }
+    224                break;
+    225              case U8G_COM_MSG_WRITE_SEQ_P:
+    226                
+    227                /*
+    228                {
+    229                  register uint8_t *ptr = (uint8_t *)arg_ptr;
+    230                  while( arg_val > 0 )//data mode
+    231                  {
+    232                    OLED_WR_Byte(*ptr++);
+    233                    arg_val--;
+    234                  }
+    235          		
+    236                }
+    237                */
+    238                break;
+    239            }
+    240            return 1;
+   \                     ??u8g_com_sw_spi_fn_1: (+1)
+   \       0x98   0x2001             MOVS     R0,#+1
+   \       0x9A   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+    241          }
+    242          //MKS OLED
+    243          
+    244          #endif
+    245          
+
+   \                                 In section .text, align 2, keep-with-next
+    246          uint8_t U8GLIB::initSPI(u8g_dev_t *dev, uint8_t sck, uint8_t mosi, uint8_t cs, uint8_t a0, uint8_t reset)
+    247          {
+   \                     _ZN6U8GLIB7initSPIEP10_u8g_dev_thhhhh: (+1)
+   \        0x0   0xE92D 0x47FF      PUSH     {R0-R10,LR}
+   \        0x4   0x4607             MOV      R7,R0
+   \        0x6   0x4688             MOV      R8,R1
+   \        0x8   0x4691             MOV      R9,R2
+   \        0xA   0x469A             MOV      R10,R3
+   \        0xC   0x9E0C             LDR      R6,[SP, #+48]
+   \        0xE   0x9D0D             LDR      R5,[SP, #+52]
+   \       0x10   0x9C0E             LDR      R4,[SP, #+56]
+    248            prepare();
+   \       0x12   0x.... 0x....      BL       _ZN6U8GLIB7prepareEv
+    249            return u8g_InitSPI(&u8g, dev, sck, mosi, cs, a0, reset);
+   \       0x16   0x9402             STR      R4,[SP, #+8]
+   \       0x18   0x9501             STR      R5,[SP, #+4]
+   \       0x1A   0x9600             STR      R6,[SP, #+0]
+   \       0x1C   0x4653             MOV      R3,R10
+   \       0x1E   0x464A             MOV      R2,R9
+   \       0x20   0x4641             MOV      R1,R8
+   \       0x22   0xF107 0x0008      ADD      R0,R7,#+8
+   \       0x26   0x.... 0x....      BL       u8g_InitSPI
+   \       0x2A   0xB004             ADD      SP,SP,#+16
+   \       0x2C   0xE8BD 0x87F0      POP      {R4-R10,PC}      ;; return
+    250          }
+    251          
+
+   \                                 In section .text, align 2, keep-with-next
+    252          uint8_t U8GLIB::initHWSPI(u8g_dev_t *dev, uint8_t cs, uint8_t a0, uint8_t reset)
+    253          {
+   \                     _ZN6U8GLIB9initHWSPIEP10_u8g_dev_thhh: (+1)
+   \        0x0   0xE92D 0x41FC      PUSH     {R2-R8,LR}
+   \        0x4   0x4605             MOV      R5,R0
+   \        0x6   0x460E             MOV      R6,R1
+   \        0x8   0x4617             MOV      R7,R2
+   \        0xA   0x4698             MOV      R8,R3
+   \        0xC   0x9C08             LDR      R4,[SP, #+32]
+    254            prepare();
+   \        0xE   0x.... 0x....      BL       _ZN6U8GLIB7prepareEv
+    255            return u8g_InitHWSPI(&u8g, dev, cs, a0, reset);	////MINI_STEP_2
+   \       0x12   0x9400             STR      R4,[SP, #+0]
+   \       0x14   0x4643             MOV      R3,R8
+   \       0x16   0x463A             MOV      R2,R7
+   \       0x18   0x4631             MOV      R1,R6
+   \       0x1A   0xF105 0x0008      ADD      R0,R5,#+8
+   \       0x1E   0x.... 0x....      BL       u8g_InitHWSPI
+   \       0x22   0xE8BD 0x81F6      POP      {R1,R2,R4-R8,PC}  ;; return
+    256            //return u8g_InitComFn(&u8g, dev,u8g_com_hw_spi_fn);
+    257          }
+    258          
+
+   \                                 In section .text, align 2, keep-with-next
+    259          uint8_t U8GLIB::u8gInit_MINI12864()
+    260          {
+   \                     _ZN6U8GLIB17u8gInit_MINI12864Ev: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x4604             MOV      R4,R0
+    261            prepare();
+   \        0x4   0x.... 0x....      BL       _ZN6U8GLIB7prepareEv
+    262            return u8g_InitComFn(&u8g, &u8g_dev_uc1701_mini12864_hw_spi,u8g_com_hw_spi_fn);			
+   \        0x8   0x....             LDR.N    R2,??DataTable8_2
+   \        0xA   0x....             LDR.N    R1,??DataTable8_3
+   \        0xC   0xF104 0x0008      ADD      R0,R4,#+8
+   \       0x10   0xE8BD 0x4010      POP      {R4,LR}
+   \       0x14   0x.... 0x....      B.W      u8g_InitComFn
+    263          }
+    264          
+
+   \                                 In section .text, align 2, keep-with-next
+    265          uint8_t U8GLIB::u8gInit_LCD12864()
+    266          {
+   \                     _ZN6U8GLIB16u8gInit_LCD12864Ev: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x4604             MOV      R4,R0
+    267            prepare();
+   \        0x4   0x.... 0x....      BL       _ZN6U8GLIB7prepareEv
+    268            u8g_Init(&u8g, &u8g_dev_st7920_128x64_rrd_sw_spi);
+   \        0x8   0x....             LDR.N    R1,??DataTable8_4
+   \        0xA   0xF104 0x0008      ADD      R0,R4,#+8
+   \        0xE   0xE8BD 0x4010      POP      {R4,LR}
+   \       0x12   0x.... 0x....      B.W      u8g_Init
+    269          }
+                 ^
+Warning[Pe940]: missing return statement at end of non-void function
+          "U8GLIB::u8gInit_LCD12864"
+    270          
+
+   \                                 In section .text, align 2, keep-with-next
+    271          uint8_t U8GLIB::u8gInit_OLED12864()//MKS OLED
+    272          {
+   \                     _ZN6U8GLIB17u8gInit_OLED12864Ev: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x4604             MOV      R4,R0
+    273            prepare();
+   \        0x4   0x.... 0x....      BL       _ZN6U8GLIB7prepareEv
+    274            u8g_InitComFn(&u8g, &u8g_dev_ssd1306_128x64_2x_sw_spi, u8g_com_sw_spi_fn);
+   \        0x8   0x....             LDR.N    R2,??DataTable8_5
+   \        0xA   0x....             LDR.N    R1,??DataTable8_6
+   \        0xC   0xF104 0x0008      ADD      R0,R4,#+8
+   \       0x10   0xE8BD 0x4010      POP      {R4,LR}
+   \       0x14   0x.... 0x....      B.W      u8g_InitComFn
+    275          }
+                 ^
+Warning[Pe940]: missing return statement at end of non-void function
+          "U8GLIB::u8gInit_OLED12864"
+    276          
+
+   \                                 In section .text, align 2, keep-with-next
+    277          uint8_t U8GLIB::initI2C(u8g_dev_t *dev, uint8_t options)
+    278          {
+   \                     _ZN6U8GLIB7initI2CEP10_u8g_dev_th: (+1)
+   \        0x0   0xB570             PUSH     {R4-R6,LR}
+   \        0x2   0x4604             MOV      R4,R0
+   \        0x4   0x460D             MOV      R5,R1
+   \        0x6   0x4616             MOV      R6,R2
+    279            prepare();
+   \        0x8   0x.... 0x....      BL       _ZN6U8GLIB7prepareEv
+    280            return u8g_InitI2C(&u8g, dev, options);
+   \        0xC   0x4632             MOV      R2,R6
+   \        0xE   0x4629             MOV      R1,R5
+   \       0x10   0xF104 0x0008      ADD      R0,R4,#+8
+   \       0x14   0xE8BD 0x4070      POP      {R4-R6,LR}
+   \       0x18   0x.... 0x....      B.W      u8g_InitI2C
+    281          }
+    282          
+
+   \                                 In section .text, align 2, keep-with-next
+    283          uint8_t U8GLIB::init8Bit(u8g_dev_t *dev, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, 
+    284              uint8_t en, uint8_t cs1, uint8_t cs2, uint8_t di, uint8_t rw, uint8_t reset)
+    285          {
+   \                     _ZN6U8GLIB8init8BitEP10_u8g_dev_thhhhhhhhhhhhhh: (+1)
+   \        0x0   0xE92D 0x4FFE      PUSH     {R1-R11,LR}
+   \        0x4   0xB08C             SUB      SP,SP,#+48
+   \        0x6   0x4683             MOV      R11,R0
+   \        0x8   0xF8DD 0xA074      LDR      R10,[SP, #+116]
+   \        0xC   0xF8DD 0x9078      LDR      R9,[SP, #+120]
+   \       0x10   0xF8DD 0x807C      LDR      R8,[SP, #+124]
+   \       0x14   0x9F20             LDR      R7,[SP, #+128]
+   \       0x16   0x9E21             LDR      R6,[SP, #+132]
+   \       0x18   0x9D22             LDR      R5,[SP, #+136]
+   \       0x1A   0x9C23             LDR      R4,[SP, #+140]
+    286            prepare();
+   \       0x1C   0x.... 0x....      BL       _ZN6U8GLIB7prepareEv
+    287            return u8g_Init8Bit(&u8g, dev, d0, d1, d2, d3, d4, d5, d6, d7, en, cs1, cs2, di, rw, reset); 
+   \       0x20   0x940B             STR      R4,[SP, #+44]
+   \       0x22   0x950A             STR      R5,[SP, #+40]
+   \       0x24   0x9609             STR      R6,[SP, #+36]
+   \       0x26   0x9708             STR      R7,[SP, #+32]
+   \       0x28   0xF8CD 0x801C      STR      R8,[SP, #+28]
+   \       0x2C   0xF8CD 0x9018      STR      R9,[SP, #+24]
+   \       0x30   0xF8CD 0xA014      STR      R10,[SP, #+20]
+   \       0x34   0xF89D 0x0070      LDRB     R0,[SP, #+112]
+   \       0x38   0x9004             STR      R0,[SP, #+16]
+   \       0x3A   0xF89D 0x006C      LDRB     R0,[SP, #+108]
+   \       0x3E   0x9003             STR      R0,[SP, #+12]
+   \       0x40   0xF89D 0x0068      LDRB     R0,[SP, #+104]
+   \       0x44   0x9002             STR      R0,[SP, #+8]
+   \       0x46   0xF89D 0x0064      LDRB     R0,[SP, #+100]
+   \       0x4A   0x9001             STR      R0,[SP, #+4]
+   \       0x4C   0xF89D 0x0060      LDRB     R0,[SP, #+96]
+   \       0x50   0x9000             STR      R0,[SP, #+0]
+   \       0x52   0xF89D 0x3038      LDRB     R3,[SP, #+56]
+   \       0x56   0xF89D 0x2034      LDRB     R2,[SP, #+52]
+   \       0x5A   0x990C             LDR      R1,[SP, #+48]
+   \       0x5C   0xF10B 0x0008      ADD      R0,R11,#+8
+   \       0x60   0x.... 0x....      BL       u8g_Init8Bit
+   \       0x64   0xB00F             ADD      SP,SP,#+60
+   \       0x66   0xE8BD 0x8FF0      POP      {R4-R11,PC}      ;; return
+    288          }
+    289          
+
+   \                                 In section .text, align 2, keep-with-next
+    290          uint8_t U8GLIB::init8BitFixedPort(u8g_dev_t *dev, uint8_t en, uint8_t cs, uint8_t di, uint8_t rw, uint8_t reset)
+    291          {
+   \                     _ZN6U8GLIB17init8BitFixedPortEP10_u8g_dev_thhhhh: (+1)
+   \        0x0   0xE92D 0x47FF      PUSH     {R0-R10,LR}
+   \        0x4   0x4607             MOV      R7,R0
+   \        0x6   0x4688             MOV      R8,R1
+   \        0x8   0x4691             MOV      R9,R2
+   \        0xA   0x469A             MOV      R10,R3
+   \        0xC   0x9E0C             LDR      R6,[SP, #+48]
+   \        0xE   0x9D0D             LDR      R5,[SP, #+52]
+   \       0x10   0x9C0E             LDR      R4,[SP, #+56]
+    292            prepare();
+   \       0x12   0x.... 0x....      BL       _ZN6U8GLIB7prepareEv
+    293            return u8g_Init8BitFixedPort(&u8g, dev, en, cs, di, rw, reset);
+   \       0x16   0x9402             STR      R4,[SP, #+8]
+   \       0x18   0x9501             STR      R5,[SP, #+4]
+   \       0x1A   0x9600             STR      R6,[SP, #+0]
+   \       0x1C   0x4653             MOV      R3,R10
+   \       0x1E   0x464A             MOV      R2,R9
+   \       0x20   0x4641             MOV      R1,R8
+   \       0x22   0xF107 0x0008      ADD      R0,R7,#+8
+   \       0x26   0x.... 0x....      BL       u8g_Init8BitFixedPort
+   \       0x2A   0xB004             ADD      SP,SP,#+16
+   \       0x2C   0xE8BD 0x87F0      POP      {R4-R10,PC}      ;; return
+    294          }
+    295          
+
+   \                                 In section .text, align 2, keep-with-next
+    296          uint8_t U8GLIB::initRW8Bit(u8g_dev_t *dev, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, 
+    297              uint8_t cs, uint8_t a0, uint8_t wr, uint8_t rd, uint8_t reset)
+    298          {
+   \                     _ZN6U8GLIB10initRW8BitEP10_u8g_dev_thhhhhhhhhhhhh: (+1)
+   \        0x0   0xE92D 0x4FFF      PUSH     {R0-R11,LR}
+   \        0x4   0xB08B             SUB      SP,SP,#+44
+   \        0x6   0x4683             MOV      R11,R0
+   \        0x8   0xF8DD 0xA070      LDR      R10,[SP, #+112]
+   \        0xC   0xF8DD 0x9074      LDR      R9,[SP, #+116]
+   \       0x10   0xF8DD 0x8078      LDR      R8,[SP, #+120]
+   \       0x14   0x9F1F             LDR      R7,[SP, #+124]
+   \       0x16   0x9E20             LDR      R6,[SP, #+128]
+   \       0x18   0x9D21             LDR      R5,[SP, #+132]
+   \       0x1A   0x9C22             LDR      R4,[SP, #+136]
+    299            prepare();
+   \       0x1C   0x.... 0x....      BL       _ZN6U8GLIB7prepareEv
+    300            return u8g_InitRW8Bit(&u8g, dev, d0, d1, d2, d3, d4, d5, d6, d7, cs, a0, wr, rd, reset); 
+   \       0x20   0x940A             STR      R4,[SP, #+40]
+   \       0x22   0x9509             STR      R5,[SP, #+36]
+   \       0x24   0x9608             STR      R6,[SP, #+32]
+   \       0x26   0x9707             STR      R7,[SP, #+28]
+   \       0x28   0xF8CD 0x8018      STR      R8,[SP, #+24]
+   \       0x2C   0xF8CD 0x9014      STR      R9,[SP, #+20]
+   \       0x30   0xF8CD 0xA010      STR      R10,[SP, #+16]
+   \       0x34   0xF89D 0x006C      LDRB     R0,[SP, #+108]
+   \       0x38   0x9003             STR      R0,[SP, #+12]
+   \       0x3A   0xF89D 0x0068      LDRB     R0,[SP, #+104]
+   \       0x3E   0x9002             STR      R0,[SP, #+8]
+   \       0x40   0xF89D 0x0064      LDRB     R0,[SP, #+100]
+   \       0x44   0x9001             STR      R0,[SP, #+4]
+   \       0x46   0xF89D 0x0060      LDRB     R0,[SP, #+96]
+   \       0x4A   0x9000             STR      R0,[SP, #+0]
+   \       0x4C   0xF89D 0x3038      LDRB     R3,[SP, #+56]
+   \       0x50   0xF89D 0x2034      LDRB     R2,[SP, #+52]
+   \       0x54   0x990C             LDR      R1,[SP, #+48]
+   \       0x56   0xF10B 0x0008      ADD      R0,R11,#+8
+   \       0x5A   0x.... 0x....      BL       u8g_InitRW8Bit
+   \       0x5E   0xB00F             ADD      SP,SP,#+60
+   \       0x60   0xE8BD 0x8FF0      POP      {R4-R11,PC}      ;; return
+    301          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable8:
+   \        0x0   0x....'....        DC32     lcd_hal_delay_enable
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable8_1:
+   \        0x0   0x4221'01B0        DC32     0x422101b0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable8_2:
+   \        0x0   0x....'....        DC32     _Z17u8g_com_hw_spi_fnP6_u8g_thhPv
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable8_3:
+   \        0x0   0x....'....        DC32     u8g_dev_uc1701_mini12864_hw_spi
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable8_4:
+   \        0x0   0x....'....        DC32     u8g_dev_st7920_128x64_rrd_sw_spi
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable8_5:
+   \        0x0   0x....'....        DC32     _Z17u8g_com_sw_spi_fnP6_u8g_thhPv
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable8_6:
+   \        0x0   0x....'....        DC32     u8g_dev_ssd1306_128x64_2x_sw_spi
+    302          
+    303          /*------------------------------------------*/
+    304          
+    305          
+    306          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      96   U8GLIB::init8Bit(u8g_dev_t *, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)
+        96   -> U8GLIB::prepare()
+        96   -> u8g_Init8Bit
+      48   U8GLIB::init8BitFixedPort(u8g_dev_t *, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)
+        48   -> U8GLIB::prepare()
+        48   -> u8g_Init8BitFixedPort
+      32   U8GLIB::initHWSPI(u8g_dev_t *, uint8_t, uint8_t, uint8_t)
+        32   -> U8GLIB::prepare()
+        32   -> u8g_InitHWSPI
+      16   U8GLIB::initI2C(u8g_dev_t *, uint8_t)
+        16   -> U8GLIB::prepare()
+         0   -> u8g_InitI2C
+      96   U8GLIB::initRW8Bit(u8g_dev_t *, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)
+        96   -> U8GLIB::prepare()
+        96   -> u8g_InitRW8Bit
+      48   U8GLIB::initSPI(u8g_dev_t *, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)
+        48   -> U8GLIB::prepare()
+        48   -> u8g_InitSPI
+       0   U8GLIB::prepare()
+       8   U8GLIB::u8gInit_LCD12864()
+         8   -> U8GLIB::prepare()
+         0   -> u8g_Init
+       8   U8GLIB::u8gInit_MINI12864()
+         8   -> U8GLIB::prepare()
+         0   -> u8g_InitComFn
+       8   U8GLIB::u8gInit_OLED12864()
+         8   -> U8GLIB::prepare()
+         0   -> u8g_InitComFn
+       0   send_data(uint8_t)
+       0   u8g_10MicroDelay
+         0   -> HAL_Delay_us
+       0   u8g_Delay
+         0   -> HAL_Delay
+       0   u8g_MicroDelay
+         0   -> HAL_Delay_us
+      16   u8g_com_hw_spi_fn(u8g_t *, uint8_t, uint8_t, void *)
+        16   -> spiSend(uint8_t)
+      16   u8g_com_sw_spi_fn(u8g_t *, uint8_t, uint8_t, void *)
+        16   -> send_data(uint8_t)
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable8
+       4  ??DataTable8_1
+       4  ??DataTable8_2
+       4  ??DataTable8_3
+       4  ??DataTable8_4
+       4  ??DataTable8_5
+       4  ??DataTable8_6
+     106  U8GLIB::init8Bit(u8g_dev_t *, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)
+      48  U8GLIB::init8BitFixedPort(u8g_dev_t *, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)
+      38  U8GLIB::initHWSPI(u8g_dev_t *, uint8_t, uint8_t, uint8_t)
+      28  U8GLIB::initI2C(u8g_dev_t *, uint8_t)
+     100  U8GLIB::initRW8Bit(u8g_dev_t *, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)
+      48  U8GLIB::initSPI(u8g_dev_t *, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t)
+      12  U8GLIB::prepare()
+      22  U8GLIB::u8gInit_LCD12864()
+      24  U8GLIB::u8gInit_MINI12864()
+      24  U8GLIB::u8gInit_OLED12864()
+       1  lcd_hal_delay_enable
+      42  send_data(uint8_t)
+      16  u8g_10MicroDelay
+      14  u8g_Delay
+      16  u8g_MicroDelay
+      82  u8g_com_hw_spi_fn(u8g_t *, uint8_t, uint8_t, void *)
+     156  u8g_com_sw_spi_fn(u8g_t *, uint8_t, uint8_t, void *)
+       2  u8g_delay_cnt
+
+ 
+   3 bytes in section .bss
+ 804 bytes in section .text
+ 
+ 792 bytes of CODE memory (+ 12 bytes shared)
+   3 bytes of DATA memory
+
+Errors: none
+Warnings: 22

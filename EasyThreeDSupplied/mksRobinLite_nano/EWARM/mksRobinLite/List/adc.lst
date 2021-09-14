@@ -1,0 +1,442 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.22.1.15669/W32 for ARM       28/Dec/2020  22:13:38
+# Copyright 1999-2018 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  F:\nano\Src\adc.c
+#    Command line =  
+#        -f C:\Users\ADMINI~1\AppData\Local\Temp\EWB625.tmp (F:\nano\Src\adc.c
+#        -D USE_HAL_DRIVER -D STM32F103xE -D MKS_ROBIN -D MARLIN -D __arm__ -D
+#        USE_MKS_WIFI --preprocess=s F:\nano\EWARM\mksRobinLite\List -lC
+#        F:\nano\EWARM\mksRobinLite\List -lA F:\nano\EWARM\mksRobinLite\List
+#        --diag_suppress Pa050 -o F:\nano\EWARM\mksRobinLite\Obj --no_unroll
+#        --no_inline --no_tbaa --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M3 -e --char_is_signed --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\INC\c\DLib_Config_Full.h" -I F:\nano\EWARM/../Inc\ -I
+#        F:\nano\EWARM/../Src\ -I
+#        F:\nano\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\ -I
+#        F:\nano\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy\ -I
+#        F:\nano\EWARM/../Drivers/STM32F10x_StdPeriph_Driver/Inc\ -I
+#        F:\nano\EWARM/../Drivers/CMSIS/Device/ST/STM32F1xx/Include\ -I
+#        F:\nano\EWARM/../Drivers/CMSIS/Include\ -I
+#        F:\nano\EWARM/../Drivers/BSP/STM32MKS-3dPrinter\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/Common\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/l6474\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/at24cxx\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/w25qxx\ -I
+#        F:\nano\EWARM/../Drivers/BSP/MotorControl\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/FatFs/src\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/FatFs/src/drivers\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/Marlin\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/u8glib_arm_v1.17/src\ -I
+#        F:\nano\EWARM/../Middlewares/arduino\ -I
+#        F:\nano\EWARM/../Middlewares/arduino/avr\ -I
+#        F:\nano\EWARM/../Inc/Logo\ -Om --use_c++_inline -I "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 8.0\arm\CMSIS\Core\Include\" -I
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\CMSIS\DSP\Include\")
+#    Locale       =  C
+#    List file    =  F:\nano\EWARM\mksRobinLite\List\adc.lst
+#    Object file  =  F:\nano\EWARM\mksRobinLite\Obj\adc.o
+#
+###############################################################################
+
+F:\nano\Src\adc.c
+      1          /**
+      2            ******************************************************************************
+      3            * File Name          : ADC.c
+      4            * Description        : This file provides code for the configuration
+      5            *                      of the ADC instances.
+      6            ******************************************************************************
+      7            *
+      8            * COPYRIGHT(c) 2017 STMicroelectronics
+      9            *
+     10            * Redistribution and use in source and binary forms, with or without modification,
+     11            * are permitted provided that the following conditions are met:
+     12            *   1. Redistributions of source code must retain the above copyright notice,
+     13            *      this list of conditions and the following disclaimer.
+     14            *   2. Redistributions in binary form must reproduce the above copyright notice,
+     15            *      this list of conditions and the following disclaimer in the documentation
+     16            *      and/or other materials provided with the distribution.
+     17            *   3. Neither the name of STMicroelectronics nor the names of its contributors
+     18            *      may be used to endorse or promote products derived from this software
+     19            *      without specific prior written permission.
+     20            *
+     21            * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+     22            * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+     23            * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+     24            * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+     25            * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+     26            * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+     27            * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+     28            * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+     29            * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     30            * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+     31            *
+     32            ******************************************************************************
+     33            */
+     34          
+     35          /* Includes ------------------------------------------------------------------*/
+     36          #include "adc.h"
+     37          
+     38          #include "gpio.h"
+     39          #include "dma.h"
+     40          
+     41          /* USER CODE BEGIN 0 */
+
+   \                                 In section .bss, align 4
+     42          uint16_t uhADCxConvertedValue[2];
+   \                     uhADCxConvertedValue:
+   \   00000000                      DS8 4
+
+   \                                 In section .bss, align 4
+     43          uint16_t uhADCxConvertedValue_temp[2];
+   \                     uhADCxConvertedValue_temp:
+   \   00000000                      DS8 4
+     44          
+     45          /* USER CODE END 0 */
+     46          
+
+   \                                 In section .bss, align 4
+     47          ADC_HandleTypeDef hadc1;
+   \                     hadc1:
+   \   00000000                      DS8 48
+
+   \                                 In section .bss, align 4
+     48          DMA_HandleTypeDef hdma_adc1;
+   \                     hdma_adc1:
+   \   00000000                      DS8 56
+     49          
+     50          /* ADC1 init function */
+
+   \                                 In section .text, align 2, keep-with-next
+     51          void MX_ADC1_Init(void)
+     52          {
+   \                     MX_ADC1_Init: (+1)
+   \   00000000   0xB51F             PUSH     {R0-R4,LR}
+     53            ADC_ChannelConfTypeDef sConfig;
+     54          
+     55              /**Common config 
+     56              */
+     57            hadc1.Instance = ADC1;
+   \   00000002   0x....             LDR.N    R4,??DataTable2
+   \   00000004   0x....             LDR.N    R0,??DataTable2_1  ;; 0x40012400
+   \   00000006   0x6020             STR      R0,[R4, #+0]
+     58            hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
+   \   00000008   0xF44F 0x7080      MOV      R0,#+256
+   \   0000000C   0x60A0             STR      R0,[R4, #+8]
+     59            hadc1.Init.ContinuousConvMode = ENABLE;
+   \   0000000E   0x2001             MOVS     R0,#+1
+   \   00000010   0x60E0             STR      R0,[R4, #+12]
+     60            hadc1.Init.DiscontinuousConvMode = DISABLE;
+   \   00000012   0x2000             MOVS     R0,#+0
+   \   00000014   0x6160             STR      R0,[R4, #+20]
+     61            hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+   \   00000016   0xF44F 0x2060      MOV      R0,#+917504
+   \   0000001A   0x61E0             STR      R0,[R4, #+28]
+     62            hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+   \   0000001C   0x2000             MOVS     R0,#+0
+   \   0000001E   0x6060             STR      R0,[R4, #+4]
+     63            hadc1.Init.NbrOfConversion = 2;
+   \   00000020   0x2002             MOVS     R0,#+2
+   \   00000022   0x6120             STR      R0,[R4, #+16]
+     64            if (HAL_ADC_Init(&hadc1) != HAL_OK)
+   \   00000024   0x4620             MOV      R0,R4
+   \   00000026   0x.... 0x....      BL       HAL_ADC_Init
+   \   0000002A   0x2800             CMP      R0,#+0
+   \   0000002C   0xD001             BEQ.N    ??MX_ADC1_Init_0
+     65            {
+     66              Error_Handler();
+   \   0000002E   0x.... 0x....      BL       Error_Handler
+     67            }
+     68          
+     69              /**Configure Regular Channel 
+     70              */
+     71            sConfig.Channel = ADC_CHANNEL_0;
+   \                     ??MX_ADC1_Init_0: (+1)
+   \   00000032   0x2000             MOVS     R0,#+0
+   \   00000034   0x9000             STR      R0,[SP, #+0]
+     72            sConfig.Rank = 1;
+   \   00000036   0x2001             MOVS     R0,#+1
+   \   00000038   0x9001             STR      R0,[SP, #+4]
+     73            sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+   \   0000003A   0x2000             MOVS     R0,#+0
+   \   0000003C   0x9002             STR      R0,[SP, #+8]
+     74            if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+   \   0000003E   0x4669             MOV      R1,SP
+   \   00000040   0x4620             MOV      R0,R4
+   \   00000042   0x.... 0x....      BL       HAL_ADC_ConfigChannel
+   \   00000046   0x2800             CMP      R0,#+0
+   \   00000048   0xD001             BEQ.N    ??MX_ADC1_Init_1
+     75            {
+     76              Error_Handler();
+   \   0000004A   0x.... 0x....      BL       Error_Handler
+     77            }
+     78          
+     79              /**Configure Regular Channel 
+     80              */
+     81            sConfig.Channel = ADC_CHANNEL_1;
+   \                     ??MX_ADC1_Init_1: (+1)
+   \   0000004E   0x2001             MOVS     R0,#+1
+   \   00000050   0x9000             STR      R0,[SP, #+0]
+     82            sConfig.Rank = 2;
+   \   00000052   0x2002             MOVS     R0,#+2
+   \   00000054   0x9001             STR      R0,[SP, #+4]
+     83            if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+   \   00000056   0x4669             MOV      R1,SP
+   \   00000058   0x4620             MOV      R0,R4
+   \   0000005A   0x.... 0x....      BL       HAL_ADC_ConfigChannel
+   \   0000005E   0x2800             CMP      R0,#+0
+   \   00000060   0xD001             BEQ.N    ??MX_ADC1_Init_2
+     84            {
+     85              Error_Handler();
+   \   00000062   0x.... 0x....      BL       Error_Handler
+     86            }
+     87          
+     88          }
+   \                     ??MX_ADC1_Init_2: (+1)
+   \   00000066   0xBD1F             POP      {R0-R4,PC}       ;; return
+     89          
+
+   \                                 In section .text, align 2, keep-with-next
+     90          void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
+     91          {
+   \                     HAL_ADC_MspInit: (+1)
+   \   00000000   0xB530             PUSH     {R4,R5,LR}
+   \   00000002   0xB085             SUB      SP,SP,#+20
+   \   00000004   0x4604             MOV      R4,R0
+     92          
+     93            GPIO_InitTypeDef GPIO_InitStruct;
+     94            if(adcHandle->Instance==ADC1)
+   \   00000006   0x6820             LDR      R0,[R4, #+0]
+   \   00000008   0x....             LDR.N    R1,??DataTable2_1  ;; 0x40012400
+   \   0000000A   0x4288             CMP      R0,R1
+   \   0000000C   0xD133             BNE.N    ??HAL_ADC_MspInit_0
+     95            {
+     96            /* USER CODE BEGIN ADC1_MspInit 0 */
+     97          
+     98            /* USER CODE END ADC1_MspInit 0 */
+     99              /* Peripheral clock enable */
+    100              __HAL_RCC_ADC1_CLK_ENABLE();
+   \   0000000E   0x....             LDR.N    R0,??DataTable2_2  ;; 0x40021018
+   \   00000010   0x6801             LDR      R1,[R0, #+0]
+   \   00000012   0xF441 0x7100      ORR      R1,R1,#0x200
+   \   00000016   0x6001             STR      R1,[R0, #+0]
+   \   00000018   0x6800             LDR      R0,[R0, #+0]
+   \   0000001A   0xF400 0x7000      AND      R0,R0,#0x200
+   \   0000001E   0x9000             STR      R0,[SP, #+0]
+   \   00000020   0x9800             LDR      R0,[SP, #+0]
+    101            
+    102              /**ADC1 GPIO Configuration    
+    103              PA0-WKUP     ------> ADC1_IN0
+    104              PA1     ------> ADC1_IN1 
+    105              */
+    106              GPIO_InitStruct.Pin = TH_Pin|TB_Pin;
+   \   00000022   0x2003             MOVS     R0,#+3
+   \   00000024   0x9001             STR      R0,[SP, #+4]
+    107              GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+   \   00000026   0x9002             STR      R0,[SP, #+8]
+    108              HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+   \   00000028   0xA901             ADD      R1,SP,#+4
+   \   0000002A   0x....             LDR.N    R0,??DataTable2_3  ;; 0x40010800
+   \   0000002C   0x.... 0x....      BL       HAL_GPIO_Init
+    109          
+    110              /* Peripheral DMA init*/
+    111            
+    112              hdma_adc1.Instance = DMA1_Channel1;
+   \   00000030   0x....             LDR.N    R5,??DataTable2_4
+   \   00000032   0x....             LDR.N    R0,??DataTable2_5  ;; 0x40020008
+   \   00000034   0x6028             STR      R0,[R5, #+0]
+    113              hdma_adc1.Init.Direction = DMA_PERIPH_TO_MEMORY;
+   \   00000036   0x2000             MOVS     R0,#+0
+   \   00000038   0x6068             STR      R0,[R5, #+4]
+    114              hdma_adc1.Init.PeriphInc = DMA_PINC_DISABLE;
+   \   0000003A   0x60A8             STR      R0,[R5, #+8]
+    115              hdma_adc1.Init.MemInc = DMA_MINC_ENABLE;
+   \   0000003C   0x2080             MOVS     R0,#+128
+   \   0000003E   0x60E8             STR      R0,[R5, #+12]
+    116              hdma_adc1.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+   \   00000040   0xF44F 0x7080      MOV      R0,#+256
+   \   00000044   0x6128             STR      R0,[R5, #+16]
+    117              hdma_adc1.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+   \   00000046   0xF44F 0x6080      MOV      R0,#+1024
+   \   0000004A   0x6168             STR      R0,[R5, #+20]
+    118              hdma_adc1.Init.Mode = DMA_CIRCULAR;
+   \   0000004C   0x2020             MOVS     R0,#+32
+   \   0000004E   0x61A8             STR      R0,[R5, #+24]
+    119              hdma_adc1.Init.Priority = DMA_PRIORITY_LOW;
+   \   00000050   0x2000             MOVS     R0,#+0
+   \   00000052   0x61E8             STR      R0,[R5, #+28]
+    120              if (HAL_DMA_Init(&hdma_adc1) != HAL_OK)
+   \   00000054   0x4628             MOV      R0,R5
+   \   00000056   0x.... 0x....      BL       HAL_DMA_Init
+   \   0000005A   0x2800             CMP      R0,#+0
+   \   0000005C   0xD001             BEQ.N    ??HAL_ADC_MspInit_1
+    121              {
+    122                Error_Handler();
+   \   0000005E   0x.... 0x....      BL       Error_Handler
+    123              }
+    124          
+    125              __HAL_LINKDMA(adcHandle,DMA_Handle,hdma_adc1);
+   \                     ??HAL_ADC_MspInit_1: (+1)
+   \   00000062   0x6225             STR      R5,[R4, #+32]
+   \   00000064   0x626C             STR      R4,[R5, #+36]
+    126          
+    127              /* Peripheral interrupt init */
+    128              HAL_NVIC_SetPriority(ADC1_2_IRQn, 3, 0);
+   \   00000066   0x2200             MOVS     R2,#+0
+   \   00000068   0x2103             MOVS     R1,#+3
+   \   0000006A   0x2012             MOVS     R0,#+18
+   \   0000006C   0x.... 0x....      BL       HAL_NVIC_SetPriority
+    129              HAL_NVIC_EnableIRQ(ADC1_2_IRQn);
+   \   00000070   0x2012             MOVS     R0,#+18
+   \   00000072   0x.... 0x....      BL       HAL_NVIC_EnableIRQ
+    130            /* USER CODE BEGIN ADC1_MspInit 1 */
+    131          
+    132            /* USER CODE END ADC1_MspInit 1 */
+    133            }
+    134          }
+   \                     ??HAL_ADC_MspInit_0: (+1)
+   \   00000076   0xB005             ADD      SP,SP,#+20
+   \   00000078   0xBD30             POP      {R4,R5,PC}       ;; return
+    135          
+
+   \                                 In section .text, align 2, keep-with-next
+    136          void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
+    137          {
+   \                     HAL_ADC_MspDeInit: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    138          
+    139            if(adcHandle->Instance==ADC1)
+   \   00000004   0x6820             LDR      R0,[R4, #+0]
+   \   00000006   0x....             LDR.N    R1,??DataTable2_1  ;; 0x40012400
+   \   00000008   0x4288             CMP      R0,R1
+   \   0000000A   0xD110             BNE.N    ??HAL_ADC_MspDeInit_0
+    140            {
+    141            /* USER CODE BEGIN ADC1_MspDeInit 0 */
+    142          
+    143            /* USER CODE END ADC1_MspDeInit 0 */
+    144              /* Peripheral clock disable */
+    145              __HAL_RCC_ADC1_CLK_DISABLE();
+   \   0000000C   0x....             LDR.N    R0,??DataTable2_2  ;; 0x40021018
+   \   0000000E   0x6801             LDR      R1,[R0, #+0]
+   \   00000010   0xF421 0x7100      BIC      R1,R1,#0x200
+   \   00000014   0x6001             STR      R1,[R0, #+0]
+    146            
+    147              /**ADC1 GPIO Configuration    
+    148              PA0-WKUP     ------> ADC1_IN0
+    149              PA1     ------> ADC1_IN1 
+    150              */
+    151              HAL_GPIO_DeInit(GPIOA, TH_Pin|TB_Pin);
+   \   00000016   0x2103             MOVS     R1,#+3
+   \   00000018   0x....             LDR.N    R0,??DataTable2_3  ;; 0x40010800
+   \   0000001A   0x.... 0x....      BL       HAL_GPIO_DeInit
+    152          
+    153              /* Peripheral DMA DeInit*/
+    154              HAL_DMA_DeInit(adcHandle->DMA_Handle);
+   \   0000001E   0x6A20             LDR      R0,[R4, #+32]
+   \   00000020   0x.... 0x....      BL       HAL_DMA_DeInit
+    155          
+    156              /* Peripheral interrupt Deinit*/
+    157              HAL_NVIC_DisableIRQ(ADC1_2_IRQn);
+   \   00000024   0x2012             MOVS     R0,#+18
+   \   00000026   0xE8BD 0x4010      POP      {R4,LR}
+   \   0000002A   0x.... 0x....      B.W      HAL_NVIC_DisableIRQ
+    158          
+    159            }
+    160            /* USER CODE BEGIN ADC1_MspDeInit 1 */
+    161          
+    162            /* USER CODE END ADC1_MspDeInit 1 */
+    163          } 
+   \                     ??HAL_ADC_MspDeInit_0: (+1)
+   \   0000002E   0xBD10             POP      {R4,PC}          ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2:
+   \   00000000   0x........         DC32     hadc1
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_1:
+   \   00000000   0x40012400         DC32     0x40012400
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_2:
+   \   00000000   0x40021018         DC32     0x40021018
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_3:
+   \   00000000   0x40010800         DC32     0x40010800
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_4:
+   \   00000000   0x........         DC32     hdma_adc1
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_5:
+   \   00000000   0x40020008         DC32     0x40020008
+    164          
+    165          /* USER CODE BEGIN 1 */
+    166          
+    167          /* USER CODE END 1 */
+    168          
+    169          /**
+    170            * @}
+    171            */
+    172          
+    173          /**
+    174            * @}
+    175            */
+    176          
+    177          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       8   HAL_ADC_MspDeInit
+         8   -> HAL_DMA_DeInit
+         8   -> HAL_GPIO_DeInit
+         0   -> HAL_NVIC_DisableIRQ
+      32   HAL_ADC_MspInit
+        32   -> Error_Handler
+        32   -> HAL_DMA_Init
+        32   -> HAL_GPIO_Init
+        32   -> HAL_NVIC_EnableIRQ
+        32   -> HAL_NVIC_SetPriority
+      24   MX_ADC1_Init
+        24   -> Error_Handler
+        24   -> HAL_ADC_ConfigChannel
+        24   -> HAL_ADC_Init
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable2
+       4  ??DataTable2_1
+       4  ??DataTable2_2
+       4  ??DataTable2_3
+       4  ??DataTable2_4
+       4  ??DataTable2_5
+      48  HAL_ADC_MspDeInit
+     122  HAL_ADC_MspInit
+     104  MX_ADC1_Init
+      48  hadc1
+      56  hdma_adc1
+       4  uhADCxConvertedValue
+       4  uhADCxConvertedValue_temp
+
+ 
+ 112 bytes in section .bss
+ 298 bytes in section .text
+ 
+ 298 bytes of CODE memory
+ 112 bytes of DATA memory
+
+Errors: none
+Warnings: none

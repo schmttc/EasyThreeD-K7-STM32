@@ -1,0 +1,451 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.22.1.15669/W32 for ARM       28/Dec/2020  21:37:11
+# Copyright 1999-2018 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        F:\nano\Middlewares\Third_Party\u8glib_arm_v1.17\src\u8g_pb8h8.c
+#    Command line =  
+#        -f C:\Users\ADMINI~1\AppData\Local\Temp\EW55F1.tmp
+#        (F:\nano\Middlewares\Third_Party\u8glib_arm_v1.17\src\u8g_pb8h8.c -D
+#        USE_HAL_DRIVER -D STM32F103xE -D MKS_ROBIN -D MARLIN -D __arm__ -D
+#        USE_MKS_WIFI --preprocess=s F:\nano\EWARM\mksRobinLite\List -lC
+#        F:\nano\EWARM\mksRobinLite\List -lA F:\nano\EWARM\mksRobinLite\List
+#        --diag_suppress Pa050 -o F:\nano\EWARM\mksRobinLite\Obj --no_unroll
+#        --no_inline --no_tbaa --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M3 -e --char_is_signed --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\INC\c\DLib_Config_Full.h" -I F:\nano\EWARM/../Inc\ -I
+#        F:\nano\EWARM/../Src\ -I
+#        F:\nano\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\ -I
+#        F:\nano\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy\ -I
+#        F:\nano\EWARM/../Drivers/STM32F10x_StdPeriph_Driver/Inc\ -I
+#        F:\nano\EWARM/../Drivers/CMSIS/Device/ST/STM32F1xx/Include\ -I
+#        F:\nano\EWARM/../Drivers/CMSIS/Include\ -I
+#        F:\nano\EWARM/../Drivers/BSP/STM32MKS-3dPrinter\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/Common\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/l6474\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/at24cxx\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/w25qxx\ -I
+#        F:\nano\EWARM/../Drivers/BSP/MotorControl\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/FatFs/src\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/FatFs/src/drivers\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/Marlin\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/u8glib_arm_v1.17/src\ -I
+#        F:\nano\EWARM/../Middlewares/arduino\ -I
+#        F:\nano\EWARM/../Middlewares/arduino/avr\ -I
+#        F:\nano\EWARM/../Inc/Logo\ -Om --use_c++_inline -I "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 8.0\arm\CMSIS\Core\Include\" -I
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\CMSIS\DSP\Include\")
+#    Locale       =  C
+#    List file    =  F:\nano\EWARM\mksRobinLite\List\u8g_pb8h8.lst
+#    Object file  =  F:\nano\EWARM\mksRobinLite\Obj\u8g_pb8h8.o
+#
+###############################################################################
+
+F:\nano\Middlewares\Third_Party\u8glib_arm_v1.17\src\u8g_pb8h8.c
+      1          /*
+      2          
+      3            u8g_pb8h8.c
+      4            
+      5            8 lines per page, horizontal, 8 bits per pixel
+      6            (22 May 2013: might also support any number of lines --> needs to be checked)
+      7            
+      8            Universal 8bit Graphics Library
+      9            
+     10            Copyright (c) 2012, olikraus@gmail.com
+     11            All rights reserved.
+     12          
+     13            Redistribution and use in source and binary forms, with or without modification, 
+     14            are permitted provided that the following conditions are met:
+     15          
+     16            * Redistributions of source code must retain the above copyright notice, this list 
+     17              of conditions and the following disclaimer.
+     18              
+     19            * Redistributions in binary form must reproduce the above copyright notice, this 
+     20              list of conditions and the following disclaimer in the documentation and/or other 
+     21              materials provided with the distribution.
+     22          
+     23            THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND 
+     24            CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+     25            INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+     26            MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+     27            DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
+     28            CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+     29            SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+     30            NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+     31            LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+     32            CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+     33            STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+     34            ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+     35            ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
+     36          
+     37          
+     38          struct _u8g_pb_t
+     39          {
+     40            u8g_page_t p;
+     41            u8g_uint_t width;
+     42            void *buf;
+     43          };
+     44          typedef struct _u8g_pb_t u8g_pb_t;
+     45          
+     46          
+     47          uint8_t u8g_index_color_8h8_buf[WIDTH*PAGE_HEIGHT] U8G_NOCOMMON ; 
+     48          u8g_pb_t u8g_index_color_8h8_pb = { {PAGE_HEIGHT, HEIGHT, 0, 0, 0},  WIDTH, u8g_index_color_8h8_buff}; 
+     49          u8g_dev_t name = { dev_fn, &u8g_index_color_8h8_pb, com_fn }
+     50          
+     51          */
+     52          
+     53          #include "u8g.h"
+     54          
+     55          /*
+     56          #define WIDTH_BITS 7
+     57          #define WIDTH (1<<WIDTH_BITS)
+     58          #define PAGE_HEIGHT_BITS 3
+     59          #define PAGE_HEIGHT (1<<PAGE_HEIGHT_BITS)
+     60          */
+     61          
+
+   \                                 In section .text, align 2, keep-with-next
+     62          void u8g_pb8h8_Clear(u8g_pb_t *b)
+     63          {
+     64            uint8_t *ptr = (uint8_t *)b->buf;
+   \                     u8g_pb8h8_Clear: (+1)
+   \   00000000   0x6881             LDR      R1,[R0, #+8]
+     65            uint8_t *end_ptr = ptr;
+     66            uint8_t cnt = b->p.page_height;
+     67            end_ptr += b->width*cnt;
+   \   00000002   0x7942             LDRB     R2,[R0, #+5]
+   \   00000004   0x7800             LDRB     R0,[R0, #+0]
+   \   00000006   0x4342             MULS     R2,R0,R2
+   \   00000008   0x1888             ADDS     R0,R1,R2
+   \   0000000A   0x2200             MOVS     R2,#+0
+     68            /*
+     69            do
+     70            {
+     71              end_ptr += b->width;
+     72              cnt--;
+     73            } while( cnt > 0 );
+     74            */
+     75            do
+     76            {
+     77              *ptr++ = 0;
+   \                     ??u8g_pb8h8_Clear_0: (+1)
+   \   0000000C   0xF801 0x2B01      STRB     R2,[R1], #+1
+     78            } while( ptr != end_ptr );
+   \   00000010   0x4281             CMP      R1,R0
+   \   00000012   0xD1FB             BNE.N    ??u8g_pb8h8_Clear_0
+     79          }
+   \   00000014   0x4770             BX       LR               ;; return
+     80          
+     81          
+
+   \                                 In section .text, align 2, keep-with-next
+     82          void u8g_pb8h8_Init(u8g_pb_t *b, void *buf, u8g_uint_t width)
+     83          {
+     84            b->buf = buf;
+   \                     u8g_pb8h8_Init: (+1)
+   \   00000000   0x6081             STR      R1,[R0, #+8]
+     85            b->width = width;
+   \   00000002   0x7142             STRB     R2,[R0, #+5]
+     86            u8g_pb8h8_Clear(b);
+   \   00000004   0x....             B.N      u8g_pb8h8_Clear
+     87          }
+     88          
+
+   \                                 In section .text, align 2, keep-with-next
+     89          static void u8g_pb8h8_set_pixel(u8g_pb_t *b, u8g_uint_t x, u8g_uint_t y, uint8_t color_index)
+     90          {
+   \                     u8g_pb8h8_set_pixel: (+1)
+   \   00000000   0xB430             PUSH     {R4,R5}
+     91            uint16_t tmp;
+     92            uint8_t *ptr = b->buf;
+     93            y -= b->p.page_y0;
+     94            tmp = y;
+     95            tmp *= b->width;
+     96            tmp += x;
+     97            ptr += tmp;
+     98            *ptr = color_index;
+   \   00000002   0x6885             LDR      R5,[R0, #+8]
+   \   00000004   0x7884             LDRB     R4,[R0, #+2]
+   \   00000006   0x1B12             SUBS     R2,R2,R4
+   \   00000008   0xB2D2             UXTB     R2,R2
+   \   0000000A   0x7940             LDRB     R0,[R0, #+5]
+   \   0000000C   0xFB00 0x1102      MLA      R1,R0,R2,R1
+   \   00000010   0xB289             UXTH     R1,R1
+   \   00000012   0x546B             STRB     R3,[R5, R1]
+     99          }
+   \   00000014   0xBC30             POP      {R4,R5}
+   \   00000016   0x4770             BX       LR               ;; return
+    100          
+
+   \                                 In section .text, align 2, keep-with-next
+    101          void u8g_pb8h8_SetPixel(u8g_pb_t *b, const u8g_dev_arg_pixel_t * const arg_pixel)
+    102          {
+   \                     u8g_pb8h8_SetPixel: (+1)
+   \   00000000   0xB418             PUSH     {R3,R4}
+    103            if ( arg_pixel->y < b->p.page_y0 )
+   \   00000002   0x784A             LDRB     R2,[R1, #+1]
+   \   00000004   0x7883             LDRB     R3,[R0, #+2]
+   \   00000006   0x429A             CMP      R2,R3
+   \   00000008   0xD30B             BCC.N    ??u8g_pb8h8_SetPixel_0
+    104              return;
+    105            if ( arg_pixel->y > b->p.page_y1 )
+   \   0000000A   0x78C3             LDRB     R3,[R0, #+3]
+   \   0000000C   0x4293             CMP      R3,R2
+   \   0000000E   0xD308             BCC.N    ??u8g_pb8h8_SetPixel_0
+    106              return;
+    107            if ( arg_pixel->x >= b->width )
+   \   00000010   0x780C             LDRB     R4,[R1, #+0]
+   \   00000012   0x7943             LDRB     R3,[R0, #+5]
+   \   00000014   0x429C             CMP      R4,R3
+   \   00000016   0xD204             BCS.N    ??u8g_pb8h8_SetPixel_0
+    108              return;
+    109            u8g_pb8h8_set_pixel(b, arg_pixel->x, arg_pixel->y, arg_pixel->color);
+   \   00000018   0x790B             LDRB     R3,[R1, #+4]
+   \   0000001A   0x4621             MOV      R1,R4
+   \   0000001C   0xB001             ADD      SP,SP,#+4
+   \   0000001E   0xBC10             POP      {R4}
+   \   00000020   0x....             B.N      u8g_pb8h8_set_pixel
+   \                     ??u8g_pb8h8_SetPixel_0: (+1)
+   \   00000022   0xBC11             POP      {R0,R4}
+   \   00000024   0x4770             BX       LR               ;; return
+    110          }
+    111          
+    112          
+
+   \                                 In section .text, align 4, keep-with-next
+    113          void u8g_pb8h8_Set8Pixel(u8g_pb_t *b, u8g_dev_arg_pixel_t *arg_pixel)
+    114          {
+   \                     u8g_pb8h8_Set8Pixel: (+1)
+   \   00000000   0xE92D 0x41F0      PUSH     {R4-R8,LR}
+   \   00000004   0x4606             MOV      R6,R0
+   \   00000006   0x460F             MOV      R7,R1
+    115            register uint8_t pixel = arg_pixel->pixel;
+   \   00000008   0xF897 0x8002      LDRB     R8,[R7, #+2]
+    116            u8g_uint_t dx = 0;
+   \   0000000C   0x2400             MOVS     R4,#+0
+    117            u8g_uint_t dy = 0;
+   \   0000000E   0x4625             MOV      R5,R4
+    118            
+    119            switch( arg_pixel->dir )
+   \   00000010   0x78F8             LDRB     R0,[R7, #+3]
+   \   00000012   0x2803             CMP      R0,#+3
+   \   00000014   0xD804             BHI.N    ??u8g_pb8h8_Set8Pixel_1
+   \   00000016   0xE8DF 0xF000      TBB      [PC, R0]
+   \                     ??u8g_pb8h8_Set8Pixel_0:
+   \   0000001A   0x02 0x18          DC8      0x2,0x18,0x1A,0x1C
+   \              0x1A 0x1C    
+    120            {
+    121              case 0: dx++; break;
+   \                     ??u8g_pb8h8_Set8Pixel_2: (+1)
+   \   0000001E   0x2401             MOVS     R4,#+1
+    122              case 1: dy++; break;
+    123              case 2: dx--; break;
+    124              case 3: dy--; break;
+    125            }
+    126            
+    127            do
+    128            {
+    129              if ( pixel & 128 )
+   \                     ??u8g_pb8h8_Set8Pixel_1: (+1)
+   \   00000020   0xEA5F 0x6008      LSLS     R0,R8,#+24
+   \   00000024   0xD503             BPL.N    ??u8g_pb8h8_Set8Pixel_3
+    130                u8g_pb8h8_SetPixel(b, arg_pixel);
+   \   00000026   0x4639             MOV      R1,R7
+   \   00000028   0x4630             MOV      R0,R6
+   \   0000002A   0x.... 0x....      BL       u8g_pb8h8_SetPixel
+    131              arg_pixel->x += dx;
+   \                     ??u8g_pb8h8_Set8Pixel_3: (+1)
+   \   0000002E   0x7838             LDRB     R0,[R7, #+0]
+   \   00000030   0x1820             ADDS     R0,R4,R0
+   \   00000032   0x7038             STRB     R0,[R7, #+0]
+    132              arg_pixel->y += dy;
+   \   00000034   0x7878             LDRB     R0,[R7, #+1]
+   \   00000036   0x1828             ADDS     R0,R5,R0
+   \   00000038   0x7078             STRB     R0,[R7, #+1]
+    133              pixel <<= 1;
+   \   0000003A   0xEA4F 0x0848      LSL      R8,R8,#+1
+    134            } while( pixel != 0  );  
+   \   0000003E   0x4640             MOV      R0,R8
+   \   00000040   0xB2C0             UXTB     R0,R0
+   \   00000042   0x2800             CMP      R0,#+0
+   \   00000044   0xD1EC             BNE.N    ??u8g_pb8h8_Set8Pixel_1
+    135          }
+   \   00000046   0xE8BD 0x81F0      POP      {R4-R8,PC}       ;; return
+   \                     ??u8g_pb8h8_Set8Pixel_4: (+1)
+   \   0000004A   0x2501             MOVS     R5,#+1
+   \   0000004C   0xE7E8             B.N      ??u8g_pb8h8_Set8Pixel_1
+   \                     ??u8g_pb8h8_Set8Pixel_5: (+1)
+   \   0000004E   0x24FF             MOVS     R4,#+255
+   \   00000050   0xE7E6             B.N      ??u8g_pb8h8_Set8Pixel_1
+   \                     ??u8g_pb8h8_Set8Pixel_6: (+1)
+   \   00000052   0x25FF             MOVS     R5,#+255
+   \   00000054   0xE7E4             B.N      ??u8g_pb8h8_Set8Pixel_1
+    136          
+    137          
+
+   \                                 In section .text, align 2, keep-with-next
+    138          uint8_t u8g_dev_pb8h8_base_fn(u8g_t *u8g, u8g_dev_t *dev, uint8_t msg, void *arg)
+    139          {
+   \                     u8g_dev_pb8h8_base_fn: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+   \   00000002   0x461C             MOV      R4,R3
+    140            u8g_pb_t *pb = (u8g_pb_t *)(dev->dev_mem);
+   \   00000004   0x684D             LDR      R5,[R1, #+4]
+    141            switch(msg)
+   \   00000006   0x2A14             CMP      R2,#+20
+   \   00000008   0xD01F             BEQ.N    ??u8g_dev_pb8h8_base_fn_0
+   \   0000000A   0x2A15             CMP      R2,#+21
+   \   0000000C   0xD024             BEQ.N    ??u8g_dev_pb8h8_base_fn_1
+   \   0000000E   0x2A17             CMP      R2,#+23
+   \   00000010   0xD02D             BEQ.N    ??u8g_dev_pb8h8_base_fn_2
+   \   00000012   0x2A32             CMP      R2,#+50
+   \   00000014   0xD014             BEQ.N    ??u8g_dev_pb8h8_base_fn_3
+   \   00000016   0x2A3B             CMP      R2,#+59
+   \   00000018   0xD006             BEQ.N    ??u8g_dev_pb8h8_base_fn_4
+   \   0000001A   0x2A46             CMP      R2,#+70
+   \   0000001C   0xD02C             BEQ.N    ??u8g_dev_pb8h8_base_fn_5
+   \   0000001E   0x2A47             CMP      R2,#+71
+   \   00000020   0xD02D             BEQ.N    ??u8g_dev_pb8h8_base_fn_6
+   \   00000022   0x2A48             CMP      R2,#+72
+   \   00000024   0xD02E             BEQ.N    ??u8g_dev_pb8h8_base_fn_7
+   \   00000026   0xE009             B.N      ??u8g_dev_pb8h8_base_fn_8
+    142            {
+    143              case U8G_DEV_MSG_SET_8PIXEL:
+    144                if ( u8g_pb_Is8PixelVisible(pb, (u8g_dev_arg_pixel_t *)arg) )
+   \                     ??u8g_dev_pb8h8_base_fn_4: (+1)
+   \   00000028   0x4621             MOV      R1,R4
+   \   0000002A   0x4628             MOV      R0,R5
+   \   0000002C   0x.... 0x....      BL       u8g_pb_Is8PixelVisible
+   \   00000030   0x2800             CMP      R0,#+0
+   \   00000032   0xD003             BEQ.N    ??u8g_dev_pb8h8_base_fn_8
+    145                  u8g_pb8h8_Set8Pixel(pb, (u8g_dev_arg_pixel_t *)arg);
+   \   00000034   0x4621             MOV      R1,R4
+   \   00000036   0x4628             MOV      R0,R5
+   \   00000038   0x.... 0x....      BL       u8g_pb8h8_Set8Pixel
+    146                break;
+    147              case U8G_DEV_MSG_SET_PIXEL:
+    148                u8g_pb8h8_SetPixel(pb, (u8g_dev_arg_pixel_t *)arg);
+    149                break;
+    150              case U8G_DEV_MSG_INIT:
+    151                break;
+    152              case U8G_DEV_MSG_STOP:
+    153                break;
+    154              case U8G_DEV_MSG_PAGE_FIRST:
+    155                u8g_pb8h8_Clear(pb);
+    156                u8g_page_First(&(pb->p));
+    157                break;
+    158              case U8G_DEV_MSG_PAGE_NEXT:
+    159                if ( u8g_page_Next(&(pb->p)) == 0 )
+    160                  return 0;
+    161                u8g_pb8h8_Clear(pb);
+    162                break;
+    163          #ifdef U8G_DEV_MSG_IS_BBX_INTERSECTION
+    164              case U8G_DEV_MSG_IS_BBX_INTERSECTION:
+    165                return u8g_pb_IsIntersection(pb, (u8g_dev_arg_bbx_t *)arg);
+    166          #endif
+    167              case U8G_DEV_MSG_GET_PAGE_BOX:
+    168                u8g_pb_GetPageBox(pb, (u8g_box_t *)arg);
+    169                break;
+    170              case U8G_DEV_MSG_GET_WIDTH:
+    171                *((u8g_uint_t *)arg) = pb->width;
+    172                break;
+    173              case U8G_DEV_MSG_GET_HEIGHT:
+    174                *((u8g_uint_t *)arg) = pb->p.total_height;
+    175                break;
+    176              case U8G_DEV_MSG_SET_COLOR_ENTRY:
+    177                break;
+    178              case U8G_DEV_MSG_SET_XY_CB:
+    179                break;
+    180              case U8G_DEV_MSG_GET_MODE:
+    181                return U8G_MODE_R3G3B2;
+    182            }
+    183            return 1;
+   \                     ??u8g_dev_pb8h8_base_fn_8: (+1)
+   \   0000003C   0x2001             MOVS     R0,#+1
+   \   0000003E   0xBD32             POP      {R1,R4,R5,PC}    ;; return
+   \                     ??u8g_dev_pb8h8_base_fn_3: (+1)
+   \   00000040   0x4621             MOV      R1,R4
+   \   00000042   0x4628             MOV      R0,R5
+   \   00000044   0x.... 0x....      BL       u8g_pb8h8_SetPixel
+   \   00000048   0xE7F8             B.N      ??u8g_dev_pb8h8_base_fn_8
+   \                     ??u8g_dev_pb8h8_base_fn_0: (+1)
+   \   0000004A   0x4628             MOV      R0,R5
+   \   0000004C   0x.... 0x....      BL       u8g_pb8h8_Clear
+   \   00000050   0x4628             MOV      R0,R5
+   \   00000052   0x.... 0x....      BL       u8g_page_First
+   \   00000056   0xE7F1             B.N      ??u8g_dev_pb8h8_base_fn_8
+   \                     ??u8g_dev_pb8h8_base_fn_1: (+1)
+   \   00000058   0x4628             MOV      R0,R5
+   \   0000005A   0x.... 0x....      BL       u8g_page_Next
+   \   0000005E   0x2800             CMP      R0,#+0
+   \   00000060   0xD101             BNE.N    ??u8g_dev_pb8h8_base_fn_9
+   \   00000062   0x2000             MOVS     R0,#+0
+   \   00000064   0xBD32             POP      {R1,R4,R5,PC}
+   \                     ??u8g_dev_pb8h8_base_fn_9: (+1)
+   \   00000066   0x4628             MOV      R0,R5
+   \   00000068   0x.... 0x....      BL       u8g_pb8h8_Clear
+   \   0000006C   0xE7E6             B.N      ??u8g_dev_pb8h8_base_fn_8
+   \                     ??u8g_dev_pb8h8_base_fn_2: (+1)
+   \   0000006E   0x4621             MOV      R1,R4
+   \   00000070   0x4628             MOV      R0,R5
+   \   00000072   0x.... 0x....      BL       u8g_pb_GetPageBox
+   \   00000076   0xE7E1             B.N      ??u8g_dev_pb8h8_base_fn_8
+   \                     ??u8g_dev_pb8h8_base_fn_5: (+1)
+   \   00000078   0x7968             LDRB     R0,[R5, #+5]
+   \   0000007A   0x7020             STRB     R0,[R4, #+0]
+   \   0000007C   0xE7DE             B.N      ??u8g_dev_pb8h8_base_fn_8
+   \                     ??u8g_dev_pb8h8_base_fn_6: (+1)
+   \   0000007E   0x7868             LDRB     R0,[R5, #+1]
+   \   00000080   0x7020             STRB     R0,[R4, #+0]
+   \   00000082   0xE7DB             B.N      ??u8g_dev_pb8h8_base_fn_8
+   \                     ??u8g_dev_pb8h8_base_fn_7: (+1)
+   \   00000084   0x2028             MOVS     R0,#+40
+   \   00000086   0xBD32             POP      {R1,R4,R5,PC}
+    184          }
+    185          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      16   u8g_dev_pb8h8_base_fn
+        16   -> u8g_page_First
+        16   -> u8g_page_Next
+        16   -> u8g_pb8h8_Clear
+        16   -> u8g_pb8h8_Set8Pixel
+        16   -> u8g_pb8h8_SetPixel
+        16   -> u8g_pb_GetPageBox
+        16   -> u8g_pb_Is8PixelVisible
+       0   u8g_pb8h8_Clear
+       0   u8g_pb8h8_Init
+         0   -> u8g_pb8h8_Clear
+      24   u8g_pb8h8_Set8Pixel
+        24   -> u8g_pb8h8_SetPixel
+       8   u8g_pb8h8_SetPixel
+         0   -> u8g_pb8h8_set_pixel
+       8   u8g_pb8h8_set_pixel
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+     136  u8g_dev_pb8h8_base_fn
+      22  u8g_pb8h8_Clear
+       6  u8g_pb8h8_Init
+      86  u8g_pb8h8_Set8Pixel
+      38  u8g_pb8h8_SetPixel
+      24  u8g_pb8h8_set_pixel
+
+ 
+ 312 bytes in section .text
+ 
+ 312 bytes of CODE memory
+
+Errors: none
+Warnings: none

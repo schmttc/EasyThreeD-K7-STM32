@@ -1,0 +1,1497 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.22.1.15669/W32 for ARM       28/Dec/2020  22:13:53
+# Copyright 1999-2018 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        F:\nano\Drivers\BSP\STM32MKS-3dPrinter\stm32f1xx_3dprinter_uart.c
+#    Command line =  
+#        -f C:\Users\ADMINI~1\AppData\Local\Temp\EWEE98.tmp
+#        (F:\nano\Drivers\BSP\STM32MKS-3dPrinter\stm32f1xx_3dprinter_uart.c -D
+#        USE_HAL_DRIVER -D STM32F103xE -D MKS_ROBIN -D MARLIN -D __arm__ -D
+#        USE_MKS_WIFI --preprocess=s F:\nano\EWARM\mksRobinLite\List -lC
+#        F:\nano\EWARM\mksRobinLite\List -lA F:\nano\EWARM\mksRobinLite\List
+#        --diag_suppress Pa050 -o F:\nano\EWARM\mksRobinLite\Obj --no_unroll
+#        --no_inline --no_tbaa --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M3 -e --char_is_signed --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\INC\c\DLib_Config_Full.h" -I F:\nano\EWARM/../Inc\ -I
+#        F:\nano\EWARM/../Src\ -I
+#        F:\nano\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\ -I
+#        F:\nano\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy\ -I
+#        F:\nano\EWARM/../Drivers/STM32F10x_StdPeriph_Driver/Inc\ -I
+#        F:\nano\EWARM/../Drivers/CMSIS/Device/ST/STM32F1xx/Include\ -I
+#        F:\nano\EWARM/../Drivers/CMSIS/Include\ -I
+#        F:\nano\EWARM/../Drivers/BSP/STM32MKS-3dPrinter\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/Common\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/l6474\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/at24cxx\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/w25qxx\ -I
+#        F:\nano\EWARM/../Drivers/BSP/MotorControl\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/FatFs/src\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/FatFs/src/drivers\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/Marlin\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/u8glib_arm_v1.17/src\ -I
+#        F:\nano\EWARM/../Middlewares/arduino\ -I
+#        F:\nano\EWARM/../Middlewares/arduino/avr\ -I
+#        F:\nano\EWARM/../Inc/Logo\ -Om --use_c++_inline -I "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 8.0\arm\CMSIS\Core\Include\" -I
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\CMSIS\DSP\Include\")
+#    Locale       =  C
+#    List file    =  
+#        F:\nano\EWARM\mksRobinLite\List\stm32f1xx_3dprinter_uart.lst
+#    Object file  =  F:\nano\EWARM\mksRobinLite\Obj\stm32f1xx_3dprinter_uart.o
+#
+###############################################################################
+
+F:\nano\Drivers\BSP\STM32MKS-3dPrinter\stm32f1xx_3dprinter_uart.c
+      1          /**
+Warning[Ms014]: some characters could not be correctly encoded in
+          "F:\nano\EWARM\mksRobinLite\List\stm32f1xx_3dprinter_uart.s", and
+          have been replaced with '@'. The first such character has unicode
+          code point 0x9884 ("@")
+      2            ******************************************************************************
+      3            * @file    stm32f1xx_3dPrinter_uart.c
+      4            * @author  IPC Rennes
+      5            * @version V1.0.0
+      6            * @date    January 29, 2015
+      7            * @brief   uart functions of 3D Printer BSP driver 
+      8            *  (based on L6474)
+      9            * @note    (C) COPYRIGHT 2015 STMicroelectronics
+     10            ******************************************************************************
+     11            * @attention
+     12            *
+     13            * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+     14            *
+     15            * Redistribution and use in source and binary forms, with or without modification,
+     16            * are permitted provided that the following conditions are met:
+     17            *   1. Redistributions of source code must retain the above copyright notice,
+     18            *      this list of conditions and the following disclaimer.
+     19            *   2. Redistributions in binary form must reproduce the above copyright notice,
+     20            *      this list of conditions and the following disclaimer in the documentation
+     21            *      and/or other materials provided with the distribution.
+     22            *   3. Neither the name of STMicroelectronics nor the names of its contributors
+     23            *      may be used to endorse or promote products derived from this software
+     24            *      without specific prior written permission.
+     25            *
+     26            * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+     27            * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+     28            * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+     29            * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+     30            * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+     31            * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+     32            * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+     33            * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+     34            * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     35            * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+     36            *
+     37            ******************************************************************************
+     38            */
+     39          
+     40          /* Includes ------------------------------------------------------------------*/
+     41          #include "stm32f1xx_3dprinter_uart.h"
+     42          #include "stm32f1xx_3dprinter_misc.h"
+     43          #include "stm32f10x_usart.h"
+     44          #include <string.h> /* for memcpy */
+     45          #include <stdarg.h> /* for va_start */
+     46          #include <stdio.h> /* for vsprintf */
+     47          
+     48          /* Private defines -----------------------------------------------------------*/
+     49          /* Private constant ----------------------------------------------------------*/
+     50          #define UART_ERROR_TAG        (0x1000)
+     51          #define UART_ERROR(error)     BSP_MiscErrorHandler(error|UART_ERROR_TAG)
+     52          
+     53          #ifdef USE_XONXOFF
+     54          #define BSP_UART_GET_NB_BYTES_IN_RX_BUFFER()  ((gBspUartData.pRxBufferRIndex <= gBspUartData.pRxBufferWIndex)? \
+     55                                              ( (unsigned int )(gBspUartData.pRxBufferWIndex - gBspUartData.pRxBufferRIndex)): \
+     56                                              ( (unsigned int )(gBspUartData.pRxBufferWIndex + UART_RX_BUFFER_SIZE - gBspUartData.pRxBufferRIndex)))
+     57          
+     58          
+     59          #define BSP_UART_GET_NB_BYTES_IN_TX_BUFFER()  ((gBspUartData.pTxBufferRIndex <= gBspUartData.pTxBufferWIndex)? \
+     60                                              ( (unsigned int )(gBspUartData.pTxBufferWIndex - gBspUartData.pTxBufferRIndex)): \
+     61                                              ( (unsigned int )(gBspUartData.pTxBufferWIndex + UART_TX_BUFFER_SIZE - gBspUartData.pTxBufferRIndex)))
+     62          
+     63          
+     64          #define BSP_UART_TX_THRESHOLD_XOFF  (UART_TX_BUFFER_SIZE / 50)
+     65          #define BSP_UART_TX_THRESHOLD_XON   (UART_TX_BUFFER_SIZE / 100)
+     66          #define BSP_UART_RX_THRESHOLD_XOFF  (UART_RX_BUFFER_SIZE / 2)
+     67          #define BSP_UART_RX_THRESHOLD_XON   (UART_RX_BUFFER_SIZE / 3)
+     68          #endif
+     69          
+     70          /* Private functions ---------------------------------------------------------*/
+     71          uint8_t BSP_UartParseRxAvalaibleBytes(const char* pBuffer, uint8_t nbRxBytes);
+     72              
+     73          extern DMA_HandleTypeDef  DMA_wifiRcv;
+     74          
+     75          #ifdef USE_XONXOFF
+     76          static uint8_t  BspUartXonXoff = 0;
+     77          static uint8_t BspUartXoffBuffer[12] = " SEND XOFF\n";
+     78          static uint8_t BspUartXonBuffer[11] = " SEND XON\n";
+     79          #endif
+     80          /* Extern function -----------------------------------------------------------*/
+     81          
+     82          /******************************************************//**
+     83           * @brief  Usart Hw initialisation
+     84           * @param None
+     85           * @retval None
+     86           **********************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+     87          void BSP_UartHwInit(BSP_UART_STACK *pUStack, uint32_t newBaudRate)
+     88          {
+   \                     BSP_UartHwInit: (+1)
+   \   00000000   0xB51C             PUSH     {R2-R4,LR}
+     89          	BspUartDataType *pUart = pUStack->pUart;
+   \   00000002   0x6804             LDR      R4,[R0, #+0]
+     90          	if(pUStack->id == 1)
+   \   00000004   0x6840             LDR      R0,[R0, #+4]
+   \   00000006   0x2801             CMP      R0,#+1
+   \   00000008   0xD102             BNE.N    ??BSP_UartHwInit_0
+     91          	{
+     92          		pUart->handle.Instance = USART1;
+   \   0000000A   0x....             LDR.N    R0,??DataTable1  ;; 0x40013800
+   \   0000000C   0x63A0             STR      R0,[R4, #+56]
+   \   0000000E   0xE012             B.N      ??BSP_UartHwInit_1
+     93          	}
+     94          	else if(pUStack->id == 2)
+   \                     ??BSP_UartHwInit_0: (+1)
+   \   00000010   0x2802             CMP      R0,#+2
+   \   00000012   0xD102             BNE.N    ??BSP_UartHwInit_2
+     95          	{
+     96          		pUart->handle.Instance = USART2;
+   \   00000014   0x....             LDR.N    R0,??DataTable1_1  ;; 0x40004400
+   \   00000016   0x63A0             STR      R0,[R4, #+56]
+   \   00000018   0xE00D             B.N      ??BSP_UartHwInit_1
+     97          	}
+     98          	else if(pUStack->id == 3)
+   \                     ??BSP_UartHwInit_2: (+1)
+   \   0000001A   0x2803             CMP      R0,#+3
+   \   0000001C   0xD102             BNE.N    ??BSP_UartHwInit_3
+     99          	{
+    100          		pUart->handle.Instance = USART3;
+   \   0000001E   0x....             LDR.N    R0,??DataTable1_2  ;; 0x40004800
+   \   00000020   0x63A0             STR      R0,[R4, #+56]
+   \   00000022   0xE008             B.N      ??BSP_UartHwInit_1
+    101          	}
+    102          	else if(pUStack->id == 4)
+   \                     ??BSP_UartHwInit_3: (+1)
+   \   00000024   0x2804             CMP      R0,#+4
+   \   00000026   0xD102             BNE.N    ??BSP_UartHwInit_4
+    103          	{
+    104          		pUart->handle.Instance = UART4;
+   \   00000028   0x....             LDR.N    R0,??DataTable1_3  ;; 0x40004c00
+   \   0000002A   0x63A0             STR      R0,[R4, #+56]
+   \   0000002C   0xE003             B.N      ??BSP_UartHwInit_1
+    105          	}
+    106          	else if(pUStack->id == 5)
+   \                     ??BSP_UartHwInit_4: (+1)
+   \   0000002E   0x2805             CMP      R0,#+5
+   \   00000030   0xD101             BNE.N    ??BSP_UartHwInit_1
+    107          	{
+    108          		pUart->handle.Instance = UART5;
+   \   00000032   0x....             LDR.N    R0,??DataTable1_4  ;; 0x40005000
+   \   00000034   0x63A0             STR      R0,[R4, #+56]
+    109          	}
+    110            
+    111            
+    112          	  pUart->handle.Init.BaudRate = newBaudRate;
+   \                     ??BSP_UartHwInit_1: (+1)
+   \   00000036   0x63E1             STR      R1,[R4, #+60]
+    113          	  pUart->handle.Init.WordLength = UART_WORDLENGTH_8B;
+   \   00000038   0x2000             MOVS     R0,#+0
+   \   0000003A   0x6420             STR      R0,[R4, #+64]
+    114          	  pUart->handle.Init.StopBits = UART_STOPBITS_1;
+   \   0000003C   0x6460             STR      R0,[R4, #+68]
+    115          	  pUart->handle.Init.Parity = UART_PARITY_NONE;
+   \   0000003E   0x64A0             STR      R0,[R4, #+72]
+    116          	  pUart->handle.Init.Mode = UART_MODE_TX_RX;
+   \   00000040   0x200C             MOVS     R0,#+12
+   \   00000042   0x64E0             STR      R0,[R4, #+76]
+    117          	  pUart->handle.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+   \   00000044   0x2000             MOVS     R0,#+0
+   \   00000046   0x6520             STR      R0,[R4, #+80]
+    118          	  pUart->handle.Init.OverSampling = UART_OVERSAMPLING_16;
+   \   00000048   0x6560             STR      R0,[R4, #+84]
+    119          
+    120          	  if(HAL_UART_DeInit(&pUart->handle) != HAL_OK)
+   \   0000004A   0xF104 0x0038      ADD      R0,R4,#+56
+   \   0000004E   0x.... 0x....      BL       HAL_UART_DeInit
+   \   00000052   0x2800             CMP      R0,#+0
+   \   00000054   0xD003             BEQ.N    ??BSP_UartHwInit_5
+    121          	  {
+    122          	    UART_ERROR(1);
+   \   00000056   0xF241 0x0001      MOVW     R0,#+4097
+   \   0000005A   0x.... 0x....      BL       BSP_MiscErrorHandler
+    123          	  }  
+    124          
+    125          	  if( HAL_UART_Init(&pUart->handle) != HAL_OK)
+   \                     ??BSP_UartHwInit_5: (+1)
+   \   0000005E   0xF104 0x0038      ADD      R0,R4,#+56
+   \   00000062   0x.... 0x....      BL       HAL_UART_Init
+   \   00000066   0x2800             CMP      R0,#+0
+   \   00000068   0xD005             BEQ.N    ??BSP_UartHwInit_6
+    126          	  {
+    127          	    UART_ERROR(2);
+   \   0000006A   0xF241 0x0002      MOVW     R0,#+4098
+   \   0000006E   0xE8BD 0x4016      POP      {R1,R2,R4,LR}
+   \   00000072   0x.... 0x....      B.W      BSP_MiscErrorHandler
+    128          	  }
+    129          }
+   \                     ??BSP_UartHwInit_6: (+1)
+   \   00000076   0xBD13             POP      {R0,R1,R4,PC}    ;; return
+    130          
+    131          /******************************************************//**
+    132           * @brief  Start the UART interface with the GUI 
+    133           * @param None
+    134           * @retval None
+    135           **********************************************************/
+    136          
+
+   \                                 In section .text, align 2, keep-with-next
+    137          void BSP_UartIfStart(BSP_UART_STACK *pUStack, uint8_t flag)
+    138          {
+   \                     BSP_UartIfStart: (+1)
+   \   00000000   0xB538             PUSH     {R3-R5,LR}
+    139            BspUartDataType *pUart = pUStack->pUart;
+   \   00000002   0x6804             LDR      R4,[R0, #+0]
+    140           // pUart->pRxBuffer = (uint8_t *)gBspUartRxBuffer;
+    141            pUart->pRxBufferWIndex =  pUart->pRxBuffer;
+   \   00000004   0x6862             LDR      R2,[R4, #+4]
+   \   00000006   0x60E2             STR      R2,[R4, #+12]
+    142            pUart->pRxBufferRIndex =  pUart->pRxBuffer;  
+   \   00000008   0x6862             LDR      R2,[R4, #+4]
+   \   0000000A   0x6122             STR      R2,[R4, #+16]
+    143           // pUart->pTxBuffer = (uint8_t *)gBspUartTxBuffer;
+    144            pUart->pTxBufferWIndex =  pUart->pTxBuffer;
+   \   0000000C   0x6962             LDR      R2,[R4, #+20]
+   \   0000000E   0x61E2             STR      R2,[R4, #+28]
+    145            pUart->pTxBufferRIndex =  pUart->pTxBuffer;
+   \   00000010   0x6962             LDR      R2,[R4, #+20]
+   \   00000012   0x6222             STR      R2,[R4, #+32]
+    146          #if USE_MKS_USART_TX
+    147            pUart->pTxWrap  =  pUart->pTxBuffer;
+   \   00000014   0x6962             LDR      R2,[R4, #+20]
+   \   00000016   0x6262             STR      R2,[R4, #+36]
+    148          #else  
+    149            pUart->pTxWrap  =  pUart->pTxBuffer + pUart->txBufferSize;
+    150          #endif  
+    151            pUart->rxBusy = RESET;
+   \   00000018   0xF104 0x0528      ADD      R5,R4,#+40
+   \   0000001C   0x2200             MOVS     R2,#+0
+   \   0000001E   0x712A             STRB     R2,[R5, #+4]
+    152            pUart->txBusy = RESET;
+   \   00000020   0x716A             STRB     R2,[R5, #+5]
+    153            pUart->debugNbTxFrames = 0;
+   \   00000022   0x656A             STR      R2,[R5, #+84]
+    154            pUart->debugNbRxFrames = 0;
+   \   00000024   0x652A             STR      R2,[R5, #+80]
+    155            
+    156            pUart->newTxRequestInThePipe = 0;
+   \   00000026   0x702A             STRB     R2,[R5, #+0]
+    157            pUart->nbBridgedBytes = 0;
+   \   00000028   0x65AA             STR      R2,[R5, #+88]
+    158            pUart->gCodeDataMode = 0;
+   \   0000002A   0x706A             STRB     R2,[R5, #+1]
+    159          
+    160              if(flag & UART_INT_MODE)
+   \   0000002C   0x07C9             LSLS     R1,R1,#+31
+   \   0000002E   0xD51F             BPL.N    ??BSP_UartIfStart_0
+    161              {
+    162              		if(pUStack->id == 1)
+   \   00000030   0x6840             LDR      R0,[R0, #+4]
+   \   00000032   0x2801             CMP      R0,#+1
+   \   00000034   0xD107             BNE.N    ??BSP_UartIfStart_1
+    163              		{    		 	
+    164          		    HAL_NVIC_SetPriority(USART1_IRQn, 3, 0);
+   \   00000036   0x2103             MOVS     R1,#+3
+   \   00000038   0x2025             MOVS     R0,#+37
+   \   0000003A   0x.... 0x....      BL       HAL_NVIC_SetPriority
+    165          		    HAL_NVIC_EnableIRQ(USART1_IRQn);
+   \   0000003E   0x2025             MOVS     R0,#+37
+   \   00000040   0x.... 0x....      BL       HAL_NVIC_EnableIRQ
+   \   00000044   0xE008             B.N      ??BSP_UartIfStart_2
+    166          		}
+    167          		else if(pUStack->id == 2)
+   \                     ??BSP_UartIfStart_1: (+1)
+   \   00000046   0x2802             CMP      R0,#+2
+   \   00000048   0xD106             BNE.N    ??BSP_UartIfStart_2
+    168          		{
+    169          			HAL_NVIC_SetPriority(USART2_IRQn, 3, 0);
+   \   0000004A   0x2103             MOVS     R1,#+3
+   \   0000004C   0x2026             MOVS     R0,#+38
+   \   0000004E   0x.... 0x....      BL       HAL_NVIC_SetPriority
+    170          		    HAL_NVIC_EnableIRQ(USART2_IRQn);
+   \   00000052   0x2026             MOVS     R0,#+38
+   \   00000054   0x.... 0x....      BL       HAL_NVIC_EnableIRQ
+    171          		}
+    172          		    
+    173          		/* wait for 1 bytes on the RX uart */
+    174          		if (HAL_UART_Receive_IT(&pUart->handle, (uint8_t *)(&pUart->rxWriteChar), 1) != HAL_OK)
+   \                     ??BSP_UartIfStart_2: (+1)
+   \   00000058   0x2201             MOVS     R2,#+1
+   \   0000005A   0x4621             MOV      R1,R4
+   \   0000005C   0xF104 0x0038      ADD      R0,R4,#+56
+   \   00000060   0x.... 0x....      BL       HAL_UART_Receive_IT
+   \   00000064   0x2800             CMP      R0,#+0
+   \   00000066   0xD003             BEQ.N    ??BSP_UartIfStart_0
+    175          		{
+    176          			UART_ERROR(3);
+   \   00000068   0xF241 0x0003      MOVW     R0,#+4099
+   \   0000006C   0x.... 0x....      BL       BSP_MiscErrorHandler
+    177          		}  
+    178          		
+    179              }
+    180              /* if(flag & UART_DMA_MODE)
+    181              {
+    182              		
+    183          		__HAL_RCC_DMA1_CLK_ENABLE();
+    184          
+    185          		HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 0, 0);
+    186          	 	HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
+    187          
+    188          		DMA_wifiRcv.Instance = DMA1_Channel6;
+    189          		DMA_wifiRcv.Init.Direction = DMA_PERIPH_TO_MEMORY;
+    190          		DMA_wifiRcv.Init.PeriphInc = DMA_PINC_DISABLE;
+    191          		DMA_wifiRcv.Init.MemInc = DMA_MINC_ENABLE;
+    192          		DMA_wifiRcv.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    193          		DMA_wifiRcv.Init.MemDataAlignment = DMA_PDATAALIGN_BYTE;
+    194          		DMA_wifiRcv.Init.Mode = DMA_NORMAL;
+    195          		DMA_wifiRcv.Init.Priority = DMA_PRIORITY_VERY_HIGH;
+    196          		if (HAL_DMA_Init(&DMA_wifiRcv) != HAL_OK)
+    197          		{
+    198          		  Error_Handler();
+    199          		}	
+    200          
+    201          		__HAL_LINKDMA(&pUart->handle, hdmarx, DMA_wifiRcv);
+    202              }*/
+    203          
+    204            pUart->rxBusy = SET;
+   \                     ??BSP_UartIfStart_0: (+1)
+   \   00000070   0x2001             MOVS     R0,#+1
+   \   00000072   0x7128             STRB     R0,[R5, #+4]
+    205          }
+   \   00000074   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+    206          
+    207          /******************************************************//**
+    208           * @brief  Queue tx data to be sent on the UART
+    209           * @param[in]  pBuf pointer to the data to be sent
+    210           * @param[in]  nbData number of bytes to be sent
+    211           * @retval None
+    212           **********************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    213          void BSP_UartIfQueueTxData(BSP_UART_STACK *pUStack, uint8_t *pBuf, uint8_t nbData)
+    214          {
+   \                     BSP_UartIfQueueTxData: (+1)
+   \   00000000   0xE92D 0x41FC      PUSH     {R2-R8,LR}
+   \   00000004   0x4605             MOV      R5,R0
+   \   00000006   0x460E             MOV      R6,R1
+   \   00000008   0x0017             MOVS     R7,R2
+    215            if (nbData != 0)
+   \   0000000A   0xD03F             BEQ.N    ??BSP_UartIfQueueTxData_0
+    216            {
+    217              BspUartDataType *pUart = pUStack->pUart;  
+   \   0000000C   0x682C             LDR      R4,[R5, #+0]
+    218              
+    219              int32_t nbFreeBytes = pUart->pTxBufferRIndex - pUart->pTxBufferWIndex;
+   \   0000000E   0x6A20             LDR      R0,[R4, #+32]
+   \   00000010   0x69E1             LDR      R1,[R4, #+28]
+   \   00000012   0x1A41             SUBS     R1,R0,R1
+    220                 
+    221              if (nbFreeBytes <= 0)
+   \   00000014   0x2901             CMP      R1,#+1
+   \   00000016   0xDA01             BGE.N    ??BSP_UartIfQueueTxData_1
+    222              {
+    223                nbFreeBytes += pUart->txBufferSize;
+   \   00000018   0x69A0             LDR      R0,[R4, #+24]
+   \   0000001A   0x1841             ADDS     R1,R0,R1
+    224              }
+    225              if (nbData > nbFreeBytes)
+   \                     ??BSP_UartIfQueueTxData_1: (+1)
+   \   0000001C   0x46B8             MOV      R8,R7
+   \   0000001E   0x4541             CMP      R1,R8
+   \   00000020   0xDA03             BGE.N    ??BSP_UartIfQueueTxData_2
+    226              {
+    227                  /* Uart Tx buffer is full */
+    228                  UART_ERROR(4);
+   \   00000022   0xF241 0x0004      MOVW     R0,#+4100
+   \   00000026   0x.... 0x....      BL       BSP_MiscErrorHandler
+    229              }
+    230              
+    231              //use of memcpy is safe as real buffer size is 2 * pUart->txBufferSize
+    232              memcpy((uint8_t *)pUart->pTxBufferWIndex, pBuf, nbData);
+   \                     ??BSP_UartIfQueueTxData_2: (+1)
+   \   0000002A   0x463A             MOV      R2,R7
+   \   0000002C   0x4631             MOV      R1,R6
+   \   0000002E   0x69E0             LDR      R0,[R4, #+28]
+   \   00000030   0x.... 0x....      BL       __aeabi_memcpy
+    233              pUart->pTxBufferWIndex += nbData;
+   \   00000034   0x69E0             LDR      R0,[R4, #+28]
+   \   00000036   0x4440             ADD      R0,R0,R8
+   \   00000038   0x61E0             STR      R0,[R4, #+28]
+    234              
+    235              if (pUart->pTxBufferWIndex >= pUart->pTxBuffer + pUart->txBufferSize - 10)
+   \   0000003A   0x6961             LDR      R1,[R4, #+20]
+   \   0000003C   0x69A2             LDR      R2,[R4, #+24]
+   \   0000003E   0x4411             ADD      R1,R1,R2
+   \   00000040   0x390A             SUBS     R1,R1,#+10
+   \   00000042   0x4288             CMP      R0,R1
+   \   00000044   0xD303             BCC.N    ??BSP_UartIfQueueTxData_3
+    236              {
+    237                pBuf[nbData-1] = '\n';    //@@@@@@@
+   \   00000046   0x200A             MOVS     R0,#+10
+   \   00000048   0x1E71             SUBS     R1,R6,#+1
+   \   0000004A   0xF801 0x0008      STRB     R0,[R1, R8]
+    238              }
+    239                
+    240          #if defined(MARLIN)
+    241              if(pUStack->id == 1)
+   \                     ??BSP_UartIfQueueTxData_3: (+1)
+   \   0000004E   0x6868             LDR      R0,[R5, #+4]
+   \   00000050   0x2801             CMP      R0,#+1
+   \   00000052   0xD117             BNE.N    ??BSP_UartIfQueueTxData_4
+    242              {
+    243          	    if (pBuf[nbData-1] == '\n')
+   \   00000054   0x1E70             SUBS     R0,R6,#+1
+   \   00000056   0xF810 0x0008      LDRB     R0,[R0, R8]
+   \   0000005A   0x280A             CMP      R0,#+10
+   \   0000005C   0xD112             BNE.N    ??BSP_UartIfQueueTxData_4
+    244          	    {
+    245          	      *pUart->pTxBufferWIndex = '\n';
+   \   0000005E   0x200A             MOVS     R0,#+10
+   \   00000060   0x69E1             LDR      R1,[R4, #+28]
+   \   00000062   0x7008             STRB     R0,[R1, #+0]
+    246          	      pUart->pTxBufferWIndex--;
+   \   00000064   0x69E0             LDR      R0,[R4, #+28]
+   \   00000066   0x1E40             SUBS     R0,R0,#+1
+   \   00000068   0x61E0             STR      R0,[R4, #+28]
+    247          	      *pUart->pTxBufferWIndex = '\r';
+   \   0000006A   0x210D             MOVS     R1,#+13
+   \   0000006C   0x7001             STRB     R1,[R0, #+0]
+    248          	      pUart->pTxBufferWIndex += 2;
+   \   0000006E   0x69E0             LDR      R0,[R4, #+28]
+   \   00000070   0x1C80             ADDS     R0,R0,#+2
+   \   00000072   0x61E0             STR      R0,[R4, #+28]
+    249          	      if (pUart->pTxBufferWIndex >= pUart->pTxBuffer + pUart->txBufferSize)
+   \   00000074   0x6961             LDR      R1,[R4, #+20]
+   \   00000076   0x69A2             LDR      R2,[R4, #+24]
+   \   00000078   0x4411             ADD      R1,R1,R2
+   \   0000007A   0x4288             CMP      R0,R1
+   \   0000007C   0xD302             BCC.N    ??BSP_UartIfQueueTxData_4
+    250          	      {
+    251          	        pUart->pTxWrap = pUart->pTxBufferWIndex; 
+   \   0000007E   0x6260             STR      R0,[R4, #+36]
+    252          	        pUart->pTxBufferWIndex = pUart->pTxBuffer;
+   \   00000080   0x6960             LDR      R0,[R4, #+20]
+   \   00000082   0x61E0             STR      R0,[R4, #+28]
+    253          	      }
+    254          	      //BSP_UartIfSendQueuedData();  // BDI
+    255          	    }
+    256          	 }
+    257          	 
+    258          #else
+    259              ABC
+    260              if (pUart->pTxBufferWIndex >= pUart->pTxBuffer + pUart->txBufferSize)
+    261              {
+    262                pUart->pTxWrap = pUart->pTxBufferWIndex; 
+    263                pUart->pTxBufferWIndex = pUart->pTxBuffer;
+    264              }
+    265          #endif
+    266              BSP_UartIfSendQueuedData(pUStack);
+   \                     ??BSP_UartIfQueueTxData_4: (+1)
+   \   00000084   0x4628             MOV      R0,R5
+   \   00000086   0xE8BD 0x41F6      POP      {R1,R2,R4-R8,LR}
+   \   0000008A   0x....             B.N      BSP_UartIfSendQueuedData
+    267          //#endif
+    268            }
+    269          }
+   \                     ??BSP_UartIfQueueTxData_0: (+1)
+   \   0000008C   0xE8BD 0x81F3      POP      {R0,R1,R4-R8,PC}  ;; return
+    270             
+    271          /******************************************************//**
+    272           * @brief  Send queued data to the GUI
+    273           * @param None
+    274           * @retval None
+    275           **********************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    276          void BSP_UartIfSendQueuedData(BSP_UART_STACK *pUStack)
+    277          {
+   \                     BSP_UartIfSendQueuedData: (+1)
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+    278              BspUartDataType *pUart = pUStack->pUart;  
+   \   00000002   0x6804             LDR      R4,[R0, #+0]
+    279              int i;
+    280          #ifdef USE_XONXOFF    
+    281              if ((pUart->newTxRequestInThePipe == 0)&&
+    282                  (pUart->txBusy == RESET))
+    283              {    
+    284                if ((BspUartXonXoff == 2)||
+    285                ((BSP_UART_GET_NB_BYTES_IN_TX_BUFFER()  > BSP_UART_TX_THRESHOLD_XOFF) && (BspUartXonXoff == 0)))
+    286                {
+    287                  pUart->txBusy = SET;
+    288                  pUart->nbTxBytesOnGoing = 0;
+    289                  BspUartXoffBuffer[0] = 0x13;
+    290                  if (HAL_UART_Transmit_IT(&pUart->handle, (uint8_t *)&BspUartXoffBuffer, sizeof(BspUartXoffBuffer))!= HAL_OK)
+    291                  {
+    292                    UART_ERROR(10);
+    293                  }
+    294                  BspUartXonXoff = 3;
+    295                  return;
+    296                }
+    297                else if ((BspUartXonXoff == 1)||
+    298                  ((BSP_UART_GET_NB_BYTES_IN_RX_BUFFER()  < BSP_UART_RX_THRESHOLD_XON) && (BspUartXonXoff == 3)&& (BSP_UART_GET_NB_BYTES_IN_TX_BUFFER() < BSP_UART_TX_THRESHOLD_XON)))
+    299                {
+    300                  pUart->txBusy = SET;
+    301                  pUart->nbTxBytesOnGoing = 0;
+    302                  BspUartXonBuffer[0] = 0x11;
+    303                  if (HAL_UART_Transmit_IT(&pUart->handle, (uint8_t *)&BspUartXonBuffer, sizeof(BspUartXonBuffer))!= HAL_OK)
+    304                  {
+    305                    UART_ERROR(11);
+    306                  } 
+    307                  BspUartXonXoff = 0;
+    308                  return;
+    309                }
+    310              }
+    311          #endif
+    312              if ((pUart->newTxRequestInThePipe == 0)&&
+    313                  (pUart->txBusy == RESET)&&
+    314                  (pUart->pTxBufferRIndex != pUart->pTxBufferWIndex))
+   \   00000004   0xF104 0x0528      ADD      R5,R4,#+40
+   \   00000008   0x7828             LDRB     R0,[R5, #+0]
+   \   0000000A   0x2800             CMP      R0,#+0
+   \   0000000C   0xD13A             BNE.N    ??BSP_UartIfSendQueuedData_0
+   \   0000000E   0xF995 0x0005      LDRSB    R0,[R5, #+5]
+   \   00000012   0x2800             CMP      R0,#+0
+   \   00000014   0xD136             BNE.N    ??BSP_UartIfSendQueuedData_0
+   \   00000016   0x69E6             LDR      R6,[R4, #+28]
+   \   00000018   0x6A20             LDR      R0,[R4, #+32]
+   \   0000001A   0x42B0             CMP      R0,R6
+   \   0000001C   0xD032             BEQ.N    ??BSP_UartIfSendQueuedData_0
+    315              {
+    316                int32_t nbTxBytes = pUart->pTxBufferWIndex - pUart->pTxBufferRIndex;
+   \   0000001E   0x1A36             SUBS     R6,R6,R0
+    317                pUart->newTxRequestInThePipe++;
+   \   00000020   0x7828             LDRB     R0,[R5, #+0]
+   \   00000022   0x1C40             ADDS     R0,R0,#+1
+   \   00000024   0x7028             STRB     R0,[R5, #+0]
+    318                if (nbTxBytes < 0)
+   \   00000026   0x6A20             LDR      R0,[R4, #+32]
+   \   00000028   0x2E00             CMP      R6,#+0
+   \   0000002A   0xD501             BPL.N    ??BSP_UartIfSendQueuedData_1
+    319                {
+    320                  nbTxBytes = pUart->pTxWrap - pUart->pTxBufferRIndex;
+   \   0000002C   0x6A66             LDR      R6,[R4, #+36]
+   \   0000002E   0x1A36             SUBS     R6,R6,R0
+    321                }
+    322                
+    323          #if defined(MARLIN)
+    324                if (pUart->pTxBufferRIndex[nbTxBytes-1]!='\n')
+   \                     ??BSP_UartIfSendQueuedData_1: (+1)
+   \   00000030   0x4430             ADD      R0,R0,R6
+   \   00000032   0xF810 0x0C01      LDRB     R0,[R0, #-1]
+   \   00000036   0x280A             CMP      R0,#+10
+   \   00000038   0xD003             BEQ.N    ??BSP_UartIfSendQueuedData_2
+    325                {
+    326                  pUart->newTxRequestInThePipe--;
+   \   0000003A   0x7828             LDRB     R0,[R5, #+0]
+   \   0000003C   0x1E40             SUBS     R0,R0,#+1
+   \   0000003E   0x7028             STRB     R0,[R5, #+0]
+    327                  return;
+   \   00000040   0xBDF1             POP      {R0,R4-R7,PC}
+    328                }
+    329          #endif
+    330                pUart->txBusy = SET;
+   \                     ??BSP_UartIfSendQueuedData_2: (+1)
+   \   00000042   0x2001             MOVS     R0,#+1
+   \   00000044   0x7168             STRB     R0,[R5, #+5]
+    331                pUart->nbTxBytesOnGoing = nbTxBytes;       
+   \   00000046   0x806E             STRH     R6,[R5, #+2]
+    332          
+    333          #if USE_MKS_USART_TX
+    334          /*-------------mode 1 begin---------------------*/
+    335          	// Send one byte from USART
+    336                for(i=0;i<nbTxBytes;i++)
+   \   00000048   0x2700             MOVS     R7,#+0
+   \   0000004A   0xE00D             B.N      ??BSP_UartIfSendQueuedData_3
+    337                {
+    338                  USART_SendData(pUart->handle.Instance, *pUart->pTxBufferRIndex++);
+   \                     ??BSP_UartIfSendQueuedData_4: (+1)
+   \   0000004C   0x6A20             LDR      R0,[R4, #+32]
+   \   0000004E   0x1C41             ADDS     R1,R0,#+1
+   \   00000050   0x6221             STR      R1,[R4, #+32]
+   \   00000052   0x7801             LDRB     R1,[R0, #+0]
+   \   00000054   0x6928             LDR      R0,[R5, #+16]
+   \   00000056   0x.... 0x....      BL       USART_SendData
+    339          	// Loop until USART DR register is empty
+    340          	while(USART_GetFlagStatus(pUart->handle.Instance, USART_FLAG_TXE) == RESET){}
+   \                     ??BSP_UartIfSendQueuedData_5: (+1)
+   \   0000005A   0x2180             MOVS     R1,#+128
+   \   0000005C   0x6928             LDR      R0,[R5, #+16]
+   \   0000005E   0x.... 0x....      BL       USART_GetFlagStatus
+   \   00000062   0x2800             CMP      R0,#+0
+   \   00000064   0xD0F9             BEQ.N    ??BSP_UartIfSendQueuedData_5
+    341                }
+   \   00000066   0x1C7F             ADDS     R7,R7,#+1
+   \                     ??BSP_UartIfSendQueuedData_3: (+1)
+   \   00000068   0x42B7             CMP      R7,R6
+   \   0000006A   0xDBEF             BLT.N    ??BSP_UartIfSendQueuedData_4
+    342                
+    343                pUart->txBusy = RESET;
+   \   0000006C   0x2000             MOVS     R0,#+0
+   \   0000006E   0x7168             STRB     R0,[R5, #+5]
+    344                pUart->nbTxBytesOnGoing = 0;
+   \   00000070   0x8068             STRH     R0,[R5, #+2]
+    345                pUart->pTxBufferRIndex = (uint8_t *)pUart->pTxBuffer;
+   \   00000072   0x6960             LDR      R0,[R4, #+20]
+   \   00000074   0x6220             STR      R0,[R4, #+32]
+    346                pUart->pTxBufferWIndex = pUart->pTxBufferRIndex;
+   \   00000076   0x61E0             STR      R0,[R4, #+28]
+    347                
+    348          /*-------------mode 1 end---------------------*/   
+    349          #else  
+    350                ABC
+    351          /*-------------mode 2 begin---------------------*/     
+    352                  //use of HAL_UART_Transmit_IT is safe as real buffer size is 2 * pUart->txBufferSize
+    353               
+    354                if(HAL_UART_Transmit_IT(&pUart->handle, (uint8_t *) pUart->pTxBufferRIndex, nbTxBytes)!= HAL_OK)
+    355                {
+    356                  UART_ERROR(5);
+    357                }
+    358          #if USE_MKS_USART_TX      
+    359                HAL_Delay(1);     
+    360                while(pUart->handle.State == HAL_UART_STATE_BUSY_TX_RX);    //skyblue modidy 2017-03-15
+    361          #endif
+    362                 
+    363          /*-------------mode 2 end---------------------*/ 
+    364          #endif      
+    365                
+    366                pUart->debugNbTxFrames++;
+   \   00000078   0x6D68             LDR      R0,[R5, #+84]
+   \   0000007A   0x1C40             ADDS     R0,R0,#+1
+   \   0000007C   0x6568             STR      R0,[R5, #+84]
+    367                pUart->newTxRequestInThePipe--;
+   \   0000007E   0x7828             LDRB     R0,[R5, #+0]
+   \   00000080   0x1E40             SUBS     R0,R0,#+1
+   \   00000082   0x7028             STRB     R0,[R5, #+0]
+    368              }
+    369          }
+   \                     ??BSP_UartIfSendQueuedData_0: (+1)
+   \   00000084   0xBDF1             POP      {R0,R4-R7,PC}    ;; return
+    370          
+    371          
+    372          /*Directly send data, without queue*/
+
+   \                                 In section .text, align 2, keep-with-next
+    373          void BSP_UartIfTxData(BSP_UART_STACK *pUStack, uint8_t *pBuf, uint32_t nbData)
+    374          {
+   \                     BSP_UartIfTxData: (+1)
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+   \   00000002   0x460C             MOV      R4,R1
+   \   00000004   0x4615             MOV      R5,R2
+    375          	BspUartDataType *pUart = pUStack->pUart;  
+   \   00000006   0x6806             LDR      R6,[R0, #+0]
+    376          	uint32_t i;
+    377          	#if 1
+    378          	for(i=0;i<nbData;i++)
+   \   00000008   0x2700             MOVS     R7,#+0
+   \   0000000A   0xE00A             B.N      ??BSP_UartIfTxData_0
+    379                {
+    380          	        USART_SendData(pUart->handle.Instance, *(pBuf+i));
+   \                     ??BSP_UartIfTxData_1: (+1)
+   \   0000000C   0x5DE1             LDRB     R1,[R4, R7]
+   \   0000000E   0x6BB0             LDR      R0,[R6, #+56]
+   \   00000010   0x.... 0x....      BL       USART_SendData
+    381          		// Loop until USART DR register is empty
+    382          		while(USART_GetFlagStatus(pUart->handle.Instance, USART_FLAG_TXE) == RESET){}
+   \                     ??BSP_UartIfTxData_2: (+1)
+   \   00000014   0x2180             MOVS     R1,#+128
+   \   00000016   0x6BB0             LDR      R0,[R6, #+56]
+   \   00000018   0x.... 0x....      BL       USART_GetFlagStatus
+   \   0000001C   0x2800             CMP      R0,#+0
+   \   0000001E   0xD0F9             BEQ.N    ??BSP_UartIfTxData_2
+    383                }
+   \   00000020   0x1C7F             ADDS     R7,R7,#+1
+   \                     ??BSP_UartIfTxData_0: (+1)
+   \   00000022   0x42AF             CMP      R7,R5
+   \   00000024   0xD3F2             BCC.N    ??BSP_UartIfTxData_1
+    384                #else
+    385                HAL_UART_Transmit(&pUart->handle, pBuf, nbData, 1000);
+    386                #endif
+    387          }
+   \   00000026   0xBDF1             POP      {R0,R4-R7,PC}    ;; return
+    388          
+    389          /******************************************************//**
+    390           * @brief  Tx Transfer completed callback
+    391           * @param[in] UartHandle UART handle. 
+    392           * @retval None
+    393           **********************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    394          void HAL_UART_TxCpltCallback(BspUartDataType *pUart)
+    395          {  
+    396          //  if (UartHandle == &(pUart->handle))
+    397            {
+    398              /* Set transmission flag: transfer complete*/
+    399              pUart->txBusy = RESET;
+   \                     HAL_UART_TxCpltCallback: (+1)
+   \   00000000   0x2100             MOVS     R1,#+0
+   \   00000002   0xF880 0x102D      STRB     R1,[R0, #+45]
+    400              
+    401          #ifdef USE_XONXOFF
+    402              if ((BspUartXonXoff == 2)||
+    403                  ((BSP_UART_GET_NB_BYTES_IN_TX_BUFFER()  > BSP_UART_TX_THRESHOLD_XOFF) && (BspUartXonXoff == 0)))
+    404              {
+    405                pUart->txBusy = SET;
+    406                BspUartXoffBuffer[0] = 0x13;
+    407                if (HAL_UART_Transmit_IT(&pUart->handle, (uint8_t *)&BspUartXoffBuffer, sizeof(BspUartXoffBuffer))!= HAL_OK)
+    408                {
+    409                  UART_ERROR(10);
+    410                }
+    411                BspUartXonXoff = 3;
+    412                return;
+    413              }
+    414              else if ((BspUartXonXoff == 1)||
+    415                  ((BSP_UART_GET_NB_BYTES_IN_RX_BUFFER()  < BSP_UART_RX_THRESHOLD_XON) && (BspUartXonXoff == 3)&& (BSP_UART_GET_NB_BYTES_IN_TX_BUFFER() < BSP_UART_TX_THRESHOLD_XON)))
+    416              {
+    417                pUart->txBusy = SET;
+    418                BspUartXonBuffer[0] = 0x11;
+    419                if (HAL_UART_Transmit_IT(&pUart->handle, (uint8_t *)&BspUartXonBuffer, sizeof(BspUartXonBuffer))!= HAL_OK)
+    420                {
+    421                  UART_ERROR(11);
+    422                } 
+    423                BspUartXonXoff = 0;
+    424                return;
+    425              }
+    426          #endif
+    427          #if USE_MKS_USART_TX
+    428            pUart->nbTxBytesOnGoing = 0;
+   \   00000006   0x8541             STRH     R1,[R0, #+42]
+    429            pUart->pTxBufferRIndex = (uint8_t *) pUart->pTxBuffer;
+   \   00000008   0x6941             LDR      R1,[R0, #+20]
+   \   0000000A   0x6201             STR      R1,[R0, #+32]
+    430            pUart->pTxBufferWIndex = pUart->pTxBufferRIndex;
+   \   0000000C   0x61C1             STR      R1,[R0, #+28]
+    431          #else      
+    432              pUart->pTxBufferRIndex += pUart->nbTxBytesOnGoing;
+    433              
+    434              if (pUart->pTxBufferRIndex >= pUart->pTxBuffer + pUart->txBufferSize)
+    435              {
+    436                pUart->pTxBufferRIndex  = pUart->pTxBuffer;
+    437              }          
+    438          #endif    
+    439              if (pUart->uartTxDoneCallback != 0)
+   \   0000000E   0x6B40             LDR      R0,[R0, #+52]
+   \   00000010   0x2800             CMP      R0,#+0
+   \   00000012   0xD000             BEQ.N    ??HAL_UART_TxCpltCallback_0
+    440              {
+    441                pUart->uartTxDoneCallback();
+   \   00000014   0x4700             BX       R0
+    442              }
+    443            }
+    444          }
+   \                     ??HAL_UART_TxCpltCallback_0: (+1)
+   \   00000016   0x4770             BX       LR               ;; return
+    445          
+    446          /******************************************************//**
+    447           * @brief  Rx Transfer completed callback
+    448           * @param[in] UartHandle UART handle. 
+    449           * @retval None
+    450           **********************************************************/
+    451          extern volatile uint8_t mks_heating_busy;
+
+   \                                 In section .text, align 2, keep-with-next
+    452          void HAL_UART_RxCpltCallback( BspUartDataType *pUart)
+    453          {
+   \                     HAL_UART_RxCpltCallback: (+1)
+   \   00000000   0xB570             PUSH     {R4-R6,LR}
+   \   00000002   0x4604             MOV      R4,R0
+    454          /*  
+    455            mks_heating_busy	
+    456            //@@@@@@@@@@@@
+    457          */
+    458            
+    459          //  if (UartHandle == &(pUart->handle))
+    460            {
+    461          
+    462             
+    463          	
+    464              if(!mks_heating_busy)
+   \   00000004   0x....             LDR.N    R5,??DataTable1_5
+   \   00000006   0x7828             LDRB     R0,[R5, #+0]
+   \   00000008   0x2800             CMP      R0,#+0
+   \   0000000A   0xD10E             BNE.N    ??HAL_UART_RxCpltCallback_0
+    465              {
+    466              	    uint8_t *tmpWIndex = (uint8_t *)pUart->pRxBufferWIndex;
+   \   0000000C   0x68E0             LDR      R0,[R4, #+12]
+   \   0000000E   0x4601             MOV      R1,R0
+    467          	    tmpWIndex = (tmpWIndex + 1 >= (pUart->pRxBuffer + pUart->rxBufferSize)) ? (uint8_t *)pUart->pRxBuffer : tmpWIndex + 1;
+   \   00000010   0x6862             LDR      R2,[R4, #+4]
+   \   00000012   0x1C4B             ADDS     R3,R1,#+1
+   \   00000014   0x68A6             LDR      R6,[R4, #+8]
+   \   00000016   0x4416             ADD      R6,R2,R6
+   \   00000018   0x42B3             CMP      R3,R6
+   \   0000001A   0xD200             BCS.N    ??HAL_UART_RxCpltCallback_1
+   \   0000001C   0x1C4A             ADDS     R2,R1,#+1
+    468          	    if(tmpWIndex != pUart->pRxBufferRIndex)
+   \                     ??HAL_UART_RxCpltCallback_1: (+1)
+   \   0000001E   0x6921             LDR      R1,[R4, #+16]
+   \   00000020   0x428A             CMP      R2,R1
+   \   00000022   0xD002             BEQ.N    ??HAL_UART_RxCpltCallback_0
+    469          	    {
+    470          	    	*pUart->pRxBufferWIndex = pUart->rxWriteChar;
+   \   00000024   0x7821             LDRB     R1,[R4, #+0]
+   \   00000026   0x7001             STRB     R1,[R0, #+0]
+    471          	    	pUart->pRxBufferWIndex = tmpWIndex;
+   \   00000028   0x60E2             STR      R2,[R4, #+12]
+    472          	    }		
+    473                
+    474              }
+    475              
+    476              if (HAL_UART_Receive_IT(&pUart->handle, (uint8_t *)(&pUart->rxWriteChar), 1) != HAL_OK)
+   \                     ??HAL_UART_RxCpltCallback_0: (+1)
+   \   0000002A   0x2201             MOVS     R2,#+1
+   \   0000002C   0x4621             MOV      R1,R4
+   \   0000002E   0xF104 0x0038      ADD      R0,R4,#+56
+   \   00000032   0x.... 0x....      BL       HAL_UART_Receive_IT
+   \   00000036   0x2800             CMP      R0,#+0
+   \   00000038   0xD003             BEQ.N    ??HAL_UART_RxCpltCallback_2
+    477              {
+    478                UART_ERROR(6);
+   \   0000003A   0xF241 0x0006      MOVW     R0,#+4102
+   \   0000003E   0x.... 0x....      BL       BSP_MiscErrorHandler
+    479              }
+    480          
+    481              
+    482          #ifdef USE_XONXOFF    
+    483              if ((BSP_UART_GET_NB_BYTES_IN_RX_BUFFER()  > BSP_UART_RX_THRESHOLD_XOFF) && (BspUartXonXoff == 0))
+    484              {
+    485                BspUartXonXoff = 2;
+    486              }
+    487              else if ((BSP_UART_GET_NB_BYTES_IN_RX_BUFFER()  < BSP_UART_RX_THRESHOLD_XON) && (BspUartXonXoff == 3)&& (BSP_UART_GET_NB_BYTES_IN_TX_BUFFER() <BSP_UART_TX_THRESHOLD_XON))
+    488              {
+    489                BspUartXonXoff = 1;
+    490              }
+    491          #endif    
+    492              if (pUart->pRxBufferWIndex == pUart->pRxBufferRIndex && mks_heating_busy == 0)
+   \                     ??HAL_UART_RxCpltCallback_2: (+1)
+   \   00000042   0x68E0             LDR      R0,[R4, #+12]
+   \   00000044   0x6921             LDR      R1,[R4, #+16]
+   \   00000046   0x4288             CMP      R0,R1
+   \   00000048   0xD106             BNE.N    ??HAL_UART_RxCpltCallback_3
+   \   0000004A   0x7828             LDRB     R0,[R5, #+0]
+   \   0000004C   0x2800             CMP      R0,#+0
+   \   0000004E   0xD103             BNE.N    ??HAL_UART_RxCpltCallback_3
+    493              {
+    494                // Rx buffer is full 
+    495                UART_ERROR(7);
+   \   00000050   0xF241 0x0007      MOVW     R0,#+4103
+   \   00000054   0x.... 0x....      BL       BSP_MiscErrorHandler
+    496              }    
+    497              
+    498              if (pUart->uartRxDataCallback != 0)
+   \                     ??HAL_UART_RxCpltCallback_3: (+1)
+   \   00000058   0x6B22             LDR      R2,[R4, #+48]
+   \   0000005A   0x2A00             CMP      R2,#+0
+   \   0000005C   0xD004             BEQ.N    ??HAL_UART_RxCpltCallback_4
+    499              {
+    500                pUart->uartRxDataCallback((uint8_t *)pUart->pRxBufferRIndex,pUart->pRxBufferWIndex - pUart->pRxBufferRIndex);
+   \   0000005E   0x6920             LDR      R0,[R4, #+16]
+   \   00000060   0x68E1             LDR      R1,[R4, #+12]
+   \   00000062   0x1A09             SUBS     R1,R1,R0
+   \   00000064   0xB2C9             UXTB     R1,R1
+   \   00000066   0x4790             BLX      R2
+    501              }
+    502              pUart->debugNbRxFrames++;
+   \                     ??HAL_UART_RxCpltCallback_4: (+1)
+   \   00000068   0x6FA0             LDR      R0,[R4, #+120]
+   \   0000006A   0x1C40             ADDS     R0,R0,#+1
+   \   0000006C   0x67A0             STR      R0,[R4, #+120]
+    503            }
+    504          }
+   \   0000006E   0xBD70             POP      {R4-R6,PC}       ;; return
+    505          
+    506          /******************************************************//**
+    507           * @brief  Uart Error callback
+    508           * @param[in] UartHandle UART handle. 
+    509           * @retval None
+    510           **********************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    511          void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+    512          {
+    513              UART_ERROR(8);
+   \                     HAL_UART_ErrorCallback: (+1)
+   \   00000000   0xF241 0x0008      MOVW     R0,#+4104
+   \   00000004   0x.... 0x....      B.W      BSP_MiscErrorHandler
+    514          }
+    515          
+    516          /******************************************************//**
+    517           * @brief  Attaches a callback which will be called when
+    518           * a complete rx uart buffer is ready
+    519           * @param[in] callback Name of the callback to attach 
+    520           * @retval None
+    521           **********************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    522          void BSP_UartAttachRxDataHandler(BSP_UART_STACK *pUStack, void (*callback)(uint8_t *, uint8_t))
+    523          {
+    524            BspUartDataType *pUart = pUStack->pUart;  
+    525            pUart->uartRxDataCallback = (void (*)(uint8_t *, uint8_t))callback;
+   \                     BSP_UartAttachRxDataHandler: (+1)
+   \   00000000   0x6800             LDR      R0,[R0, #+0]
+   \   00000002   0x6301             STR      R1,[R0, #+48]
+    526          }
+   \   00000004   0x4770             BX       LR               ;; return
+    527          
+    528          /******************************************************//**
+    529           * @brief  Attaches a callback which will be called when
+    530           * a complete tx uart buffer is ready
+    531           * @param[in] callback Name of the callback to attach 
+    532           * @retval None
+    533           **********************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    534          void BSP_UartAttachTxDoneCallback(BSP_UART_STACK *pUStack, void (*callback)(void))
+    535          {
+    536            BspUartDataType *pUart = pUStack->pUart;  
+    537            pUart->uartTxDoneCallback = (void (*)(void))callback;
+   \                     BSP_UartAttachTxDoneCallback: (+1)
+   \   00000000   0x6800             LDR      R0,[R0, #+0]
+   \   00000002   0x6341             STR      R1,[R0, #+52]
+    538          }
+   \   00000004   0x4770             BX       LR               ;; return
+    539          
+    540          
+    541          /******************************************************//**
+    542           * @brief  This function trigs the transmission of a string over the UART 
+    543           *             for printing
+    544           * @param[in] format string with formatting
+    545           * @param[in]  Optional arguments to fit with formatting
+    546           * @retval Lengthj of the string to print (uint32_t)
+    547           **********************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    548          uint32_t BSP_UartPrintf(BSP_UART_STACK *pUStack, const char* format,...)
+    549          {
+   \                     BSP_UartPrintf: (+1)
+   \   00000000   0xB40C             PUSH     {R2,R3}
+   \   00000002   0xE92D 0x43F8      PUSH     {R3-R9,LR}
+   \   00000006   0x4605             MOV      R5,R0
+    550            BspUartDataType *pUart = pUStack->pUart;  
+   \   00000008   0x682E             LDR      R6,[R5, #+0]
+    551            va_list args;
+    552             uint32_t size;
+    553            uint32_t retSize = 0;
+    554            int32_t nbFreeBytes = pUart->pTxBufferRIndex - pUart->pTxBufferWIndex;
+   \   0000000A   0xF8D6 0x801C      LDR      R8,[R6, #+28]
+   \   0000000E   0x6A37             LDR      R7,[R6, #+32]
+   \   00000010   0xEBA7 0x0708      SUB      R7,R7,R8
+    555            
+    556            if (nbFreeBytes <= 0)
+   \   00000014   0x2F01             CMP      R7,#+1
+   \   00000016   0xDA01             BGE.N    ??BSP_UartPrintf_0
+    557            {
+    558              nbFreeBytes += pUart->txBufferSize;
+   \   00000018   0x69B0             LDR      R0,[R6, #+24]
+   \   0000001A   0x19C7             ADDS     R7,R0,R7
+    559            }  
+    560            
+    561            char *writeBufferp =(char *) pUart->pTxBufferWIndex;
+    562            /* the string to transmit is copied in the temporary buffer in order to    */
+    563            /* check its size.                                                         */
+    564            va_start(args, format);
+   \                     ??BSP_UartPrintf_0: (+1)
+   \   0000001C   0xAA08             ADD      R2,SP,#+32
+    565            size=vsprintf(writeBufferp, (const char*)format, args);
+   \   0000001E   0x4640             MOV      R0,R8
+   \   00000020   0x.... 0x....      BL       vsprintf
+   \   00000024   0x4604             MOV      R4,R0
+    566            va_end(args);
+    567             
+    568            retSize = size;   
+   \   00000026   0x46A1             MOV      R9,R4
+    569            if (*(writeBufferp + size - 1) == '\n')
+   \   00000028   0xEB08 0x0004      ADD      R0,R8,R4
+   \   0000002C   0xF910 0x1C01      LDRSB    R1,[R0, #-1]
+   \   00000030   0x290A             CMP      R1,#+10
+   \   00000032   0xD106             BNE.N    ??BSP_UartPrintf_1
+    570            {
+    571              *(writeBufferp + size - 1) = '\r';
+   \   00000034   0x210D             MOVS     R1,#+13
+   \   00000036   0xF800 0x1C01      STRB     R1,[R0, #-1]
+    572              *(writeBufferp + size) = '\n';
+   \   0000003A   0x200A             MOVS     R0,#+10
+   \   0000003C   0xF808 0x0004      STRB     R0,[R8, R4]
+    573              size++;
+   \   00000040   0x1C64             ADDS     R4,R4,#+1
+    574            }
+    575            if (size != 0)
+   \                     ??BSP_UartPrintf_1: (+1)
+   \   00000042   0x2C00             CMP      R4,#+0
+   \   00000044   0xD013             BEQ.N    ??BSP_UartPrintf_2
+    576            {
+    577              if ( size > nbFreeBytes )
+   \   00000046   0x42A7             CMP      R7,R4
+   \   00000048   0xD203             BCS.N    ??BSP_UartPrintf_3
+    578              {
+    579                UART_ERROR(9);
+   \   0000004A   0xF241 0x0009      MOVW     R0,#+4105
+   \   0000004E   0x.... 0x....      BL       BSP_MiscErrorHandler
+    580              }
+    581              pUart->pTxBufferWIndex += size;
+   \                     ??BSP_UartPrintf_3: (+1)
+   \   00000052   0x69F0             LDR      R0,[R6, #+28]
+   \   00000054   0x4420             ADD      R0,R0,R4
+   \   00000056   0x61F0             STR      R0,[R6, #+28]
+    582              if (pUart->pTxBufferWIndex >= pUart->pTxBuffer + pUart->txBufferSize)
+   \   00000058   0x6971             LDR      R1,[R6, #+20]
+   \   0000005A   0x69B2             LDR      R2,[R6, #+24]
+   \   0000005C   0x4411             ADD      R1,R1,R2
+   \   0000005E   0x4288             CMP      R0,R1
+   \   00000060   0xD302             BCC.N    ??BSP_UartPrintf_4
+    583              {
+    584                pUart->pTxWrap = pUart->pTxBufferWIndex; 
+   \   00000062   0x6270             STR      R0,[R6, #+36]
+    585                pUart->pTxBufferWIndex  = pUart->pTxBuffer;
+   \   00000064   0x6970             LDR      R0,[R6, #+20]
+   \   00000066   0x61F0             STR      R0,[R6, #+28]
+    586              }
+    587                
+    588              BSP_UartIfSendQueuedData(pUStack);
+   \                     ??BSP_UartPrintf_4: (+1)
+   \   00000068   0x4628             MOV      R0,R5
+   \   0000006A   0x.... 0x....      BL       BSP_UartIfSendQueuedData
+    589            }
+    590            return(retSize);  
+   \                     ??BSP_UartPrintf_2: (+1)
+   \   0000006E   0x4648             MOV      R0,R9
+   \   00000070   0xE8BD 0x03F2      POP      {R1,R4-R9}
+   \   00000074   0xF85D 0xFB0C      LDR      PC,[SP], #+12    ;; return
+    591          }
+    592          
+    593          /******************************************************//**
+    594           * @brief  This function returns the number of bytes received via the UART
+    595           * @param[in] fnone
+    596            * @retval nxRxBytes nb received bytes
+    597           **********************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    598          uint32_t BSP_UartGetNbRxAvalaibleBytes(BSP_UART_STACK *pUStack)
+    599          {
+   \                     BSP_UartGetNbRxAvalaibleBytes: (+1)
+   \   00000000   0xB081             SUB      SP,SP,#+4
+    600            BspUartDataType *pUart = pUStack->pUart;  
+   \   00000002   0x6802             LDR      R2,[R0, #+0]
+    601            uint8_t *writePtr = (uint8_t *)(pUart->pRxBufferWIndex - 1);
+   \   00000004   0x68D0             LDR      R0,[R2, #+12]
+   \   00000006   0x1E41             SUBS     R1,R0,#+1
+    602            
+    603            if (writePtr < pUart->pRxBuffer)
+   \   00000008   0x6853             LDR      R3,[R2, #+4]
+   \   0000000A   0x4299             CMP      R1,R3
+   \   0000000C   0xD201             BCS.N    ??BSP_UartGetNbRxAvalaibleBytes_0
+    604            {
+    605              writePtr += pUart->rxBufferSize;
+   \   0000000E   0x6893             LDR      R3,[R2, #+8]
+   \   00000010   0x4419             ADD      R1,R1,R3
+    606            }  
+    607            
+    608            //waitline feed to have a complete line before processing bytes
+    609            if ((int8_t)(*writePtr) != 0XA)
+   \                     ??BSP_UartGetNbRxAvalaibleBytes_0: (+1)
+   \   00000012   0xF991 0x1000      LDRSB    R1,[R1, #+0]
+   \   00000016   0x290A             CMP      R1,#+10
+   \   00000018   0xD001             BEQ.N    ??BSP_UartGetNbRxAvalaibleBytes_1
+    610              return (0);
+   \   0000001A   0x2000             MOVS     R0,#+0
+   \   0000001C   0xE004             B.N      ??BSP_UartGetNbRxAvalaibleBytes_2
+    611            
+    612            int32_t nxRxBytes = pUart->pRxBufferWIndex - pUart->pRxBufferRIndex;
+   \                     ??BSP_UartGetNbRxAvalaibleBytes_1: (+1)
+   \   0000001E   0x6911             LDR      R1,[R2, #+16]
+   \   00000020   0x1A40             SUBS     R0,R0,R1
+    613            if (nxRxBytes < 0)
+   \   00000022   0xD501             BPL.N    ??BSP_UartGetNbRxAvalaibleBytes_2
+    614            {
+    615              nxRxBytes += pUart->rxBufferSize;
+   \   00000024   0x6891             LDR      R1,[R2, #+8]
+   \   00000026   0x1808             ADDS     R0,R1,R0
+    616            }
+    617          #if !defined(MARLIN)
+    618            if (nxRxBytes != 0)
+    619            {
+    620              uint8_t result = BSP_UartParseRxAvalaibleBytes((char const*)pUart->pRxBufferRIndex, nxRxBytes);
+    621              if (result < BSP_WIFI_THRES_TO_GCODE_PARSER)
+    622              {
+    623                //The available bytes will not to go into the Gcode parser
+    624                pUart->pRxBufferRIndex += nxRxBytes;
+    625                nxRxBytes = 0; 
+    626                if (pUart->pRxBufferRIndex >= (pUart->pRxBuffer + pUart->rxBufferSize))
+    627                {
+    628                  pUart->pRxBufferRIndex = pUart->pRxBuffer;
+    629                }
+    630              }
+    631            }
+    632          #endif
+    633            
+    634            return ((uint32_t) nxRxBytes );
+   \                     ??BSP_UartGetNbRxAvalaibleBytes_2: (+1)
+   \   00000028   0xB001             ADD      SP,SP,#+4
+   \   0000002A   0x4770             BX       LR               ;; return
+    635          }
+    636          
+    637          /******************************************************//**
+    638           * @brief  This function returns the number of bytes received via the UART
+    639           * @param[in] fnone
+    640            * @retval nxRxBytes nb received bytes
+    641           **********************************************************/
+    642          /*
+    643          uint8_t BSP_UartParseRxAvalaibleBytes(const char* pBuffer, uint8_t nbRxBytes)
+    644          {
+    645            return (BSP_WifiParseTxBytes(pBuffer, nbRxBytes, BSP_WIFI_SOURCE_IS_DEBUG_UART));
+    646          }
+    647          */
+    648          /******************************************************//**
+    649           * @brief  This function returns the first byte available on the UART
+    650           * @param[in] none
+    651           * @retval byteValue (0-0X7F)  or -1 if no byte is available
+    652           **********************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    653          int8_t BSP_UartGetNextRxBytes(BSP_UART_STACK *pUStack)
+    654          {
+   \                     BSP_UartGetNextRxBytes: (+1)
+   \   00000000   0xB410             PUSH     {R4}
+    655            BspUartDataType *pUart = pUStack->pUart;  
+   \   00000002   0x6801             LDR      R1,[R0, #+0]
+    656            int8_t byteValue;
+    657          
+    658            uint8_t *writePtr = (uint8_t *)(pUart->pRxBufferWIndex);
+    659            
+    660           /* if (writePtr < pUart->pRxBuffer)
+    661            {
+    662              writePtr += pUart->rxBufferSize;
+    663            }*/  
+    664            
+    665            if (pUart->pRxBufferRIndex != writePtr)
+   \   00000004   0x690A             LDR      R2,[R1, #+16]
+   \   00000006   0x68C8             LDR      R0,[R1, #+12]
+   \   00000008   0x4282             CMP      R2,R0
+   \   0000000A   0xD00B             BEQ.N    ??BSP_UartGetNextRxBytes_0
+    666            {
+    667              byteValue = (int8_t)(*(pUart->pRxBufferRIndex));
+   \   0000000C   0xF992 0x0000      LDRSB    R0,[R2, #+0]
+    668              pUart->pRxBufferRIndex++;
+   \   00000010   0x1C52             ADDS     R2,R2,#+1
+   \   00000012   0x610A             STR      R2,[R1, #+16]
+    669          
+    670              if (pUart->pRxBufferRIndex >= (pUart->pRxBuffer + pUart->rxBufferSize))
+   \   00000014   0x684A             LDR      R2,[R1, #+4]
+   \   00000016   0x690B             LDR      R3,[R1, #+16]
+   \   00000018   0x688C             LDR      R4,[R1, #+8]
+   \   0000001A   0x4414             ADD      R4,R2,R4
+   \   0000001C   0x42A3             CMP      R3,R4
+   \   0000001E   0xD303             BCC.N    ??BSP_UartGetNextRxBytes_1
+    671              {
+    672                pUart->pRxBufferRIndex = pUart->pRxBuffer;
+   \   00000020   0x610A             STR      R2,[R1, #+16]
+   \   00000022   0xE001             B.N      ??BSP_UartGetNextRxBytes_1
+    673              } 
+    674            }
+    675            else
+    676            {
+    677              byteValue = -1;
+   \                     ??BSP_UartGetNextRxBytes_0: (+1)
+   \   00000024   0xF04F 0x30FF      MOV      R0,#-1
+    678            }
+    679            
+    680            return (byteValue);
+   \                     ??BSP_UartGetNextRxBytes_1: (+1)
+   \   00000028   0xBC10             POP      {R4}
+   \   0000002A   0x4770             BX       LR               ;; return
+    681          }
+    682          
+    683          /*
+    684          Read %len bytes from uart rx fifo
+    685          */
+
+   \                                 In section .text, align 2, keep-with-next
+    686          int32_t BSP_UartGetNRxBytes (BSP_UART_STACK *pUStack, uint8_t *buf, uint32_t len )
+    687          {
+   \                     BSP_UartGetNRxBytes: (+1)
+   \   00000000   0xB4F0             PUSH     {R4-R7}
+    688          	BspUartDataType *pUart = pUStack->pUart;  
+   \   00000002   0x6803             LDR      R3,[R0, #+0]
+    689          	uint32_t i = 0;
+   \   00000004   0x2000             MOVS     R0,#+0
+    690          	uint8_t *writePtr = (uint8_t *)(pUart->pRxBufferWIndex);
+   \   00000006   0x68DC             LDR      R4,[R3, #+12]
+    691          	uint8_t *readPtr = (uint8_t *)(pUart->pRxBufferRIndex);
+    692          
+    693          	/*  if (writePtr < pUart->pRxBuffer)
+    694          	  {
+    695          	    writePtr += pUart->rxBufferSize;
+    696          	  }  */
+    697          	
+    698          	while(i < len)
+   \                     ??BSP_UartGetNRxBytes_0: (+1)
+   \   00000008   0x4290             CMP      R0,R2
+   \   0000000A   0xD210             BCS.N    ??BSP_UartGetNRxBytes_1
+    699          	{
+    700          		readPtr = (uint8_t *)(pUart->pRxBufferRIndex);
+    701          		if (readPtr != writePtr)
+   \   0000000C   0x691D             LDR      R5,[R3, #+16]
+   \   0000000E   0x42A5             CMP      R5,R4
+   \   00000010   0xD00D             BEQ.N    ??BSP_UartGetNRxBytes_1
+    702          		{
+    703          			buf[i] = (int8_t)(*(pUart->pRxBufferRIndex));
+   \   00000012   0x782D             LDRB     R5,[R5, #+0]
+   \   00000014   0x540D             STRB     R5,[R1, R0]
+    704          			pUart->pRxBufferRIndex++;
+   \   00000016   0x691D             LDR      R5,[R3, #+16]
+   \   00000018   0x1C6D             ADDS     R5,R5,#+1
+   \   0000001A   0x611D             STR      R5,[R3, #+16]
+    705          
+    706          			if (pUart->pRxBufferRIndex >= (pUart->pRxBuffer + pUart->rxBufferSize))
+   \   0000001C   0x685D             LDR      R5,[R3, #+4]
+   \   0000001E   0x691E             LDR      R6,[R3, #+16]
+   \   00000020   0x689F             LDR      R7,[R3, #+8]
+   \   00000022   0x442F             ADD      R7,R5,R7
+   \   00000024   0x42BE             CMP      R6,R7
+   \   00000026   0xD300             BCC.N    ??BSP_UartGetNRxBytes_2
+    707          			{
+    708          				pUart->pRxBufferRIndex = pUart->pRxBuffer;
+   \   00000028   0x611D             STR      R5,[R3, #+16]
+    709          			} 
+    710          			i++;				
+   \                     ??BSP_UartGetNRxBytes_2: (+1)
+   \   0000002A   0x1C40             ADDS     R0,R0,#+1
+   \   0000002C   0xE7EC             B.N      ??BSP_UartGetNRxBytes_0
+    711          		}
+    712          		else
+    713          		{
+    714          			break;
+    715          		}
+    716          	}
+    717          	return i;
+   \                     ??BSP_UartGetNRxBytes_1: (+1)
+   \   0000002E   0xBCF0             POP      {R4-R7}
+   \   00000030   0x4770             BX       LR               ;; return
+    718          }
+    719          
+    720          /******************************************************//**
+    721           * @brief  Returns if there is a pending TX request in the UART
+    722           * @param[in] none
+    723           * @retval 0 if no pending TX request in the UART
+    724           **********************************************************/
+
+   \                                 In section .text, align 2, keep-with-next
+    725          uint8_t BSP_UartIsTxOnGoing(BSP_UART_STACK *pUStack)
+    726          {
+    727            BspUartDataType *pUart = pUStack->pUart; 
+   \                     BSP_UartIsTxOnGoing: (+1)
+   \   00000000   0x6800             LDR      R0,[R0, #+0]
+    728            return (pUart->newTxRequestInThePipe||pUart->txBusy);
+   \   00000002   0xF100 0x0128      ADD      R1,R0,#+40
+   \   00000006   0x7808             LDRB     R0,[R1, #+0]
+   \   00000008   0x2800             CMP      R0,#+0
+   \   0000000A   0xD106             BNE.N    ??BSP_UartIsTxOnGoing_0
+   \   0000000C   0xF991 0x0005      LDRSB    R0,[R1, #+5]
+   \   00000010   0x1E40             SUBS     R0,R0,#+1
+   \   00000012   0x4180             SBCS     R0,R0,R0
+   \   00000014   0x43C0             MVNS     R0,R0
+   \   00000016   0x0FC0             LSRS     R0,R0,#+31
+   \   00000018   0x4770             BX       LR
+   \                     ??BSP_UartIsTxOnGoing_0: (+1)
+   \   0000001A   0x2001             MOVS     R0,#+1
+   \   0000001C   0x4770             BX       LR               ;; return
+    729          }
+    730          
+    731          #if defined(MARLIN)
+    732          /******************************************************//**
+    733           * @brief  This function calls the WIFI TX parser and returns 0 when the command 
+    734             in the buffer is not destinated to the gcode parser
+    735           * @param[in] pBuf pointer to the buffer holding the command
+    736           * @retval number of bytes destinated to the gcode parser
+    737           **********************************************************/
+    738          /*
+    739          uint32_t BSP_UartCommandsFilter(char *pBufCmd, uint8_t nxRxBytes)
+    740          {
+    741            if (BSP_UartParseRxAvalaibleBytes((char const*)pBufCmd, nxRxBytes)\
+    742                  < BSP_WIFI_THRES_TO_GCODE_PARSER)
+    743            {
+    744              nxRxBytes = 0; 
+    745            }
+    746            return nxRxBytes;  
+    747          }
+    748          */
+    749          #endif
+    750          
+    751          /******************************************************//**
+    752           * @brief  This function sends data via the Uart in locking
+    753           * mode (no interrupt used).
+    754           * It should not be used except by the Error handler
+    755           * @param[in]  pBuf pointer to the data to be sent
+    756           * @param[in]  nbData number of bytes to be sent
+    757           * @retval None
+    758           **********************************************************/
+    759          
+
+   \                                 In section .text, align 2, keep-with-next
+    760          void BSP_UartLockingTx(BSP_UART_STACK *pUStack, uint8_t *pBuf, uint8_t nbData)
+    761          {
+    762             BspUartDataType *pUart = pUStack->pUart;  
+    763            
+    764              HAL_UART_Transmit(&pUart->handle, pBuf, nbData, 1000);
+   \                     BSP_UartLockingTx: (+1)
+   \   00000000   0xF44F 0x737A      MOV      R3,#+1000
+   \   00000004   0x6800             LDR      R0,[R0, #+0]
+   \   00000006   0x3038             ADDS     R0,R0,#+56
+   \   00000008   0x.... 0x....      B.W      HAL_UART_Transmit
+    765          }
+    766          
+
+   \                                 In section .text, align 2, keep-with-next
+    767          void BSP_UartFlushRx(BSP_UART_STACK *pUStack)
+    768          {
+    769          	BspUartDataType *pUart = pUStack->pUart;
+   \                     BSP_UartFlushRx: (+1)
+   \   00000000   0x6801             LDR      R1,[R0, #+0]
+    770          	uint32_t tmp_flag = 0;  
+    771          	
+    772          	 tmp_flag = __HAL_UART_GET_FLAG(&pUart->handle, UART_FLAG_RXNE);
+   \   00000002   0x6B88             LDR      R0,[R1, #+56]
+   \   00000004   0x6800             LDR      R0,[R0, #+0]
+   \   00000006   0x0940             LSRS     R0,R0,#+5
+   \   00000008   0xF010 0x0001      ANDS     R0,R0,#0x1
+   \   0000000C   0xE005             B.N      ??BSP_UartFlushRx_0
+    773          	  /* UART in mode Receiver ---------------------------------------------------*/
+    774          	  while(tmp_flag != RESET)
+    775          	  { 
+    776          	    	pUart->handle.Instance->DR;
+   \                     ??BSP_UartFlushRx_1: (+1)
+   \   0000000E   0x6B88             LDR      R0,[R1, #+56]
+   \   00000010   0x6842             LDR      R2,[R0, #+4]
+    777          		tmp_flag = __HAL_UART_GET_FLAG(&pUart->handle, UART_FLAG_RXNE);
+   \   00000012   0x6800             LDR      R0,[R0, #+0]
+   \   00000014   0x0940             LSRS     R0,R0,#+5
+   \   00000016   0xF010 0x0001      ANDS     R0,R0,#0x1
+    778          	   
+    779          	  }
+   \                     ??BSP_UartFlushRx_0: (+1)
+   \   0000001A   0xD1F8             BNE.N    ??BSP_UartFlushRx_1
+    780          }
+   \   0000001C   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1:
+   \   00000000   0x40013800         DC32     0x40013800
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_1:
+   \   00000000   0x40004400         DC32     0x40004400
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_2:
+   \   00000000   0x40004800         DC32     0x40004800
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_3:
+   \   00000000   0x40004C00         DC32     0x40004c00
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_4:
+   \   00000000   0x40005000         DC32     0x40005000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable1_5:
+   \   00000000   0x........         DC32     mks_heating_busy
+    781          /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+    782          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   BSP_UartAttachRxDataHandler
+       0   BSP_UartAttachTxDoneCallback
+       0   BSP_UartFlushRx
+      16   BSP_UartGetNRxBytes
+       4   BSP_UartGetNbRxAvalaibleBytes
+       4   BSP_UartGetNextRxBytes
+      16   BSP_UartHwInit
+         0   -> BSP_MiscErrorHandler
+        16   -> BSP_MiscErrorHandler
+        16   -> HAL_UART_DeInit
+        16   -> HAL_UART_Init
+      32   BSP_UartIfQueueTxData
+        32   -> BSP_MiscErrorHandler
+         0   -> BSP_UartIfSendQueuedData
+        32   -> __aeabi_memcpy
+      24   BSP_UartIfSendQueuedData
+        24   -> USART_GetFlagStatus
+        24   -> USART_SendData
+      16   BSP_UartIfStart
+        16   -> BSP_MiscErrorHandler
+        16   -> HAL_NVIC_EnableIRQ
+        16   -> HAL_NVIC_SetPriority
+        16   -> HAL_UART_Receive_IT
+      24   BSP_UartIfTxData
+        24   -> USART_GetFlagStatus
+        24   -> USART_SendData
+       0   BSP_UartIsTxOnGoing
+       0   BSP_UartLockingTx
+         0   -> HAL_UART_Transmit
+      40   BSP_UartPrintf
+        40   -> BSP_MiscErrorHandler
+        40   -> BSP_UartIfSendQueuedData
+        40   -> vsprintf
+       0   HAL_UART_ErrorCallback
+         0   -> BSP_MiscErrorHandler
+      16   HAL_UART_RxCpltCallback
+        16   -- Indirect call
+        16   -> BSP_MiscErrorHandler
+        16   -> HAL_UART_Receive_IT
+       0   HAL_UART_TxCpltCallback
+         0   -- Indirect call
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable1
+       4  ??DataTable1_1
+       4  ??DataTable1_2
+       4  ??DataTable1_3
+       4  ??DataTable1_4
+       4  ??DataTable1_5
+       6  BSP_UartAttachRxDataHandler
+       6  BSP_UartAttachTxDoneCallback
+      30  BSP_UartFlushRx
+      50  BSP_UartGetNRxBytes
+      44  BSP_UartGetNbRxAvalaibleBytes
+      44  BSP_UartGetNextRxBytes
+     120  BSP_UartHwInit
+     144  BSP_UartIfQueueTxData
+     134  BSP_UartIfSendQueuedData
+     118  BSP_UartIfStart
+      40  BSP_UartIfTxData
+      30  BSP_UartIsTxOnGoing
+      12  BSP_UartLockingTx
+     120  BSP_UartPrintf
+       8  HAL_UART_ErrorCallback
+     112  HAL_UART_RxCpltCallback
+      24  HAL_UART_TxCpltCallback
+
+ 
+ 1 066 bytes in section .text
+ 
+ 1 066 bytes of CODE memory
+
+Errors: none
+Warnings: 1

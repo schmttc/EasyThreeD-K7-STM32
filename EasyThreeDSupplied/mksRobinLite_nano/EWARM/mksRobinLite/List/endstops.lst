@@ -1,0 +1,2704 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.30.1.114/W32 for ARM         07/May/2021  14:21:29
+# Copyright 1999-2018 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\endstops.cpp
+#    Command line =  
+#        -f C:\Users\PLT\AppData\Local\Temp\EWE57D.tmp
+#        (C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\endstops.cpp
+#        -D USE_HAL_DRIVER -D STM32F103xE -D MKS_ROBIN -D MARLIN -D __arm__ -D
+#        USE_MKS_WIFI --preprocess=s
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM\mksRobinLite\List -lC
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM\mksRobinLite\List -lA
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM\mksRobinLite\List
+#        --diag_suppress Pa050 -o
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM\mksRobinLite\Obj
+#        --no_unroll --no_inline --no_tbaa --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M3 -e --char_is_signed --fpu=None
+#        --dlib_config "D:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.1\arm\inc\c\DLib_Config_Full.h" -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Inc\ -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Src\ -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/STM32F10x_StdPeriph_Driver/Inc\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/CMSIS/Device/ST/STM32F1xx/Include\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/CMSIS/Include\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/BSP/STM32MKS-3dPrinter\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/BSP/Components/Common\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/BSP/Components/l6474\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/BSP/Components/at24cxx\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/BSP/Components/w25qxx\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Drivers/BSP/MotorControl\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/Third_Party/FatFs/src\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/Third_Party/FatFs/src/drivers\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/Third_Party/Marlin\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/Third_Party/u8glib_arm_v1.17/src\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/arduino\
+#        -I
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Middlewares/arduino/avr\
+#        -I C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM/../Inc/Logo\ -Om --c++
+#        --no_exceptions --no_rtti -I "D:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 8.1\arm\CMSIS\Core\Include\" -I "D:\Program
+#        Files (x86)\IAR Systems\Embedded Workbench
+#        8.1\arm\CMSIS\DSP\Include\")
+#    Locale       =  C
+#    List file    =  
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM\mksRobinLite\List\endstops.lst
+#    Object file  =  
+#        C:\Users\PLT\Desktop\mksRobinLite_nano\EWARM\mksRobinLite\Obj\endstops.o
+#
+###############################################################################
+
+C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\endstops.cpp
+      1          /**
+      2           * Marlin 3D Printer Firmware
+      3           * Copyright (C) 2016 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+      4           *
+      5           * Based on Sprinter and grbl.
+      6           * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
+      7           *
+      8           * This program is free software: you can redistribute it and/or modify
+      9           * it under the terms of the GNU General Public License as published by
+     10           * the Free Software Foundation, either version 3 of the License, or
+     11           * (at your option) any later version.
+     12           *
+     13           * This program is distributed in the hope that it will be useful,
+     14           * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     15           * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     16           * GNU General Public License for more details.
+     17           *
+     18           * You should have received a copy of the GNU General Public License
+     19           * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+     20           *
+     21           */
+     22          
+     23          /**
+     24           * endstops.cpp - A singleton object to manage endstops
+     25           */
+     26          
+     27          #include "Marlin.h"
+
+    #define SDSS   18
+            ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\pins_MKS_ROBIN_LITE.h",161  Warning[Pa181]: 
+          incompatible redefinition of macro "SDSS" (declared at line 62)
+
+  #define UNUSED(x) ((void)(x))
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h",87  Warning[Pa181]: 
+          incompatible redefinition of macro "UNUSED" (declared at line 88 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marl
+          in\macros.h")
+
+   \                                 In section .text, align 2
+   \   __interwork __softfp void MarlinSerial::write(uint8_t)
+   \                     _ZN12MarlinSerial5writeEh: (+1)
+   \        0x0   0xB502             PUSH     {R1,LR}
+   \        0x2   0x2201             MOVS     R2,#+1
+   \        0x4   0x4669             MOV      R1,SP
+   \        0x6   0x.... 0x....      BL       BSP_UartIfQueueTxData
+   \        0xA   0xBD01             POP      {R0,PC}          ;; return
+
+   \                                 In section .text, align 2
+   \   __interwork __softfp void MarlinSerial::write(char const *)
+   \                     _ZN12MarlinSerial5writeEPKc: (+1)
+   \        0x0   0xB538             PUSH     {R3-R5,LR}
+   \        0x2   0x4604             MOV      R4,R0
+   \        0x4   0x460D             MOV      R5,R1
+   \        0x6   0x4628             MOV      R0,R5
+   \        0x8   0x.... 0x....      BL       strlen
+   \        0xC   0x4602             MOV      R2,R0
+   \        0xE   0xB2D2             UXTB     R2,R2
+   \       0x10   0x4629             MOV      R1,R5
+   \       0x12   0x4620             MOV      R0,R4
+   \       0x14   0xE8BD 0x4038      POP      {R3-R5,LR}
+   \       0x18   0x.... 0x....      B.W      BSP_UartIfQueueTxData
+
+   \                                 In section .text, align 4
+   \   __interwork __softfp void MarlinSerial::print(char const *)
+   \                     _ZN12MarlinSerial5printEPKc: (+1)
+   \        0x0   0xB538             PUSH     {R3-R5,LR}
+   \        0x2   0x4604             MOV      R4,R0
+   \        0x4   0x460D             MOV      R5,R1
+   \        0x6   0x4628             MOV      R0,R5
+   \        0x8   0x.... 0x....      BL       strlen
+   \        0xC   0x2800             CMP      R0,#+0
+   \        0xE   0xD013             BEQ.N    ??print_1
+   \       0x10   0x480A             LDR.N    R0,??print_0
+   \       0x12   0x7800             LDRB     R0,[R0, #+0]
+   \       0x14   0x2800             CMP      R0,#+0
+   \       0x16   0xD105             BNE.N    ??print_2
+   \       0x18   0x4629             MOV      R1,R5
+   \       0x1A   0x4620             MOV      R0,R4
+   \       0x1C   0xE8BD 0x4034      POP      {R2,R4,R5,LR}
+   \       0x20   0x.... 0x....      B.W      _ZN12MarlinSerial5writeEPKc
+   \                     ??print_2: (+1)
+   \       0x24   0x4628             MOV      R0,R5
+   \       0x26   0x.... 0x....      BL       strlen
+   \       0x2A   0x4602             MOV      R2,R0
+   \       0x2C   0x4629             MOV      R1,R5
+   \       0x2E   0x2002             MOVS     R0,#+2
+   \       0x30   0xE8BD 0x4038      POP      {R3-R5,LR}
+   \       0x34   0x.... 0x....      B.W      package_to_wifi
+   \                     ??print_1: (+1)
+   \       0x38   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+   \       0x3A   0xBF00             Nop      
+   \                     ??print_0:
+   \       0x3C   0x....'....        DC32     from_wifi_flag
+
+   \                                 In section .text, align 4
+   \   __interwork __softfp void serialprintPGM(char const *)
+   \                     _Z14serialprintPGMPKc: (+1)
+   \        0x0   0x4601             MOV      R1,R0
+   \        0x2   0x4805             LDR.N    R0,??serialprintPGM_0
+   \        0x4   0x7800             LDRB     R0,[R0, #+0]
+   \        0x6   0x2800             CMP      R0,#+0
+   \        0x8   0xD102             BNE.N    ??serialprintPGM_1
+   \        0xA   0x4804             LDR.N    R0,??serialprintPGM_0+0x4
+   \        0xC   0x.... 0x....      B.W      _ZN12MarlinSerial5writeEPKc
+   \                     ??serialprintPGM_1: (+1)
+   \       0x10   0x4803             LDR.N    R0,??serialprintPGM_0+0x8
+   \       0x12   0x.... 0x....      B.W      _ZN12MarlinSerial5printEPKc
+   \       0x16   0xBF00             Nop      
+   \                     ??serialprintPGM_0:
+   \       0x18   0x....'....        DC32     from_wifi_flag
+   \       0x1C   0x....'....        DC32     customizedSerial
+   \       0x20   0x....'....        DC32     serial2
+
+  #define PRINT_LED_PIN         PDout(2)
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Drivers\BSP\STM32MKS-3dPrinter\mks_fastio.h",14  Warning[Pa181]: 
+          incompatible redefinition of macro "PRINT_LED_PIN" (declared at line
+          146 of "C:\Users\PLT\Desktop\mksRobinLite_nano\Inc\main.h")
+     28          #include "cardreader.h"
+
+  #define PSTR(str) (str)
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\arduino\avr\pgmspace.h",8  Warning[Pa181]: 
+          incompatible redefinition of macro "PSTR" (declared at line 59 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marl
+          in\Marlin.h")
+
+  #define strcpy_P(dest, src) strcpy((dest), (src))
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\arduino\avr\pgmspace.h",23  Warning[Pa181]: 
+          incompatible redefinition of macro "strcpy_P" (declared at line 93 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marl
+          in\Marlin_export.h")
+
+  #define strstr_P(a, b) strstr((a), (b))
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\arduino\avr\pgmspace.h",26  Warning[Pa181]: 
+          incompatible redefinition of macro "strstr_P" (declared at line 94 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marl
+          in\Marlin_export.h")
+
+  #define sprintf_P(s, f, ...) sprintf((s), (f), __VA_ARGS__)
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\arduino\avr\pgmspace.h",28  Warning[Pa181]: 
+          incompatible redefinition of macro "sprintf_P" (declared at line 95
+          of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marl
+          in\Marlin_export.h")
+
+  #define pgm_read_word_near(addr) pgm_read_word(addr)
+          ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\arduino\avr\pgmspace.h",36  Warning[Pa181]: 
+          incompatible redefinition of macro "pgm_read_word_near" (declared at
+          line 65 of
+          "C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marl
+          in\Marlin_export.h")
+
+  class SdFile : public SdBaseFile, public Print {
+        ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\SdFile.h",45  Warning[Pe611]: 
+          overloaded virtual function "Print::write" is only partially
+          overridden in class "SdFile"
+
+    FORCE_INLINE bool renameFile(const char * newPath){ file.rename(curDir, newPath);}
+                                                                                     ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\cardreader.h",99  Warning[Pe940]: 
+          missing return statement at end of non-void function
+          "CardReader::renameFile"
+     29          #include "endstops.h"
+
+   \                                 In section .text, align 4
+   \   __interwork __softfp void Endstops::hit_on_purpose()
+   \                     _ZN8Endstops14hit_on_purposeEv: (+1)
+   \        0x0   0x2000             MOVS     R0,#+0
+   \        0x2   0x4901             LDR.N    R1,??hit_on_purpose_0
+   \        0x4   0x7008             STRB     R0,[R1, #+0]
+   \        0x6   0x4770             BX       LR               ;; return
+   \                     ??hit_on_purpose_0:
+   \        0x8   0x....'....        DC32     _ZN8Endstops16endstop_hit_bitsE
+     30          #include "temperature.h"
+
+        target_temperature[HOTEND_INDEX] = celsius;
+                                         ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\temperature.h",401  Warning[Pa093]: 
+          implicit conversion from floating point to integer
+
+        target_temperature_bed = celsius;
+                               ^
+"C:\Users\PLT\Desktop\mksRobinLite_nano\Middlewares\Third_Party\Marlin\temperature.h",408  Warning[Pa093]: 
+          implicit conversion from floating point to integer
+     31          #include "stepper.h"
+
+   \                                 In section .text, align 4
+   \   __interwork __softfp bool Stepper::motor_direction(AxisEnum)
+   \                     _ZN7Stepper15motor_directionE8AxisEnum: (+1)
+   \        0x0   0x4601             MOV      R1,R0
+   \        0x2   0x4806             LDR.N    R0,??motor_direction_0
+   \        0x4   0x7800             LDRB     R0,[R0, #+0]
+   \        0x6   0x2201             MOVS     R2,#+1
+   \        0x8   0xFA02 0xF101      LSL      R1,R2,R1
+   \        0xC   0x4001             ANDS     R1,R1,R0
+   \        0xE   0x4608             MOV      R0,R1
+   \       0x10   0x1E40             SUBS     R0,R0,#+1
+   \       0x12   0x4180             SBCS     R0,R0,R0
+   \       0x14   0x43C0             MVNS     R0,R0
+   \       0x16   0x0FC0             LSRS     R0,R0,#+31
+   \       0x18   0x4770             BX       LR               ;; return
+   \       0x1A   0xBF00             Nop      
+   \                     ??motor_direction_0:
+   \       0x1C   0x....'....        DC32     _ZN7Stepper19last_direction_bitsE
+
+   \                                 In section .text, align 4
+   \   __interwork __softfp float Stepper::triggered_position_mm(AxisEnum)
+   \                     _ZN7Stepper21triggered_position_mmE8AxisEnum: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x4604             MOV      R4,R0
+   \        0x4   0x4805             LDR.N    R0,??triggered_position_mm_0
+   \        0x6   0xF850 0x0024      LDR      R0,[R0, R4, LSL #+2]
+   \        0xA   0x.... 0x....      BL       __aeabi_i2f
+   \        0xE   0x4904             LDR.N    R1,??triggered_position_mm_0+0x4
+   \       0x10   0xF851 0x1024      LDR      R1,[R1, R4, LSL #+2]
+   \       0x14   0xE8BD 0x4010      POP      {R4,LR}
+   \       0x18   0x.... 0x....      B.W      __aeabi_fmul
+   \                     ??triggered_position_mm_0:
+   \       0x1C   0x....'....        DC32     _ZN7Stepper18endstops_trigstepsE
+   \       0x20   0x....'....        DC32     _ZN7Planner11steps_to_mmE
+     32          #include "ultralcd.h"
+     33          
+     34          // TEST_ENDSTOP: test the old and the current status of an endstop
+     35          #define TEST_ENDSTOP(ENDSTOP) (TEST(current_endstop_bits & old_endstop_bits, ENDSTOP))
+     36          
+
+   \                                 In section .bss, align 1
+     37          Endstops endstops;
+   \                     endstops:
+   \        0x0                      DS8 1
+     38          
+     39          // public:
+     40          
+
+   \                                 In section .data, align 1
+     41          bool  Endstops::enabled = true,
+   \                     _ZN8Endstops7enabledE:
+   \        0x0   0x01               DC8 1
+
+   \                                 In section .bss, align 1
+     42                Endstops::enabled_globally =
+   \                     _ZN8Endstops16enabled_globallyE:
+   \        0x0                      DS8 1
+     43                  #if ENABLED(ENDSTOPS_ALWAYS_ON_DEFAULT)
+     44                    (true)
+     45                  #else
+     46                    (false)
+     47                  #endif
+     48                ;
+
+   \                                 In section .bss, align 1
+     49          volatile char Endstops::endstop_hit_bits; // use X_MIN, Y_MIN, Z_MIN and Z_MIN_PROBE as BIT value
+   \                     _ZN8Endstops16endstop_hit_bitsE:
+   \        0x0                      DS8 1
+     50          
+     51          #if ENABLED(Z_DUAL_ENDSTOPS)
+     52            uint16_t
+     53          #else
+     54            byte
+     55          #endif
+     56              Endstops::current_endstop_bits = 0,
+   \                     _ZN8Endstops20current_endstop_bitsE:
+   \        0x1                      DS8 1
+     57              Endstops::old_endstop_bits = 0;
+   \                     _ZN8Endstops16old_endstop_bitsE:
+   \        0x2                      DS8 1
+     58          
+     59          #if HAS_BED_PROBE
+     60            volatile bool Endstops::z_probe_enabled = false;
+   \                     _ZN8Endstops15z_probe_enabledE:
+   \        0x3                      DS8 1
+     61          #endif
+     62          
+     63          /**
+     64           * Class and Instance Methods
+     65           */
+     66          
+
+   \                                 In section .text, align 2, keep-with-next
+     67          void Endstops::init() {
+     68          
+     69            #if HAS_X_MIN
+     70              #if ENABLED(ENDSTOPPULLUP_XMIN)
+     71                SET_INPUT_PULLUP(X_MIN_PIN);
+     72              #else
+     73                SET_INPUT(X_MIN_PIN);
+     74              #endif
+     75            #endif
+     76          
+     77            #if HAS_Y_MIN
+     78              #if ENABLED(ENDSTOPPULLUP_YMIN)
+     79                SET_INPUT_PULLUP(Y_MIN_PIN);
+     80              #else
+     81                SET_INPUT(Y_MIN_PIN);
+     82              #endif
+     83            #endif
+     84          
+     85            #if HAS_Z_MIN
+     86              #if ENABLED(ENDSTOPPULLUP_ZMIN)
+     87                SET_INPUT_PULLUP(Z_MIN_PIN);
+     88              #else
+     89                SET_INPUT(Z_MIN_PIN);
+     90              #endif
+     91            #endif
+     92          
+     93            #if HAS_Z2_MIN
+     94              #if ENABLED(ENDSTOPPULLUP_ZMIN)
+     95                SET_INPUT_PULLUP(Z2_MIN_PIN);
+     96              #else
+     97                SET_INPUT(Z2_MIN_PIN);
+     98              #endif
+     99            #endif
+    100          
+    101            #if HAS_X_MAX
+    102              #if ENABLED(ENDSTOPPULLUP_XMAX)
+    103                SET_INPUT_PULLUP(X_MAX_PIN);
+    104              #else
+    105                SET_INPUT(X_MAX_PIN);
+    106              #endif
+    107            #endif
+    108          
+    109            #if HAS_Y_MAX
+    110              #if ENABLED(ENDSTOPPULLUP_YMAX)
+    111                SET_INPUT_PULLUP(Y_MAX_PIN);
+    112              #else
+    113                SET_INPUT(Y_MAX_PIN);
+    114              #endif
+    115            #endif
+    116          
+    117            #if HAS_Z_MAX
+    118            if(Z_MIN_PROBE_PIN_MODE != Z_MIN_PROBE_USES_Z_MAX_ENDSTOP_PIN)
+    119            	{
+    120              #if ENABLED(ENDSTOPPULLUP_ZMAX)
+    121                SET_INPUT_PULLUP(Z_MAX_PIN);
+    122              #else
+    123                SET_INPUT(Z_MAX_PIN);
+    124              #endif
+    125            	}
+    126            #endif
+    127          
+    128            #if HAS_Z2_MAX
+    129              #if ENABLED(ENDSTOPPULLUP_ZMAX)
+    130                SET_INPUT_PULLUP(Z2_MAX_PIN);
+    131              #else
+    132                SET_INPUT(Z2_MAX_PIN);
+    133              #endif
+    134            #endif
+    135          
+    136          //  #if ENABLED(Z_MIN_PROBE_ENDSTOP)
+    137           if(Z_MIN_PROBE_PIN_MODE == Z_MIN_PROBE_USES_Z_MAX_ENDSTOP_PIN)  
+    138           	{
+    139              #if ENABLED(ENDSTOPPULLUP_ZMIN_PROBE)
+    140                SET_INPUT_PULLUP(Z_MIN_PROBE_PIN);
+    141              #else
+    142                SET_INPUT(Z_MIN_PROBE_PIN);
+    143              #endif
+    144           	}
+    145            //#endif
+    146          
+    147          } // Endstops::init
+   \                     _ZN8Endstops4initEv: (+1)
+   \        0x0   0x4770             BX       LR               ;; return
+    148          
+
+   \                                 In section .text, align 4, keep-with-next
+    149          void Endstops::report_state() {
+   \                     _ZN8Endstops12report_stateEv: (+1)
+   \        0x0   0xE92D 0x41FC      PUSH     {R2-R8,LR}
+    150            if (endstop_hit_bits) {
+   \        0x4   0x.... 0x....      LDR.W    R4,??DataTable25
+   \        0x8   0xF994 0x0000      LDRSB    R0,[R4, #+0]
+   \        0xC   0x2800             CMP      R0,#+0
+   \        0xE   0xD06C             BEQ.N    ??report_state_0
+    151              #if ENABLED(ULTRA_LCD)
+    152                char chrX = ' ', chrY = ' ', chrZ = ' ', chrP = ' ';
+   \       0x10   0x2520             MOVS     R5,#+32
+   \       0x12   0x462F             MOV      R7,R5
+   \       0x14   0x46A8             MOV      R8,R5
+   \       0x16   0x462E             MOV      R6,R5
+    153                #define _SET_STOP_CHAR(A,C) (chr## A = C)
+    154              #else
+    155                #define _SET_STOP_CHAR(A,C) ;
+    156              #endif
+    157          
+    158              #define _ENDSTOP_HIT_ECHO(A,C) do{ \
+    159                SERIAL_ECHOPAIR(" " STRINGIFY(A) ":", stepper.triggered_position_mm(A ##_AXIS)); \
+    160                _SET_STOP_CHAR(A,C); }while(0)
+    161          
+    162              #define _ENDSTOP_HIT_TEST(A,C) \
+    163                if (TEST(endstop_hit_bits, A ##_MIN) || TEST(endstop_hit_bits, A ##_MAX)) \
+    164                  _ENDSTOP_HIT_ECHO(A,C)
+    165          
+    166              #define ENDSTOP_HIT_TEST_X() _ENDSTOP_HIT_TEST(X,'X')
+    167              #define ENDSTOP_HIT_TEST_Y() _ENDSTOP_HIT_TEST(Y,'Y')
+    168              #define ENDSTOP_HIT_TEST_Z() _ENDSTOP_HIT_TEST(Z,'Z')
+    169          
+    170              SERIAL_ECHO_START;
+   \       0x18   0x.... 0x....      LDR.W    R0,??DataTable25_1
+   \       0x1C   0x.... 0x....      BL       _Z14serialprintPGMPKc
+    171              SERIAL_ECHOPGM(MSG_ENDSTOPS_HIT);
+   \       0x20   0x....             ADR.N    R0,?_0
+   \       0x22   0x.... 0x....      BL       _Z14serialprintPGMPKc
+    172              ENDSTOP_HIT_TEST_X();
+   \       0x26   0xF994 0x0000      LDRSB    R0,[R4, #+0]
+   \       0x2A   0x07C0             LSLS     R0,R0,#+31
+   \       0x2C   0xD403             BMI.N    ??report_state_1
+   \       0x2E   0xF994 0x0000      LDRSB    R0,[R4, #+0]
+   \       0x32   0x06C0             LSLS     R0,R0,#+27
+   \       0x34   0xD507             BPL.N    ??report_state_2
+   \                     ??report_state_1: (+1)
+   \       0x36   0x2000             MOVS     R0,#+0
+   \       0x38   0x.... 0x....      BL       _ZN7Stepper21triggered_position_mmE8AxisEnum
+   \       0x3C   0x4601             MOV      R1,R0
+   \       0x3E   0x....             ADR.N    R0,??DataTable18  ;; " X:"
+   \       0x40   0x.... 0x....      BL       _Z17serial_echopair_PPKcf
+   \       0x44   0x2558             MOVS     R5,#+88
+    173              ENDSTOP_HIT_TEST_Y();
+   \                     ??report_state_2: (+1)
+   \       0x46   0xF994 0x0000      LDRSB    R0,[R4, #+0]
+   \       0x4A   0x0780             LSLS     R0,R0,#+30
+   \       0x4C   0xD403             BMI.N    ??report_state_3
+   \       0x4E   0xF994 0x0000      LDRSB    R0,[R4, #+0]
+   \       0x52   0x0680             LSLS     R0,R0,#+26
+   \       0x54   0xD507             BPL.N    ??report_state_4
+   \                     ??report_state_3: (+1)
+   \       0x56   0x2001             MOVS     R0,#+1
+   \       0x58   0x.... 0x....      BL       _ZN7Stepper21triggered_position_mmE8AxisEnum
+   \       0x5C   0x4601             MOV      R1,R0
+   \       0x5E   0x....             ADR.N    R0,??DataTable18_1  ;; " Y:"
+   \       0x60   0x.... 0x....      BL       _Z17serial_echopair_PPKcf
+   \       0x64   0x2759             MOVS     R7,#+89
+    174              ENDSTOP_HIT_TEST_Z();
+   \                     ??report_state_4: (+1)
+   \       0x66   0xF994 0x0000      LDRSB    R0,[R4, #+0]
+   \       0x6A   0x0740             LSLS     R0,R0,#+29
+   \       0x6C   0xD403             BMI.N    ??report_state_5
+   \       0x6E   0xF994 0x0000      LDRSB    R0,[R4, #+0]
+   \       0x72   0x0640             LSLS     R0,R0,#+25
+   \       0x74   0xD508             BPL.N    ??report_state_6
+   \                     ??report_state_5: (+1)
+   \       0x76   0x2002             MOVS     R0,#+2
+   \       0x78   0x.... 0x....      BL       _ZN7Stepper21triggered_position_mmE8AxisEnum
+   \       0x7C   0x4601             MOV      R1,R0
+   \       0x7E   0x....             ADR.N    R0,??DataTable18_2  ;; " Z:"
+   \       0x80   0x.... 0x....      BL       _Z17serial_echopair_PPKcf
+   \       0x84   0xF04F 0x085A      MOV      R8,#+90
+    175          
+    176              //#if ENABLED(Z_MIN_PROBE_ENDSTOP)
+    177          	 if(Z_MIN_PROBE_PIN_MODE == Z_MIN_PROBE_USES_Z_MAX_ENDSTOP_PIN)
+   \                     ??report_state_6: (+1)
+   \       0x88   0x.... 0x....      LDR.W    R0,??DataTable26
+   \       0x8C   0xF890 0x0099      LDRB     R0,[R0, #+153]
+   \       0x90   0x2802             CMP      R0,#+2
+   \       0x92   0xD10B             BNE.N    ??report_state_7
+    178          	 	{
+    179                #define P_AXIS Z_AXIS
+    180                if (TEST(endstop_hit_bits, Z_MIN_PROBE)) _ENDSTOP_HIT_ECHO(P, 'P');
+   \       0x94   0xF994 0x0000      LDRSB    R0,[R4, #+0]
+   \       0x98   0x0700             LSLS     R0,R0,#+28
+   \       0x9A   0xD507             BPL.N    ??report_state_7
+   \       0x9C   0x2002             MOVS     R0,#+2
+   \       0x9E   0x.... 0x....      BL       _ZN7Stepper21triggered_position_mmE8AxisEnum
+   \       0xA2   0x4601             MOV      R1,R0
+   \       0xA4   0x....             ADR.N    R0,??DataTable18_3  ;; " P:"
+   \       0xA6   0x.... 0x....      BL       _Z17serial_echopair_PPKcf
+   \       0xAA   0x2650             MOVS     R6,#+80
+    181          	 	}
+    182              //#endif
+    183          	
+    184              SERIAL_EOL;
+   \                     ??report_state_7: (+1)
+   \       0xAC   0x.... 0x....      LDR.W    R0,??DataTable26_1
+   \       0xB0   0x7800             LDRB     R0,[R0, #+0]
+   \       0xB2   0x2800             CMP      R0,#+0
+   \       0xB4   0xD105             BNE.N    ??report_state_8
+   \       0xB6   0x210A             MOVS     R1,#+10
+   \       0xB8   0x.... 0x....      LDR.W    R0,??DataTable26_2
+   \       0xBC   0x.... 0x....      BL       _ZN12MarlinSerial5writeEh
+   \       0xC0   0xE005             B.N      ??report_state_9
+   \                     ??report_state_8: (+1)
+   \       0xC2   0x2200             MOVS     R2,#+0
+   \       0xC4   0x210A             MOVS     R1,#+10
+   \       0xC6   0x.... 0x....      LDR.W    R0,??DataTable26_3
+   \       0xCA   0x.... 0x....      BL       _ZN12MarlinSerial5printEci
+    185          
+    186              #if ENABLED(ULTRA_LCD)
+    187                lcd_status_printf_P(0, PSTR(MSG_LCD_ENDSTOPS " %c %c %c %c"), chrX, chrY, chrZ, chrP);
+   \                     ??report_state_9: (+1)
+   \       0xCE   0x9601             STR      R6,[SP, #+4]
+   \       0xD0   0xF8CD 0x8000      STR      R8,[SP, #+0]
+   \       0xD4   0x463B             MOV      R3,R7
+   \       0xD6   0x462A             MOV      R2,R5
+   \       0xD8   0x.... 0x....      ADR.W    R1,?_5
+   \       0xDC   0x2000             MOVS     R0,#+0
+   \       0xDE   0x.... 0x....      BL       _Z19lcd_status_printf_PhPKcz
+    188              #endif
+    189          
+    190              hit_on_purpose();
+   \       0xE2   0xE8BD 0x41F3      POP      {R0,R1,R4-R8,LR}
+   \       0xE6   0x.... 0x....      B.W      _ZN8Endstops14hit_on_purposeEv
+    191          
+    192              #if ENABLED(ABORT_ON_ENDSTOP_HIT_FEATURE_ENABLED) && ENABLED(SDSUPPORT)
+    193                if (stepper.abort_on_endstop_hit) {
+    194                  card.sdprinting = false;
+    195                  card.sdprintflag = false;
+    196                  card.closefile();
+    197                  quickstop_stepper();
+    198                  thermalManager.disable_all_heaters(); // switch off all heaters.
+    199                }
+    200              #endif
+    201            }
+    202          } // Endstops::report_state
+   \                     ??report_state_0: (+1)
+   \       0xEA   0xE8BD 0x81F3      POP      {R0,R1,R4-R8,PC}  ;; return
+    203          
+
+   \                                 In section .text, align 2, keep-with-next
+    204          void Endstops::M119() {
+   \                     _ZN8Endstops4M119Ev: (+1)
+   \        0x0   0xE92D 0x4FF8      PUSH     {R3-R11,LR}
+    205            SERIAL_PROTOCOLLNPGM(MSG_M119_REPORT);
+   \        0x4   0x.... 0x....      ADR.W    R0,?_6
+   \        0x8   0x.... 0x....      BL       _Z14serialprintPGMPKc
+    206            #if HAS_X_MIN	
+    207            if(mksCfg.use_xmin_plug){
+   \        0xC   0x.... 0x....      LDR.W    R9,??DataTable26
+   \       0x10   0xF109 0x0A37      ADD      R10,R9,#+55
+   \       0x14   0xF109 0x0080      ADD      R0,R9,#+128
+   \       0x18   0x9000             STR      R0,[SP, #+0]
+   \       0x1A   0x.... 0x....      LDR.W    R6,??DataTable26_3
+   \       0x1E   0x.... 0x....      LDR.W    R7,??DataTable26_2
+   \       0x22   0x.... 0x....      ADR.W    R4,?_9
+   \       0x26   0x.... 0x....      ADR.W    R5,?_8
+   \       0x2A   0x.... 0x....      LDR.W    R11,??DataTable26_4
+   \       0x2E   0x.... 0x....      LDR.W    R8,??DataTable26_1
+   \       0x32   0x7800             LDRB     R0,[R0, #+0]
+   \       0x34   0x2800             CMP      R0,#+0
+   \       0x36   0xD035             BEQ.N    ??M119_0
+    208              SERIAL_PROTOCOLPGM(MSG_X_MIN);
+   \       0x38   0x.... 0x....      ADR.W    R0,?_7
+   \       0x3C   0x.... 0x....      BL       _Z14serialprintPGMPKc
+    209              SERIAL_PROTOCOLLN(((READ(X_MIN_PIN)^X_MIN_ENDSTOP_INVERTING) ? MSG_ENDSTOP_HIT : MSG_ENDSTOP_OPEN));
+   \       0x40   0x.... 0x....      LDR.W    R0,??DataTable26_5
+   \       0x44   0x6900             LDR      R0,[R0, #+16]
+   \       0x46   0xF8BB 0x1008      LDRH     R1,[R11, #+8]
+   \       0x4A   0xF898 0x2000      LDRB     R2,[R8, #+0]
+   \       0x4E   0x2A00             CMP      R2,#+0
+   \       0x50   0xD10D             BNE.N    ??M119_1
+   \       0x52   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \       0x56   0xF89A 0x1000      LDRB     R1,[R10, #+0]
+   \       0x5A   0xEA91 0x0F00      TEQ      R1,R0
+   \       0x5E   0xD001             BEQ.N    ??M119_2
+   \       0x60   0x4629             MOV      R1,R5
+   \       0x62   0xE000             B.N      ??M119_3
+   \                     ??M119_2: (+1)
+   \       0x64   0x4621             MOV      R1,R4
+   \                     ??M119_3: (+1)
+   \       0x66   0x4638             MOV      R0,R7
+   \       0x68   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \       0x6C   0xE00C             B.N      ??M119_4
+   \                     ??M119_1: (+1)
+   \       0x6E   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \       0x72   0xF89A 0x1000      LDRB     R1,[R10, #+0]
+   \       0x76   0xEA91 0x0F00      TEQ      R1,R0
+   \       0x7A   0xD001             BEQ.N    ??M119_5
+   \       0x7C   0x4629             MOV      R1,R5
+   \       0x7E   0xE000             B.N      ??M119_6
+   \                     ??M119_5: (+1)
+   \       0x80   0x4621             MOV      R1,R4
+   \                     ??M119_6: (+1)
+   \       0x82   0x4630             MOV      R0,R6
+   \       0x84   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \                     ??M119_4: (+1)
+   \       0x88   0xF898 0x0000      LDRB     R0,[R8, #+0]
+   \       0x8C   0x2800             CMP      R0,#+0
+   \       0x8E   0xD104             BNE.N    ??M119_7
+   \       0x90   0x210A             MOVS     R1,#+10
+   \       0x92   0x4638             MOV      R0,R7
+   \       0x94   0x.... 0x....      BL       _ZN12MarlinSerial5writeEh
+   \       0x98   0xE004             B.N      ??M119_0
+   \                     ??M119_7: (+1)
+   \       0x9A   0x2200             MOVS     R2,#+0
+   \       0x9C   0x210A             MOVS     R1,#+10
+   \       0x9E   0x4630             MOV      R0,R6
+   \       0xA0   0x.... 0x....      BL       _ZN12MarlinSerial5printEci
+    210            	}
+    211            #endif
+    212            #if HAS_X_MAX
+    213            if(mksCfg.use_xmax_plug){
+   \                     ??M119_0: (+1)
+   \       0xA4   0x9800             LDR      R0,[SP, #+0]
+   \       0xA6   0x78C0             LDRB     R0,[R0, #+3]
+   \       0xA8   0x2800             CMP      R0,#+0
+   \       0xAA   0xD035             BEQ.N    ??M119_8
+    214              SERIAL_PROTOCOLPGM(MSG_X_MAX);
+   \       0xAC   0x.... 0x....      ADR.W    R0,?_10
+   \       0xB0   0x.... 0x....      BL       _Z14serialprintPGMPKc
+    215              SERIAL_PROTOCOLLN(((READ(X_MAX_PIN)^X_MAX_ENDSTOP_INVERTING) ? MSG_ENDSTOP_HIT : MSG_ENDSTOP_OPEN));
+   \       0xB4   0x.... 0x....      LDR.W    R0,??DataTable26_5
+   \       0xB8   0x6900             LDR      R0,[R0, #+16]
+   \       0xBA   0xF8BB 0x1008      LDRH     R1,[R11, #+8]
+   \       0xBE   0xF898 0x2000      LDRB     R2,[R8, #+0]
+   \       0xC2   0x2A00             CMP      R2,#+0
+   \       0xC4   0xD10D             BNE.N    ??M119_9
+   \       0xC6   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \       0xCA   0xF89A 0x1003      LDRB     R1,[R10, #+3]
+   \       0xCE   0xEA91 0x0F00      TEQ      R1,R0
+   \       0xD2   0xD001             BEQ.N    ??M119_10
+   \       0xD4   0x4629             MOV      R1,R5
+   \       0xD6   0xE000             B.N      ??M119_11
+   \                     ??M119_10: (+1)
+   \       0xD8   0x4621             MOV      R1,R4
+   \                     ??M119_11: (+1)
+   \       0xDA   0x4638             MOV      R0,R7
+   \       0xDC   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \       0xE0   0xE00C             B.N      ??M119_12
+   \                     ??M119_9: (+1)
+   \       0xE2   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \       0xE6   0xF89A 0x1003      LDRB     R1,[R10, #+3]
+   \       0xEA   0xEA91 0x0F00      TEQ      R1,R0
+   \       0xEE   0xD001             BEQ.N    ??M119_13
+   \       0xF0   0x4629             MOV      R1,R5
+   \       0xF2   0xE000             B.N      ??M119_14
+   \                     ??M119_13: (+1)
+   \       0xF4   0x4621             MOV      R1,R4
+   \                     ??M119_14: (+1)
+   \       0xF6   0x4630             MOV      R0,R6
+   \       0xF8   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \                     ??M119_12: (+1)
+   \       0xFC   0xF898 0x0000      LDRB     R0,[R8, #+0]
+   \      0x100   0x2800             CMP      R0,#+0
+   \      0x102   0xD104             BNE.N    ??M119_15
+   \      0x104   0x210A             MOVS     R1,#+10
+   \      0x106   0x4638             MOV      R0,R7
+   \      0x108   0x.... 0x....      BL       _ZN12MarlinSerial5writeEh
+   \      0x10C   0xE004             B.N      ??M119_8
+   \                     ??M119_15: (+1)
+   \      0x10E   0x2200             MOVS     R2,#+0
+   \      0x110   0x210A             MOVS     R1,#+10
+   \      0x112   0x4630             MOV      R0,R6
+   \      0x114   0x.... 0x....      BL       _ZN12MarlinSerial5printEci
+    216            	}
+    217            #endif
+    218            #if HAS_Y_MIN
+    219          if(mksCfg.use_ymin_plug){  
+   \                     ??M119_8: (+1)
+   \      0x118   0x9800             LDR      R0,[SP, #+0]
+   \      0x11A   0x7840             LDRB     R0,[R0, #+1]
+   \      0x11C   0x2800             CMP      R0,#+0
+   \      0x11E   0xD035             BEQ.N    ??M119_16
+    220              SERIAL_PROTOCOLPGM(MSG_Y_MIN);
+   \      0x120   0x.... 0x....      ADR.W    R0,?_11
+   \      0x124   0x.... 0x....      BL       _Z14serialprintPGMPKc
+    221              SERIAL_PROTOCOLLN(((READ(Y_MIN_PIN)^Y_MIN_ENDSTOP_INVERTING) ? MSG_ENDSTOP_HIT : MSG_ENDSTOP_OPEN));
+   \      0x128   0x.... 0x....      LDR.W    R0,??DataTable26_5
+   \      0x12C   0x69C0             LDR      R0,[R0, #+28]
+   \      0x12E   0xF8BB 0x100E      LDRH     R1,[R11, #+14]
+   \      0x132   0xF898 0x2000      LDRB     R2,[R8, #+0]
+   \      0x136   0x2A00             CMP      R2,#+0
+   \      0x138   0xD10D             BNE.N    ??M119_17
+   \      0x13A   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x13E   0xF89A 0x1001      LDRB     R1,[R10, #+1]
+   \      0x142   0xEA91 0x0F00      TEQ      R1,R0
+   \      0x146   0xD001             BEQ.N    ??M119_18
+   \      0x148   0x4629             MOV      R1,R5
+   \      0x14A   0xE000             B.N      ??M119_19
+   \                     ??M119_18: (+1)
+   \      0x14C   0x4621             MOV      R1,R4
+   \                     ??M119_19: (+1)
+   \      0x14E   0x4638             MOV      R0,R7
+   \      0x150   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \      0x154   0xE00C             B.N      ??M119_20
+   \                     ??M119_17: (+1)
+   \      0x156   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x15A   0xF89A 0x1001      LDRB     R1,[R10, #+1]
+   \      0x15E   0xEA91 0x0F00      TEQ      R1,R0
+   \      0x162   0xD001             BEQ.N    ??M119_21
+   \      0x164   0x4629             MOV      R1,R5
+   \      0x166   0xE000             B.N      ??M119_22
+   \                     ??M119_21: (+1)
+   \      0x168   0x4621             MOV      R1,R4
+   \                     ??M119_22: (+1)
+   \      0x16A   0x4630             MOV      R0,R6
+   \      0x16C   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \                     ??M119_20: (+1)
+   \      0x170   0xF898 0x0000      LDRB     R0,[R8, #+0]
+   \      0x174   0x2800             CMP      R0,#+0
+   \      0x176   0xD104             BNE.N    ??M119_23
+   \      0x178   0x210A             MOVS     R1,#+10
+   \      0x17A   0x4638             MOV      R0,R7
+   \      0x17C   0x.... 0x....      BL       _ZN12MarlinSerial5writeEh
+   \      0x180   0xE004             B.N      ??M119_16
+   \                     ??M119_23: (+1)
+   \      0x182   0x2200             MOVS     R2,#+0
+   \      0x184   0x210A             MOVS     R1,#+10
+   \      0x186   0x4630             MOV      R0,R6
+   \      0x188   0x.... 0x....      BL       _ZN12MarlinSerial5printEci
+    222          }
+    223            #endif
+    224            #if HAS_Y_MAX
+    225          if(mksCfg.use_ymax_plug){  
+   \                     ??M119_16: (+1)
+   \      0x18C   0x9800             LDR      R0,[SP, #+0]
+   \      0x18E   0x7900             LDRB     R0,[R0, #+4]
+   \      0x190   0x2800             CMP      R0,#+0
+   \      0x192   0xD035             BEQ.N    ??M119_24
+    226              SERIAL_PROTOCOLPGM(MSG_Y_MAX);
+   \      0x194   0x.... 0x....      ADR.W    R0,?_12
+   \      0x198   0x.... 0x....      BL       _Z14serialprintPGMPKc
+    227              SERIAL_PROTOCOLLN(((READ(Y_MAX_PIN)^Y_MAX_ENDSTOP_INVERTING) ? MSG_ENDSTOP_HIT : MSG_ENDSTOP_OPEN));
+   \      0x19C   0x.... 0x....      LDR.W    R0,??DataTable26_5
+   \      0x1A0   0x69C0             LDR      R0,[R0, #+28]
+   \      0x1A2   0xF8BB 0x100E      LDRH     R1,[R11, #+14]
+   \      0x1A6   0xF898 0x2000      LDRB     R2,[R8, #+0]
+   \      0x1AA   0x2A00             CMP      R2,#+0
+   \      0x1AC   0xD10D             BNE.N    ??M119_25
+   \      0x1AE   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x1B2   0xF89A 0x1004      LDRB     R1,[R10, #+4]
+   \      0x1B6   0xEA91 0x0F00      TEQ      R1,R0
+   \      0x1BA   0xD001             BEQ.N    ??M119_26
+   \      0x1BC   0x4629             MOV      R1,R5
+   \      0x1BE   0xE000             B.N      ??M119_27
+   \                     ??M119_26: (+1)
+   \      0x1C0   0x4621             MOV      R1,R4
+   \                     ??M119_27: (+1)
+   \      0x1C2   0x4638             MOV      R0,R7
+   \      0x1C4   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \      0x1C8   0xE00C             B.N      ??M119_28
+   \                     ??M119_25: (+1)
+   \      0x1CA   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x1CE   0xF89A 0x1004      LDRB     R1,[R10, #+4]
+   \      0x1D2   0xEA91 0x0F00      TEQ      R1,R0
+   \      0x1D6   0xD001             BEQ.N    ??M119_29
+   \      0x1D8   0x4629             MOV      R1,R5
+   \      0x1DA   0xE000             B.N      ??M119_30
+   \                     ??M119_29: (+1)
+   \      0x1DC   0x4621             MOV      R1,R4
+   \                     ??M119_30: (+1)
+   \      0x1DE   0x4630             MOV      R0,R6
+   \      0x1E0   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \                     ??M119_28: (+1)
+   \      0x1E4   0xF898 0x0000      LDRB     R0,[R8, #+0]
+   \      0x1E8   0x2800             CMP      R0,#+0
+   \      0x1EA   0xD104             BNE.N    ??M119_31
+   \      0x1EC   0x210A             MOVS     R1,#+10
+   \      0x1EE   0x4638             MOV      R0,R7
+   \      0x1F0   0x.... 0x....      BL       _ZN12MarlinSerial5writeEh
+   \      0x1F4   0xE004             B.N      ??M119_24
+   \                     ??M119_31: (+1)
+   \      0x1F6   0x2200             MOVS     R2,#+0
+   \      0x1F8   0x210A             MOVS     R1,#+10
+   \      0x1FA   0x4630             MOV      R0,R6
+   \      0x1FC   0x.... 0x....      BL       _ZN12MarlinSerial5printEci
+    228          }
+    229            #endif
+    230            #if HAS_Z_MIN
+    231          if(mksCfg.use_zmin_plug){  
+   \                     ??M119_24: (+1)
+   \      0x200   0x9800             LDR      R0,[SP, #+0]
+   \      0x202   0x7880             LDRB     R0,[R0, #+2]
+   \      0x204   0x2800             CMP      R0,#+0
+   \      0x206   0xD035             BEQ.N    ??M119_32
+    232              SERIAL_PROTOCOLPGM(MSG_Z_MIN);
+   \      0x208   0x.... 0x....      ADR.W    R0,?_13
+   \      0x20C   0x.... 0x....      BL       _Z14serialprintPGMPKc
+    233              SERIAL_PROTOCOLLN(((READ(Z_MIN_PIN)^Z_MIN_ENDSTOP_INVERTING) ? MSG_ENDSTOP_HIT : MSG_ENDSTOP_OPEN));
+   \      0x210   0x.... 0x....      LDR.W    R0,??DataTable26_5
+   \      0x214   0x6A80             LDR      R0,[R0, #+40]
+   \      0x216   0xF8BB 0x1014      LDRH     R1,[R11, #+20]
+   \      0x21A   0xF898 0x2000      LDRB     R2,[R8, #+0]
+   \      0x21E   0x2A00             CMP      R2,#+0
+   \      0x220   0xD10D             BNE.N    ??M119_33
+   \      0x222   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x226   0xF89A 0x1002      LDRB     R1,[R10, #+2]
+   \      0x22A   0xEA91 0x0F00      TEQ      R1,R0
+   \      0x22E   0xD001             BEQ.N    ??M119_34
+   \      0x230   0x4629             MOV      R1,R5
+   \      0x232   0xE000             B.N      ??M119_35
+   \                     ??M119_34: (+1)
+   \      0x234   0x4621             MOV      R1,R4
+   \                     ??M119_35: (+1)
+   \      0x236   0x4638             MOV      R0,R7
+   \      0x238   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \      0x23C   0xE00C             B.N      ??M119_36
+   \                     ??M119_33: (+1)
+   \      0x23E   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x242   0xF89A 0x1002      LDRB     R1,[R10, #+2]
+   \      0x246   0xEA91 0x0F00      TEQ      R1,R0
+   \      0x24A   0xD001             BEQ.N    ??M119_37
+   \      0x24C   0x4629             MOV      R1,R5
+   \      0x24E   0xE000             B.N      ??M119_38
+   \                     ??M119_37: (+1)
+   \      0x250   0x4621             MOV      R1,R4
+   \                     ??M119_38: (+1)
+   \      0x252   0x4630             MOV      R0,R6
+   \      0x254   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \                     ??M119_36: (+1)
+   \      0x258   0xF898 0x0000      LDRB     R0,[R8, #+0]
+   \      0x25C   0x2800             CMP      R0,#+0
+   \      0x25E   0xD104             BNE.N    ??M119_39
+   \      0x260   0x210A             MOVS     R1,#+10
+   \      0x262   0x4638             MOV      R0,R7
+   \      0x264   0x.... 0x....      BL       _ZN12MarlinSerial5writeEh
+   \      0x268   0xE004             B.N      ??M119_32
+   \                     ??M119_39: (+1)
+   \      0x26A   0x2200             MOVS     R2,#+0
+   \      0x26C   0x210A             MOVS     R1,#+10
+   \      0x26E   0x4630             MOV      R0,R6
+   \      0x270   0x.... 0x....      BL       _ZN12MarlinSerial5printEci
+    234            }
+    235          	#endif
+    236            #if HAS_Z2_MIN
+    237              SERIAL_PROTOCOLPGM(MSG_Z2_MIN);
+    238              SERIAL_PROTOCOLLN(((READ(Z2_MIN_PIN)^Z2_MIN_ENDSTOP_INVERTING) ? MSG_ENDSTOP_HIT : MSG_ENDSTOP_OPEN));
+    239            #endif
+    240            #if HAS_Z_MAX
+    241          if(Z_MIN_PROBE_PIN_MODE != Z_MIN_PROBE_USES_Z_MAX_ENDSTOP_PIN)  
+   \                     ??M119_32: (+1)
+   \      0x274   0x9800             LDR      R0,[SP, #+0]
+   \      0x276   0x7E40             LDRB     R0,[R0, #+25]
+   \      0x278   0x2802             CMP      R0,#+2
+   \      0x27A   0xD039             BEQ.N    ??M119_40
+    242          {
+    243          if(mksCfg.use_zmax_plug){  
+   \      0x27C   0x9800             LDR      R0,[SP, #+0]
+   \      0x27E   0x7940             LDRB     R0,[R0, #+5]
+   \      0x280   0x2800             CMP      R0,#+0
+   \      0x282   0xD035             BEQ.N    ??M119_40
+    244              SERIAL_PROTOCOLPGM(MSG_Z_MAX);
+   \      0x284   0x.... 0x....      ADR.W    R0,?_14
+   \      0x288   0x.... 0x....      BL       _Z14serialprintPGMPKc
+    245              SERIAL_PROTOCOLLN(((READ(Z_MAX_PIN)^Z_MAX_ENDSTOP_INVERTING) ? MSG_ENDSTOP_HIT : MSG_ENDSTOP_OPEN));
+   \      0x28C   0x.... 0x....      LDR.W    R0,??DataTable26_5
+   \      0x290   0x6AC0             LDR      R0,[R0, #+44]
+   \      0x292   0xF8BB 0x1016      LDRH     R1,[R11, #+22]
+   \      0x296   0xF898 0x2000      LDRB     R2,[R8, #+0]
+   \      0x29A   0x2A00             CMP      R2,#+0
+   \      0x29C   0xD10D             BNE.N    ??M119_41
+   \      0x29E   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x2A2   0xF89A 0x1005      LDRB     R1,[R10, #+5]
+   \      0x2A6   0xEA91 0x0F00      TEQ      R1,R0
+   \      0x2AA   0xD001             BEQ.N    ??M119_42
+   \      0x2AC   0x4629             MOV      R1,R5
+   \      0x2AE   0xE000             B.N      ??M119_43
+   \                     ??M119_42: (+1)
+   \      0x2B0   0x4621             MOV      R1,R4
+   \                     ??M119_43: (+1)
+   \      0x2B2   0x4638             MOV      R0,R7
+   \      0x2B4   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \      0x2B8   0xE00C             B.N      ??M119_44
+   \                     ??M119_41: (+1)
+   \      0x2BA   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x2BE   0xF89A 0x1005      LDRB     R1,[R10, #+5]
+   \      0x2C2   0xEA91 0x0F00      TEQ      R1,R0
+   \      0x2C6   0xD001             BEQ.N    ??M119_45
+   \      0x2C8   0x4629             MOV      R1,R5
+   \      0x2CA   0xE000             B.N      ??M119_46
+   \                     ??M119_45: (+1)
+   \      0x2CC   0x4621             MOV      R1,R4
+   \                     ??M119_46: (+1)
+   \      0x2CE   0x4630             MOV      R0,R6
+   \      0x2D0   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \                     ??M119_44: (+1)
+   \      0x2D4   0xF898 0x0000      LDRB     R0,[R8, #+0]
+   \      0x2D8   0x2800             CMP      R0,#+0
+   \      0x2DA   0xD104             BNE.N    ??M119_47
+   \      0x2DC   0x210A             MOVS     R1,#+10
+   \      0x2DE   0x4638             MOV      R0,R7
+   \      0x2E0   0x.... 0x....      BL       _ZN12MarlinSerial5writeEh
+   \      0x2E4   0xE004             B.N      ??M119_40
+   \                     ??M119_47: (+1)
+   \      0x2E6   0x2200             MOVS     R2,#+0
+   \      0x2E8   0x210A             MOVS     R1,#+10
+   \      0x2EA   0x4630             MOV      R0,R6
+   \      0x2EC   0x.... 0x....      BL       _ZN12MarlinSerial5printEci
+    246            }
+    247          }
+    248          #endif
+    249            #if HAS_Z2_MAX
+    250              SERIAL_PROTOCOLPGM(MSG_Z2_MAX);
+    251              SERIAL_PROTOCOLLN(((READ(Z2_MAX_PIN)^Z2_MAX_ENDSTOP_INVERTING) ? MSG_ENDSTOP_HIT : MSG_ENDSTOP_OPEN));
+    252            #endif
+    253          //  #if ENABLED(Z_MIN_PROBE_ENDSTOP)
+    254             if(Z_MIN_PROBE_PIN_MODE == Z_MIN_PROBE_USES_Z_MAX_ENDSTOP_PIN)
+   \                     ??M119_40: (+1)
+   \      0x2F0   0x9800             LDR      R0,[SP, #+0]
+   \      0x2F2   0x7E40             LDRB     R0,[R0, #+25]
+   \      0x2F4   0x2802             CMP      R0,#+2
+   \      0x2F6   0xD135             BNE.N    ??M119_48
+    255             	{
+    256              SERIAL_PROTOCOLPGM(MSG_Z_PROBE);
+   \      0x2F8   0x.... 0x....      ADR.W    R0,?_15
+   \      0x2FC   0x.... 0x....      BL       _Z14serialprintPGMPKc
+    257              SERIAL_PROTOCOLLN(((READ(Z_MIN_PROBE_PIN)^Z_MIN_PROBE_ENDSTOP_INVERTING) ? MSG_ENDSTOP_HIT : MSG_ENDSTOP_OPEN));
+   \      0x300   0x.... 0x....      LDR.W    R0,??DataTable26_5
+   \      0x304   0x6AC0             LDR      R0,[R0, #+44]
+   \      0x306   0xF8BB 0x1016      LDRH     R1,[R11, #+22]
+   \      0x30A   0xF898 0x2000      LDRB     R2,[R8, #+0]
+   \      0x30E   0x2A00             CMP      R2,#+0
+   \      0x310   0xD10D             BNE.N    ??M119_49
+   \      0x312   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x316   0xF89A 0x1006      LDRB     R1,[R10, #+6]
+   \      0x31A   0xEA91 0x0F00      TEQ      R1,R0
+   \      0x31E   0xD001             BEQ.N    ??M119_50
+   \      0x320   0x4629             MOV      R1,R5
+   \      0x322   0xE000             B.N      ??M119_51
+   \                     ??M119_50: (+1)
+   \      0x324   0x4621             MOV      R1,R4
+   \                     ??M119_51: (+1)
+   \      0x326   0x4638             MOV      R0,R7
+   \      0x328   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \      0x32C   0xE00C             B.N      ??M119_52
+   \                     ??M119_49: (+1)
+   \      0x32E   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x332   0xF89A 0x1006      LDRB     R1,[R10, #+6]
+   \      0x336   0xEA91 0x0F00      TEQ      R1,R0
+   \      0x33A   0xD001             BEQ.N    ??M119_53
+   \      0x33C   0x4629             MOV      R1,R5
+   \      0x33E   0xE000             B.N      ??M119_54
+   \                     ??M119_53: (+1)
+   \      0x340   0x4621             MOV      R1,R4
+   \                     ??M119_54: (+1)
+   \      0x342   0x4630             MOV      R0,R6
+   \      0x344   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \                     ??M119_52: (+1)
+   \      0x348   0xF898 0x0000      LDRB     R0,[R8, #+0]
+   \      0x34C   0x2800             CMP      R0,#+0
+   \      0x34E   0xD104             BNE.N    ??M119_55
+   \      0x350   0x210A             MOVS     R1,#+10
+   \      0x352   0x4638             MOV      R0,R7
+   \      0x354   0x.... 0x....      BL       _ZN12MarlinSerial5writeEh
+   \      0x358   0xE004             B.N      ??M119_48
+   \                     ??M119_55: (+1)
+   \      0x35A   0x2200             MOVS     R2,#+0
+   \      0x35C   0x210A             MOVS     R1,#+10
+   \      0x35E   0x4630             MOV      R0,R6
+   \      0x360   0x.... 0x....      BL       _ZN12MarlinSerial5printEci
+    258             	}
+    259           // #endif
+    260            #if ENABLED(FILAMENT_RUNOUT_SENSOR)
+    261              SERIAL_PROTOCOLPGM(MSG_FILAMENT_RUNOUT_SENSOR);
+   \                     ??M119_48: (+1)
+   \      0x364   0x.... 0x....      ADR.W    R0,?_16
+   \      0x368   0x.... 0x....      BL       _Z14serialprintPGMPKc
+    262              SERIAL_PROTOCOLLN(((READ(FIL_RUNOUT_PIN)^FIL_RUNOUT_INVERTING) ? MSG_ENDSTOP_HIT : MSG_ENDSTOP_OPEN));
+   \      0x36C   0x.... 0x....      LDR.W    R0,??DataTable26_5
+   \      0x370   0xF8D0 0x0084      LDR      R0,[R0, #+132]
+   \      0x374   0xF8BB 0x1042      LDRH     R1,[R11, #+66]
+   \      0x378   0xF898 0x2000      LDRB     R2,[R8, #+0]
+   \      0x37C   0x2A00             CMP      R2,#+0
+   \      0x37E   0xD10D             BNE.N    ??M119_56
+   \      0x380   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x384   0xF899 0x10D0      LDRB     R1,[R9, #+208]
+   \      0x388   0xEA91 0x0F00      TEQ      R1,R0
+   \      0x38C   0xD001             BEQ.N    ??M119_57
+   \      0x38E   0x4629             MOV      R1,R5
+   \      0x390   0xE000             B.N      ??M119_58
+   \                     ??M119_57: (+1)
+   \      0x392   0x4621             MOV      R1,R4
+   \                     ??M119_58: (+1)
+   \      0x394   0x4638             MOV      R0,R7
+   \      0x396   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \      0x39A   0xE00C             B.N      ??M119_59
+   \                     ??M119_56: (+1)
+   \      0x39C   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x3A0   0xF899 0x10D0      LDRB     R1,[R9, #+208]
+   \      0x3A4   0xEA91 0x0F00      TEQ      R1,R0
+   \      0x3A8   0xD001             BEQ.N    ??M119_60
+   \      0x3AA   0x4629             MOV      R1,R5
+   \      0x3AC   0xE000             B.N      ??M119_61
+   \                     ??M119_60: (+1)
+   \      0x3AE   0x4621             MOV      R1,R4
+   \                     ??M119_61: (+1)
+   \      0x3B0   0x4630             MOV      R0,R6
+   \      0x3B2   0x.... 0x....      BL       _ZN12MarlinSerial5printEPKc
+   \                     ??M119_59: (+1)
+   \      0x3B6   0xF898 0x0000      LDRB     R0,[R8, #+0]
+   \      0x3BA   0x2800             CMP      R0,#+0
+   \      0x3BC   0xD105             BNE.N    ??M119_62
+   \      0x3BE   0x210A             MOVS     R1,#+10
+   \      0x3C0   0x4638             MOV      R0,R7
+   \      0x3C2   0xE8BD 0x4FF4      POP      {R2,R4-R11,LR}
+   \      0x3C6   0x.... 0x....      B.W      _ZN12MarlinSerial5writeEh
+   \                     ??M119_62: (+1)
+   \      0x3CA   0x2200             MOVS     R2,#+0
+   \      0x3CC   0x210A             MOVS     R1,#+10
+   \      0x3CE   0x4630             MOV      R0,R6
+   \      0x3D0   0xE8BD 0x4FF8      POP      {R3-R11,LR}
+   \      0x3D4   0x.... 0x....      B.W      _ZN12MarlinSerial5printEci
+    263            #endif
+    264          } // Endstops::M119
+    265          
+    266          #if ENABLED(Z_DUAL_ENDSTOPS)
+    267          
+    268            // Pass the result of the endstop test
+    269            void Endstops::test_dual_z_endstops(const EndstopEnum es1, const EndstopEnum es2) {
+    270              byte z_test = TEST_ENDSTOP(es1) | (TEST_ENDSTOP(es2) << 1); // bit 0 for Z, bit 1 for Z2
+    271              if (z_test && stepper.current_block->steps[Z_AXIS] > 0) {
+    272                SBI(endstop_hit_bits, Z_MIN);
+    273                if (!stepper.performing_homing || (z_test == 0x3))  //if not performing home or if both endstops were trigged during homing...
+    274                  stepper.kill_current_block();
+    275              }
+    276            }
+    277          
+    278          #endif
+    279          
+    280          // Check endstops - Called from ISR!
+    281          /*--------------------------------------- */
+    282            /**
+    283             * Define conditions for checking endstops
+    284             */
+    285          
+    286          //  #if IS_CORE	//mks_delta
+    287            #if 1
+    288              #define S_(N) stepper.current_block->steps[CORE_AXIS_##N]
+    289              #define D_(N) stepper.motor_direction(CORE_AXIS_##N)
+    290            #endif
+    291          #if 0	//mks_delta
+    292            #if CORE_IS_XY || CORE_IS_XZ
+    293              /**
+    294               * Head direction in -X axis for CoreXY and CoreXZ bots.
+    295               *
+    296               * If steps differ, both axes are moving.
+    297               * If DeltaA == -DeltaB, the movement is only in the 2nd axis (Y or Z, handled below)
+    298               * If DeltaA ==  DeltaB, the movement is only in the 1st axis (X)
+    299               */
+    300              #if ENABLED(COREXY) || ENABLED(COREXZ)
+    301                #define X_CMP ==
+    302              #else
+    303                #define X_CMP !=
+    304              #endif
+    305              #define X_MOVE_TEST ( S_(1) != S_(2) || (S_(1) > 0 && D_(1) X_CMP D_(2)) )
+    306              #define X_AXIS_HEAD X_HEAD
+    307            #else
+    308              #define X_MOVE_TEST stepper.current_block->steps[X_AXIS] > 0
+    309              #define X_AXIS_HEAD X_AXIS
+    310            #endif
+    311          #endif  
+    312          /*----------------------------------------*/
+    313          /*
+    314          #if IS_CORE
+    315            #if CORE_IS_XY
+    316          	#define CORE_AXIS_1 A_AXIS
+    317          	#define CORE_AXIS_2 B_AXIS
+    318          	#define NORMAL_AXIS Z_AXIS
+    319            #elif CORE_IS_XZ
+    320          	#define CORE_AXIS_1 A_AXIS
+    321          	#define NORMAL_AXIS Y_AXIS
+    322          	#define CORE_AXIS_2 C_AXIS
+    323            #elif CORE_IS_YZ
+    324          	#define NORMAL_AXIS X_AXIS
+    325          	#define CORE_AXIS_1 B_AXIS
+    326          	#define CORE_AXIS_2 C_AXIS
+    327            #endif
+    328            #if (ENABLED(COREYX) || ENABLED(COREZX) || ENABLED(COREZY))
+    329          	#define CORESIGN(n) (-(n))
+    330            #else
+    331          	#define CORESIGN(n) (n)
+    332            #endif
+    333          #endif
+    334             #define S_(N) stepper.current_block->steps[CORE_AXIS_##N]
+    335              #define D_(N) stepper.motor_direction(CORE_AXIS_##N)
+    336          */
+
+   \                                 In section .text, align 2, keep-with-next
+    337          bool  X_MOVE_TEST()
+    338          {
+   \                     _Z11X_MOVE_TESTv: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+    339              bool D_temp;
+    340          	if(MACHINETPYE & CORE_IS_XY || MACHINETPYE & CORE_IS_XZ)
+   \        0x2   0x.... 0x....      LDR.W    R0,??DataTable26
+   \        0x6   0xF9B0 0x0058      LDRSH    R0,[R0, #+88]
+   \        0xA   0x213C             MOVS     R1,#+60
+   \        0xC   0x4208             TST      R0,R1
+   \        0xE   0xF000 0x8092      BEQ.W    ??X_MOVE_TEST_0
+    341          		{
+    342          		if(MACHINETPYE & COREXY || MACHINETPYE & COREXZ)
+   \       0x12   0x2114             MOVS     R1,#+20
+   \       0x14   0x4208             TST      R0,R1
+   \       0x16   0x4601             MOV      R1,R0
+   \       0x18   0xD046             BEQ.N    ??X_MOVE_TEST_1
+    343          			{
+    344                                    if(MACHINETPYE & CORE_IS_XY)
+   \       0x1A   0xF011 0x0F0C      TST      R1,#0xC
+   \       0x1E   0xD00C             BEQ.N    ??X_MOVE_TEST_2
+    345                                      D_temp = (stepper.motor_direction(A_AXIS) == stepper.motor_direction(B_AXIS));
+   \       0x20   0x2000             MOVS     R0,#+0
+   \       0x22   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x26   0x4604             MOV      R4,R0
+   \       0x28   0x2001             MOVS     R0,#+1
+   \       0x2A   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x2E   0x4284             CMP      R4,R0
+   \       0x30   0xD101             BNE.N    ??X_MOVE_TEST_3
+   \       0x32   0x2101             MOVS     R1,#+1
+   \       0x34   0xE01D             B.N      ??X_MOVE_TEST_4
+   \                     ??X_MOVE_TEST_3: (+1)
+   \       0x36   0x2100             MOVS     R1,#+0
+   \       0x38   0xE01B             B.N      ??X_MOVE_TEST_4
+    346                                    else if(MACHINETPYE & CORE_IS_XZ)
+   \                     ??X_MOVE_TEST_2: (+1)
+   \       0x3A   0xF010 0x0F30      TST      R0,#0x30
+   \       0x3E   0xD00C             BEQ.N    ??X_MOVE_TEST_5
+    347                                      D_temp = (stepper.motor_direction(A_AXIS) == stepper.motor_direction(C_AXIS));
+   \       0x40   0x2000             MOVS     R0,#+0
+   \       0x42   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x46   0x4604             MOV      R4,R0
+   \       0x48   0x2002             MOVS     R0,#+2
+   \       0x4A   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x4E   0x4284             CMP      R4,R0
+   \       0x50   0xD101             BNE.N    ??X_MOVE_TEST_6
+   \       0x52   0x2101             MOVS     R1,#+1
+   \       0x54   0xE00D             B.N      ??X_MOVE_TEST_4
+   \                     ??X_MOVE_TEST_6: (+1)
+   \       0x56   0x2100             MOVS     R1,#+0
+   \       0x58   0xE00B             B.N      ??X_MOVE_TEST_4
+    348                                    else
+    349                                      D_temp = (stepper.motor_direction(B_AXIS) == stepper.motor_direction(C_AXIS));
+   \                     ??X_MOVE_TEST_5: (+1)
+   \       0x5A   0x2001             MOVS     R0,#+1
+   \       0x5C   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x60   0x4604             MOV      R4,R0
+   \       0x62   0x2002             MOVS     R0,#+2
+   \       0x64   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x68   0x4284             CMP      R4,R0
+   \       0x6A   0xD101             BNE.N    ??X_MOVE_TEST_7
+   \       0x6C   0x2101             MOVS     R1,#+1
+   \       0x6E   0xE000             B.N      ??X_MOVE_TEST_4
+   \                     ??X_MOVE_TEST_7: (+1)
+   \       0x70   0x2100             MOVS     R1,#+0
+    350                                    return  ( S_(1) != S_(2) || (S_(1) > 0 && D_temp) );
+   \                     ??X_MOVE_TEST_4: (+1)
+   \       0x72   0x.... 0x....      LDR.W    R0,??DataTable26_6
+   \       0x76   0x.... 0x....      LDR.W    R2,??DataTable26_7
+   \       0x7A   0x6812             LDR      R2,[R2, #+0]
+   \       0x7C   0x7C03             LDRB     R3,[R0, #+16]
+   \       0x7E   0xEB02 0x0383      ADD      R3,R2,R3, LSL #+2
+   \       0x82   0x685B             LDR      R3,[R3, #+4]
+   \       0x84   0x1D12             ADDS     R2,R2,#+4
+   \       0x86   0x7C40             LDRB     R0,[R0, #+17]
+   \       0x88   0xF852 0x0020      LDR      R0,[R2, R0, LSL #+2]
+   \       0x8C   0x4283             CMP      R3,R0
+   \       0x8E   0xD107             BNE.N    ??X_MOVE_TEST_8
+   \       0x90   0x2B01             CMP      R3,#+1
+   \       0x92   0xDB07             BLT.N    ??X_MOVE_TEST_9
+   \       0x94   0x4608             MOV      R0,R1
+   \       0x96   0x1E40             SUBS     R0,R0,#+1
+   \       0x98   0x4180             SBCS     R0,R0,R0
+   \       0x9A   0x43C0             MVNS     R0,R0
+   \       0x9C   0x0FC0             LSRS     R0,R0,#+31
+   \       0x9E   0xBD10             POP      {R4,PC}
+   \                     ??X_MOVE_TEST_8: (+1)
+   \       0xA0   0x2001             MOVS     R0,#+1
+   \       0xA2   0xBD10             POP      {R4,PC}
+   \                     ??X_MOVE_TEST_9: (+1)
+   \       0xA4   0x2000             MOVS     R0,#+0
+   \       0xA6   0xBD10             POP      {R4,PC}
+    351          			}
+    352          			else
+    353          			{
+    354                                    if(MACHINETPYE & CORE_IS_XY)
+   \                     ??X_MOVE_TEST_1: (+1)
+   \       0xA8   0xF011 0x0F0C      TST      R1,#0xC
+   \       0xAC   0xD00C             BEQ.N    ??X_MOVE_TEST_10
+    355                                      D_temp = (stepper.motor_direction(A_AXIS) != stepper.motor_direction(B_AXIS));
+   \       0xAE   0x2000             MOVS     R0,#+0
+   \       0xB0   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xB4   0x4604             MOV      R4,R0
+   \       0xB6   0x2001             MOVS     R0,#+1
+   \       0xB8   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xBC   0x4284             CMP      R4,R0
+   \       0xBE   0xD001             BEQ.N    ??X_MOVE_TEST_11
+   \       0xC0   0x2101             MOVS     R1,#+1
+   \       0xC2   0xE01D             B.N      ??X_MOVE_TEST_12
+   \                     ??X_MOVE_TEST_11: (+1)
+   \       0xC4   0x2100             MOVS     R1,#+0
+   \       0xC6   0xE01B             B.N      ??X_MOVE_TEST_12
+    356                                    else if(MACHINETPYE & CORE_IS_XZ)
+   \                     ??X_MOVE_TEST_10: (+1)
+   \       0xC8   0xF010 0x0F30      TST      R0,#0x30
+   \       0xCC   0xD00C             BEQ.N    ??X_MOVE_TEST_13
+    357                                      D_temp = (stepper.motor_direction(A_AXIS) != stepper.motor_direction(C_AXIS));
+   \       0xCE   0x2000             MOVS     R0,#+0
+   \       0xD0   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xD4   0x4604             MOV      R4,R0
+   \       0xD6   0x2002             MOVS     R0,#+2
+   \       0xD8   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xDC   0x4284             CMP      R4,R0
+   \       0xDE   0xD001             BEQ.N    ??X_MOVE_TEST_14
+   \       0xE0   0x2101             MOVS     R1,#+1
+   \       0xE2   0xE00D             B.N      ??X_MOVE_TEST_12
+   \                     ??X_MOVE_TEST_14: (+1)
+   \       0xE4   0x2100             MOVS     R1,#+0
+   \       0xE6   0xE00B             B.N      ??X_MOVE_TEST_12
+    358                                    else
+    359                                      D_temp = (stepper.motor_direction(B_AXIS) != stepper.motor_direction(C_AXIS));
+   \                     ??X_MOVE_TEST_13: (+1)
+   \       0xE8   0x2001             MOVS     R0,#+1
+   \       0xEA   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xEE   0x4604             MOV      R4,R0
+   \       0xF0   0x2002             MOVS     R0,#+2
+   \       0xF2   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xF6   0x4284             CMP      R4,R0
+   \       0xF8   0xD001             BEQ.N    ??X_MOVE_TEST_15
+   \       0xFA   0x2101             MOVS     R1,#+1
+   \       0xFC   0xE000             B.N      ??X_MOVE_TEST_12
+   \                     ??X_MOVE_TEST_15: (+1)
+   \       0xFE   0x2100             MOVS     R1,#+0
+    360                                    return  ( S_(1) != S_(2) || (S_(1) > 0 && D_temp) );
+   \                     ??X_MOVE_TEST_12: (+1)
+   \      0x100   0x.... 0x....      LDR.W    R0,??DataTable26_6
+   \      0x104   0x.... 0x....      LDR.W    R2,??DataTable26_7
+   \      0x108   0x6812             LDR      R2,[R2, #+0]
+   \      0x10A   0x7C03             LDRB     R3,[R0, #+16]
+   \      0x10C   0xEB02 0x0383      ADD      R3,R2,R3, LSL #+2
+   \      0x110   0x685B             LDR      R3,[R3, #+4]
+   \      0x112   0x1D12             ADDS     R2,R2,#+4
+   \      0x114   0x7C40             LDRB     R0,[R0, #+17]
+   \      0x116   0xF852 0x0020      LDR      R0,[R2, R0, LSL #+2]
+   \      0x11A   0x4283             CMP      R3,R0
+   \      0x11C   0xD107             BNE.N    ??X_MOVE_TEST_16
+   \      0x11E   0x2B01             CMP      R3,#+1
+   \      0x120   0xDB07             BLT.N    ??X_MOVE_TEST_17
+   \      0x122   0x4608             MOV      R0,R1
+   \      0x124   0x1E40             SUBS     R0,R0,#+1
+   \      0x126   0x4180             SBCS     R0,R0,R0
+   \      0x128   0x43C0             MVNS     R0,R0
+   \      0x12A   0x0FC0             LSRS     R0,R0,#+31
+   \      0x12C   0xBD10             POP      {R4,PC}
+   \                     ??X_MOVE_TEST_16: (+1)
+   \      0x12E   0x2001             MOVS     R0,#+1
+   \      0x130   0xBD10             POP      {R4,PC}
+   \                     ??X_MOVE_TEST_17: (+1)
+   \      0x132   0x2000             MOVS     R0,#+0
+   \      0x134   0xBD10             POP      {R4,PC}
+    361          			}
+    362          		}
+    363          	else
+    364          		{
+    365          		return (stepper.current_block->steps[X_AXIS] > 0);
+   \                     ??X_MOVE_TEST_0: (+1)
+   \      0x136   0x.... 0x....      LDR.W    R0,??DataTable26_7
+   \      0x13A   0x6800             LDR      R0,[R0, #+0]
+   \      0x13C   0x6840             LDR      R0,[R0, #+4]
+   \      0x13E   0x2801             CMP      R0,#+1
+   \      0x140   0xDB01             BLT.N    ??X_MOVE_TEST_18
+   \      0x142   0x2001             MOVS     R0,#+1
+   \      0x144   0xBD10             POP      {R4,PC}
+   \                     ??X_MOVE_TEST_18: (+1)
+   \      0x146   0x2000             MOVS     R0,#+0
+   \      0x148   0xBD10             POP      {R4,PC}          ;; return
+    366          		}
+    367          }
+
+   \                                 In section .text, align 2, keep-with-next
+    368          AxisEnum  X_AXIS_HEAD()
+    369          {
+    370          	if(MACHINETPYE & CORE_IS_XY || MACHINETPYE & CORE_IS_XZ)
+   \                     _Z11X_AXIS_HEADv: (+1)
+   \        0x0   0x.... 0x....      LDR.W    R0,??DataTable26
+   \        0x4   0xF890 0x0058      LDRB     R0,[R0, #+88]
+   \        0x8   0x213C             MOVS     R1,#+60
+   \        0xA   0x4208             TST      R0,R1
+   \        0xC   0xD001             BEQ.N    ??X_AXIS_HEAD_0
+    371          		return X_HEAD;
+   \        0xE   0x2004             MOVS     R0,#+4
+   \       0x10   0x4770             BX       LR
+    372          	else
+    373          		return X_AXIS;
+   \                     ??X_AXIS_HEAD_0: (+1)
+   \       0x12   0x2000             MOVS     R0,#+0
+   \       0x14   0x4770             BX       LR               ;; return
+    374          }
+    375          /*----------------------------------------*/
+    376          #if 0	//mks_delta
+    377            #if CORE_IS_XY || CORE_IS_YZ
+    378              /**
+    379               * Head direction in -Y axis for CoreXY / CoreYZ bots.
+    380               *
+    381               * If steps differ, both axes are moving
+    382               * If DeltaA ==  DeltaB, the movement is only in the 1st axis (X or Y)
+    383               * If DeltaA == -DeltaB, the movement is only in the 2nd axis (Y or Z)
+    384               */
+    385              #if ENABLED(COREYX) || ENABLED(COREYZ)
+    386                #define Y_CMP ==
+    387              #else
+    388                #define Y_CMP !=
+    389              #endif
+    390              #define Y_MOVE_TEST ( S_(1) != S_(2) || (S_(1) > 0 && D_(1) Y_CMP D_(2)) )
+    391              #define Y_AXIS_HEAD Y_HEAD
+    392            #else
+    393              #define Y_MOVE_TEST stepper.current_block->steps[Y_AXIS] > 0
+    394              #define Y_AXIS_HEAD Y_AXIS
+    395            #endif
+    396          #endif
+    397            /*----------------------------------------*/
+
+   \                                 In section .text, align 2, keep-with-next
+    398            bool	Y_MOVE_TEST()
+    399            {
+   \                     _Z11Y_MOVE_TESTv: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+    400                  bool D_temp;
+    401          
+    402          	if(MACHINETPYE & CORE_IS_XY || MACHINETPYE & CORE_IS_YZ)
+   \        0x2   0x.... 0x....      LDR.W    R0,??DataTable26
+   \        0x6   0xF9B0 0x0058      LDRSH    R0,[R0, #+88]
+   \        0xA   0x21CC             MOVS     R1,#+204
+   \        0xC   0x4208             TST      R0,R1
+   \        0xE   0xF000 0x8092      BEQ.W    ??Y_MOVE_TEST_0
+    403          		{
+    404          		if(MACHINETPYE & COREYX || MACHINETPYE & COREYZ)
+   \       0x12   0x2148             MOVS     R1,#+72
+   \       0x14   0x4208             TST      R0,R1
+   \       0x16   0x4601             MOV      R1,R0
+   \       0x18   0xD046             BEQ.N    ??Y_MOVE_TEST_1
+    405          			{
+    406                                    if(MACHINETPYE & CORE_IS_XY)
+   \       0x1A   0xF011 0x0F0C      TST      R1,#0xC
+   \       0x1E   0xD00C             BEQ.N    ??Y_MOVE_TEST_2
+    407                                      D_temp = (stepper.motor_direction(A_AXIS) == stepper.motor_direction(B_AXIS));
+   \       0x20   0x2000             MOVS     R0,#+0
+   \       0x22   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x26   0x4604             MOV      R4,R0
+   \       0x28   0x2001             MOVS     R0,#+1
+   \       0x2A   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x2E   0x4284             CMP      R4,R0
+   \       0x30   0xD101             BNE.N    ??Y_MOVE_TEST_3
+   \       0x32   0x2101             MOVS     R1,#+1
+   \       0x34   0xE01D             B.N      ??Y_MOVE_TEST_4
+   \                     ??Y_MOVE_TEST_3: (+1)
+   \       0x36   0x2100             MOVS     R1,#+0
+   \       0x38   0xE01B             B.N      ??Y_MOVE_TEST_4
+    408                                    else if(MACHINETPYE & CORE_IS_XZ)
+   \                     ??Y_MOVE_TEST_2: (+1)
+   \       0x3A   0xF010 0x0F30      TST      R0,#0x30
+   \       0x3E   0xD00C             BEQ.N    ??Y_MOVE_TEST_5
+    409                                      D_temp = (stepper.motor_direction(A_AXIS) == stepper.motor_direction(C_AXIS));
+   \       0x40   0x2000             MOVS     R0,#+0
+   \       0x42   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x46   0x4604             MOV      R4,R0
+   \       0x48   0x2002             MOVS     R0,#+2
+   \       0x4A   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x4E   0x4284             CMP      R4,R0
+   \       0x50   0xD101             BNE.N    ??Y_MOVE_TEST_6
+   \       0x52   0x2101             MOVS     R1,#+1
+   \       0x54   0xE00D             B.N      ??Y_MOVE_TEST_4
+   \                     ??Y_MOVE_TEST_6: (+1)
+   \       0x56   0x2100             MOVS     R1,#+0
+   \       0x58   0xE00B             B.N      ??Y_MOVE_TEST_4
+    410                                    else
+    411                                      D_temp = (stepper.motor_direction(B_AXIS) == stepper.motor_direction(C_AXIS));
+   \                     ??Y_MOVE_TEST_5: (+1)
+   \       0x5A   0x2001             MOVS     R0,#+1
+   \       0x5C   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x60   0x4604             MOV      R4,R0
+   \       0x62   0x2002             MOVS     R0,#+2
+   \       0x64   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x68   0x4284             CMP      R4,R0
+   \       0x6A   0xD101             BNE.N    ??Y_MOVE_TEST_7
+   \       0x6C   0x2101             MOVS     R1,#+1
+   \       0x6E   0xE000             B.N      ??Y_MOVE_TEST_4
+   \                     ??Y_MOVE_TEST_7: (+1)
+   \       0x70   0x2100             MOVS     R1,#+0
+    412                                    
+    413          			return( S_(1) != S_(2) || (S_(1) > 0 && D_temp) );
+   \                     ??Y_MOVE_TEST_4: (+1)
+   \       0x72   0x.... 0x....      LDR.W    R0,??DataTable26_6
+   \       0x76   0x.... 0x....      LDR.W    R2,??DataTable26_7
+   \       0x7A   0x6812             LDR      R2,[R2, #+0]
+   \       0x7C   0x7C03             LDRB     R3,[R0, #+16]
+   \       0x7E   0xEB02 0x0383      ADD      R3,R2,R3, LSL #+2
+   \       0x82   0x685B             LDR      R3,[R3, #+4]
+   \       0x84   0x1D12             ADDS     R2,R2,#+4
+   \       0x86   0x7C40             LDRB     R0,[R0, #+17]
+   \       0x88   0xF852 0x0020      LDR      R0,[R2, R0, LSL #+2]
+   \       0x8C   0x4283             CMP      R3,R0
+   \       0x8E   0xD107             BNE.N    ??Y_MOVE_TEST_8
+   \       0x90   0x2B01             CMP      R3,#+1
+   \       0x92   0xDB07             BLT.N    ??Y_MOVE_TEST_9
+   \       0x94   0x4608             MOV      R0,R1
+   \       0x96   0x1E40             SUBS     R0,R0,#+1
+   \       0x98   0x4180             SBCS     R0,R0,R0
+   \       0x9A   0x43C0             MVNS     R0,R0
+   \       0x9C   0x0FC0             LSRS     R0,R0,#+31
+   \       0x9E   0xBD10             POP      {R4,PC}
+   \                     ??Y_MOVE_TEST_8: (+1)
+   \       0xA0   0x2001             MOVS     R0,#+1
+   \       0xA2   0xBD10             POP      {R4,PC}
+   \                     ??Y_MOVE_TEST_9: (+1)
+   \       0xA4   0x2000             MOVS     R0,#+0
+   \       0xA6   0xBD10             POP      {R4,PC}
+    414          			}
+    415          		else
+    416          			{
+    417                                    if(MACHINETPYE & CORE_IS_XY)
+   \                     ??Y_MOVE_TEST_1: (+1)
+   \       0xA8   0xF011 0x0F0C      TST      R1,#0xC
+   \       0xAC   0xD00C             BEQ.N    ??Y_MOVE_TEST_10
+    418                                      D_temp = (stepper.motor_direction(A_AXIS) != stepper.motor_direction(B_AXIS));
+   \       0xAE   0x2000             MOVS     R0,#+0
+   \       0xB0   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xB4   0x4604             MOV      R4,R0
+   \       0xB6   0x2001             MOVS     R0,#+1
+   \       0xB8   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xBC   0x4284             CMP      R4,R0
+   \       0xBE   0xD001             BEQ.N    ??Y_MOVE_TEST_11
+   \       0xC0   0x2101             MOVS     R1,#+1
+   \       0xC2   0xE01D             B.N      ??Y_MOVE_TEST_12
+   \                     ??Y_MOVE_TEST_11: (+1)
+   \       0xC4   0x2100             MOVS     R1,#+0
+   \       0xC6   0xE01B             B.N      ??Y_MOVE_TEST_12
+    419                                    else if(MACHINETPYE & CORE_IS_XZ)
+   \                     ??Y_MOVE_TEST_10: (+1)
+   \       0xC8   0xF010 0x0F30      TST      R0,#0x30
+   \       0xCC   0xD00C             BEQ.N    ??Y_MOVE_TEST_13
+    420                                      D_temp = (stepper.motor_direction(A_AXIS) != stepper.motor_direction(C_AXIS));
+   \       0xCE   0x2000             MOVS     R0,#+0
+   \       0xD0   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xD4   0x4604             MOV      R4,R0
+   \       0xD6   0x2002             MOVS     R0,#+2
+   \       0xD8   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xDC   0x4284             CMP      R4,R0
+   \       0xDE   0xD001             BEQ.N    ??Y_MOVE_TEST_14
+   \       0xE0   0x2101             MOVS     R1,#+1
+   \       0xE2   0xE00D             B.N      ??Y_MOVE_TEST_12
+   \                     ??Y_MOVE_TEST_14: (+1)
+   \       0xE4   0x2100             MOVS     R1,#+0
+   \       0xE6   0xE00B             B.N      ??Y_MOVE_TEST_12
+    421                                    else
+    422                                      D_temp = (stepper.motor_direction(B_AXIS) != stepper.motor_direction(C_AXIS));
+   \                     ??Y_MOVE_TEST_13: (+1)
+   \       0xE8   0x2001             MOVS     R0,#+1
+   \       0xEA   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xEE   0x4604             MOV      R4,R0
+   \       0xF0   0x2002             MOVS     R0,#+2
+   \       0xF2   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xF6   0x4284             CMP      R4,R0
+   \       0xF8   0xD001             BEQ.N    ??Y_MOVE_TEST_15
+   \       0xFA   0x2101             MOVS     R1,#+1
+   \       0xFC   0xE000             B.N      ??Y_MOVE_TEST_12
+   \                     ??Y_MOVE_TEST_15: (+1)
+   \       0xFE   0x2100             MOVS     R1,#+0
+    423                                    
+    424          			return( S_(1) != S_(2) || (S_(1) > 0 && D_temp) );
+   \                     ??Y_MOVE_TEST_12: (+1)
+   \      0x100   0x.... 0x....      LDR.W    R0,??DataTable26_6
+   \      0x104   0x.... 0x....      LDR.W    R2,??DataTable26_7
+   \      0x108   0x6812             LDR      R2,[R2, #+0]
+   \      0x10A   0x7C03             LDRB     R3,[R0, #+16]
+   \      0x10C   0xEB02 0x0383      ADD      R3,R2,R3, LSL #+2
+   \      0x110   0x685B             LDR      R3,[R3, #+4]
+   \      0x112   0x1D12             ADDS     R2,R2,#+4
+   \      0x114   0x7C40             LDRB     R0,[R0, #+17]
+   \      0x116   0xF852 0x0020      LDR      R0,[R2, R0, LSL #+2]
+   \      0x11A   0x4283             CMP      R3,R0
+   \      0x11C   0xD107             BNE.N    ??Y_MOVE_TEST_16
+   \      0x11E   0x2B01             CMP      R3,#+1
+   \      0x120   0xDB07             BLT.N    ??Y_MOVE_TEST_17
+   \      0x122   0x4608             MOV      R0,R1
+   \      0x124   0x1E40             SUBS     R0,R0,#+1
+   \      0x126   0x4180             SBCS     R0,R0,R0
+   \      0x128   0x43C0             MVNS     R0,R0
+   \      0x12A   0x0FC0             LSRS     R0,R0,#+31
+   \      0x12C   0xBD10             POP      {R4,PC}
+   \                     ??Y_MOVE_TEST_16: (+1)
+   \      0x12E   0x2001             MOVS     R0,#+1
+   \      0x130   0xBD10             POP      {R4,PC}
+   \                     ??Y_MOVE_TEST_17: (+1)
+   \      0x132   0x2000             MOVS     R0,#+0
+   \      0x134   0xBD10             POP      {R4,PC}
+    425          			}
+    426          		
+    427          		}
+    428          	else
+    429          		{
+    430          		return(stepper.current_block->steps[Y_AXIS] > 0);
+   \                     ??Y_MOVE_TEST_0: (+1)
+   \      0x136   0x.... 0x....      LDR.W    R0,??DataTable26_7
+   \      0x13A   0x6800             LDR      R0,[R0, #+0]
+   \      0x13C   0x6880             LDR      R0,[R0, #+8]
+   \      0x13E   0x2801             CMP      R0,#+1
+   \      0x140   0xDB01             BLT.N    ??Y_MOVE_TEST_18
+   \      0x142   0x2001             MOVS     R0,#+1
+   \      0x144   0xBD10             POP      {R4,PC}
+   \                     ??Y_MOVE_TEST_18: (+1)
+   \      0x146   0x2000             MOVS     R0,#+0
+   \      0x148   0xBD10             POP      {R4,PC}          ;; return
+    431          		}
+    432            }
+    433            
+
+   \                                 In section .text, align 2, keep-with-next
+    434            AxisEnum  Y_AXIS_HEAD()
+    435            {
+    436          	  if(MACHINETPYE & CORE_IS_XY || MACHINETPYE & CORE_IS_YZ)
+   \                     _Z11Y_AXIS_HEADv: (+1)
+   \        0x0   0x.... 0x....      LDR.W    R0,??DataTable26
+   \        0x4   0xF890 0x0058      LDRB     R0,[R0, #+88]
+   \        0x8   0x21CC             MOVS     R1,#+204
+   \        0xA   0x4208             TST      R0,R1
+   \        0xC   0xD001             BEQ.N    ??Y_AXIS_HEAD_0
+    437          		  return Y_HEAD;
+   \        0xE   0x2005             MOVS     R0,#+5
+   \       0x10   0x4770             BX       LR
+    438          	  else
+    439          		  return Y_AXIS;
+   \                     ??Y_AXIS_HEAD_0: (+1)
+   \       0x12   0x2001             MOVS     R0,#+1
+   \       0x14   0x4770             BX       LR               ;; return
+    440            }
+    441            
+    442            /*----------------------------------------*/
+    443          
+    444          #if 0	//mks_delta
+    445            #if CORE_IS_XZ || CORE_IS_YZ
+    446              /**
+    447               * Head direction in -Z axis for CoreXZ or CoreYZ bots.
+    448               *
+    449               * If steps differ, both axes are moving
+    450               * If DeltaA ==  DeltaB, the movement is only in the 1st axis (X or Y, already handled above)
+    451               * If DeltaA == -DeltaB, the movement is only in the 2nd axis (Z)
+    452               */
+    453              #if ENABLED(COREZX) || ENABLED(COREZY)
+    454                #define Z_CMP ==
+    455              #else
+    456                #define Z_CMP !=
+    457              #endif
+    458              #define Z_MOVE_TEST ( S_(1) != S_(2) || (S_(1) > 0 && D_(1) Z_CMP D_(2)) )
+    459              #define Z_AXIS_HEAD Z_HEAD
+    460            #else
+    461              #define Z_MOVE_TEST stepper.current_block->steps[Z_AXIS] > 0
+    462              #define Z_AXIS_HEAD Z_AXIS
+    463            #endif
+    464          #endif
+    465            /*----------------------------------------*/
+
+   \                                 In section .text, align 2, keep-with-next
+    466            bool	Z_MOVE_TEST()
+    467            {
+   \                     _Z11Z_MOVE_TESTv: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+    468                      bool D_temp;
+    469          
+    470          	if(MACHINETPYE & CORE_IS_XZ || MACHINETPYE & CORE_IS_YZ)
+   \        0x2   0x.... 0x....      LDR.W    R0,??DataTable26
+   \        0x6   0xF9B0 0x1058      LDRSH    R1,[R0, #+88]
+   \        0xA   0x20F0             MOVS     R0,#+240
+   \        0xC   0x4201             TST      R1,R0
+   \        0xE   0xF000 0x8091      BEQ.W    ??Z_MOVE_TEST_0
+    471          		{
+    472          		if(MACHINETPYE & COREZX || MACHINETPYE & COREZY)
+   \       0x12   0xF001 0x000C      AND      R0,R1,#0xC
+   \       0x16   0x22A0             MOVS     R2,#+160
+   \       0x18   0x4211             TST      R1,R2
+   \       0x1A   0xD045             BEQ.N    ??Z_MOVE_TEST_1
+    473          			{
+    474                                    if(MACHINETPYE & CORE_IS_XY)
+   \       0x1C   0x2800             CMP      R0,#+0
+   \       0x1E   0xD00C             BEQ.N    ??Z_MOVE_TEST_2
+    475                                      D_temp = (stepper.motor_direction(A_AXIS) == stepper.motor_direction(B_AXIS));
+   \       0x20   0x2000             MOVS     R0,#+0
+   \       0x22   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x26   0x4604             MOV      R4,R0
+   \       0x28   0x2001             MOVS     R0,#+1
+   \       0x2A   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x2E   0x4284             CMP      R4,R0
+   \       0x30   0xD101             BNE.N    ??Z_MOVE_TEST_3
+   \       0x32   0x2101             MOVS     R1,#+1
+   \       0x34   0xE01D             B.N      ??Z_MOVE_TEST_4
+   \                     ??Z_MOVE_TEST_3: (+1)
+   \       0x36   0x2100             MOVS     R1,#+0
+   \       0x38   0xE01B             B.N      ??Z_MOVE_TEST_4
+    476                                    else if(MACHINETPYE & CORE_IS_XZ)
+   \                     ??Z_MOVE_TEST_2: (+1)
+   \       0x3A   0xF011 0x0F30      TST      R1,#0x30
+   \       0x3E   0xD00C             BEQ.N    ??Z_MOVE_TEST_5
+    477                                      D_temp = (stepper.motor_direction(A_AXIS) == stepper.motor_direction(C_AXIS));
+   \       0x40   0x2000             MOVS     R0,#+0
+   \       0x42   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x46   0x4604             MOV      R4,R0
+   \       0x48   0x2002             MOVS     R0,#+2
+   \       0x4A   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x4E   0x4284             CMP      R4,R0
+   \       0x50   0xD101             BNE.N    ??Z_MOVE_TEST_6
+   \       0x52   0x2101             MOVS     R1,#+1
+   \       0x54   0xE00D             B.N      ??Z_MOVE_TEST_4
+   \                     ??Z_MOVE_TEST_6: (+1)
+   \       0x56   0x2100             MOVS     R1,#+0
+   \       0x58   0xE00B             B.N      ??Z_MOVE_TEST_4
+    478                                    else
+    479                                      D_temp = (stepper.motor_direction(B_AXIS) == stepper.motor_direction(C_AXIS));
+   \                     ??Z_MOVE_TEST_5: (+1)
+   \       0x5A   0x2001             MOVS     R0,#+1
+   \       0x5C   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x60   0x4604             MOV      R4,R0
+   \       0x62   0x2002             MOVS     R0,#+2
+   \       0x64   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x68   0x4284             CMP      R4,R0
+   \       0x6A   0xD101             BNE.N    ??Z_MOVE_TEST_7
+   \       0x6C   0x2101             MOVS     R1,#+1
+   \       0x6E   0xE000             B.N      ??Z_MOVE_TEST_4
+   \                     ??Z_MOVE_TEST_7: (+1)
+   \       0x70   0x2100             MOVS     R1,#+0
+    480                                    
+    481          			return( S_(1) != S_(2) || (S_(1) > 0 && D_temp) );
+   \                     ??Z_MOVE_TEST_4: (+1)
+   \       0x72   0x.... 0x....      LDR.W    R0,??DataTable26_6
+   \       0x76   0x.... 0x....      LDR.W    R2,??DataTable26_7
+   \       0x7A   0x6812             LDR      R2,[R2, #+0]
+   \       0x7C   0x7C03             LDRB     R3,[R0, #+16]
+   \       0x7E   0xEB02 0x0383      ADD      R3,R2,R3, LSL #+2
+   \       0x82   0x685B             LDR      R3,[R3, #+4]
+   \       0x84   0x1D12             ADDS     R2,R2,#+4
+   \       0x86   0x7C40             LDRB     R0,[R0, #+17]
+   \       0x88   0xF852 0x0020      LDR      R0,[R2, R0, LSL #+2]
+   \       0x8C   0x4283             CMP      R3,R0
+   \       0x8E   0xD107             BNE.N    ??Z_MOVE_TEST_8
+   \       0x90   0x2B01             CMP      R3,#+1
+   \       0x92   0xDB07             BLT.N    ??Z_MOVE_TEST_9
+   \       0x94   0x4608             MOV      R0,R1
+   \       0x96   0x1E40             SUBS     R0,R0,#+1
+   \       0x98   0x4180             SBCS     R0,R0,R0
+   \       0x9A   0x43C0             MVNS     R0,R0
+   \       0x9C   0x0FC0             LSRS     R0,R0,#+31
+   \       0x9E   0xBD10             POP      {R4,PC}
+   \                     ??Z_MOVE_TEST_8: (+1)
+   \       0xA0   0x2001             MOVS     R0,#+1
+   \       0xA2   0xBD10             POP      {R4,PC}
+   \                     ??Z_MOVE_TEST_9: (+1)
+   \       0xA4   0x2000             MOVS     R0,#+0
+   \       0xA6   0xBD10             POP      {R4,PC}
+    482          			}
+    483          		else
+    484          			{
+    485                                    if(MACHINETPYE & CORE_IS_XY)
+   \                     ??Z_MOVE_TEST_1: (+1)
+   \       0xA8   0x2800             CMP      R0,#+0
+   \       0xAA   0xD00C             BEQ.N    ??Z_MOVE_TEST_10
+    486                                      D_temp = (stepper.motor_direction(A_AXIS) != stepper.motor_direction(B_AXIS));
+   \       0xAC   0x2000             MOVS     R0,#+0
+   \       0xAE   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xB2   0x4604             MOV      R4,R0
+   \       0xB4   0x2001             MOVS     R0,#+1
+   \       0xB6   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xBA   0x4284             CMP      R4,R0
+   \       0xBC   0xD001             BEQ.N    ??Z_MOVE_TEST_11
+   \       0xBE   0x2101             MOVS     R1,#+1
+   \       0xC0   0xE01D             B.N      ??Z_MOVE_TEST_12
+   \                     ??Z_MOVE_TEST_11: (+1)
+   \       0xC2   0x2100             MOVS     R1,#+0
+   \       0xC4   0xE01B             B.N      ??Z_MOVE_TEST_12
+    487                                    else if(MACHINETPYE & CORE_IS_XZ)
+   \                     ??Z_MOVE_TEST_10: (+1)
+   \       0xC6   0xF011 0x0F30      TST      R1,#0x30
+   \       0xCA   0xD00C             BEQ.N    ??Z_MOVE_TEST_13
+    488                                      D_temp = (stepper.motor_direction(A_AXIS) != stepper.motor_direction(C_AXIS));
+   \       0xCC   0x2000             MOVS     R0,#+0
+   \       0xCE   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xD2   0x4604             MOV      R4,R0
+   \       0xD4   0x2002             MOVS     R0,#+2
+   \       0xD6   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xDA   0x4284             CMP      R4,R0
+   \       0xDC   0xD001             BEQ.N    ??Z_MOVE_TEST_14
+   \       0xDE   0x2101             MOVS     R1,#+1
+   \       0xE0   0xE00D             B.N      ??Z_MOVE_TEST_12
+   \                     ??Z_MOVE_TEST_14: (+1)
+   \       0xE2   0x2100             MOVS     R1,#+0
+   \       0xE4   0xE00B             B.N      ??Z_MOVE_TEST_12
+    489                                    else
+    490                                      D_temp = (stepper.motor_direction(B_AXIS) != stepper.motor_direction(C_AXIS));
+   \                     ??Z_MOVE_TEST_13: (+1)
+   \       0xE6   0x2001             MOVS     R0,#+1
+   \       0xE8   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xEC   0x4604             MOV      R4,R0
+   \       0xEE   0x2002             MOVS     R0,#+2
+   \       0xF0   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xF4   0x4284             CMP      R4,R0
+   \       0xF6   0xD001             BEQ.N    ??Z_MOVE_TEST_15
+   \       0xF8   0x2101             MOVS     R1,#+1
+   \       0xFA   0xE000             B.N      ??Z_MOVE_TEST_12
+   \                     ??Z_MOVE_TEST_15: (+1)
+   \       0xFC   0x2100             MOVS     R1,#+0
+    491                                    
+    492          			return( S_(1) != S_(2) || (S_(1) > 0 && D_temp) );
+   \                     ??Z_MOVE_TEST_12: (+1)
+   \       0xFE   0x.... 0x....      LDR.W    R0,??DataTable26_6
+   \      0x102   0x.... 0x....      LDR.W    R2,??DataTable26_7
+   \      0x106   0x6812             LDR      R2,[R2, #+0]
+   \      0x108   0x7C03             LDRB     R3,[R0, #+16]
+   \      0x10A   0xEB02 0x0383      ADD      R3,R2,R3, LSL #+2
+   \      0x10E   0x685B             LDR      R3,[R3, #+4]
+   \      0x110   0x1D12             ADDS     R2,R2,#+4
+   \      0x112   0x7C40             LDRB     R0,[R0, #+17]
+   \      0x114   0xF852 0x0020      LDR      R0,[R2, R0, LSL #+2]
+   \      0x118   0x4283             CMP      R3,R0
+   \      0x11A   0xD107             BNE.N    ??Z_MOVE_TEST_16
+   \      0x11C   0x2B01             CMP      R3,#+1
+   \      0x11E   0xDB07             BLT.N    ??Z_MOVE_TEST_17
+   \      0x120   0x4608             MOV      R0,R1
+   \      0x122   0x1E40             SUBS     R0,R0,#+1
+   \      0x124   0x4180             SBCS     R0,R0,R0
+   \      0x126   0x43C0             MVNS     R0,R0
+   \      0x128   0x0FC0             LSRS     R0,R0,#+31
+   \      0x12A   0xBD10             POP      {R4,PC}
+   \                     ??Z_MOVE_TEST_16: (+1)
+   \      0x12C   0x2001             MOVS     R0,#+1
+   \      0x12E   0xBD10             POP      {R4,PC}
+   \                     ??Z_MOVE_TEST_17: (+1)
+   \      0x130   0x2000             MOVS     R0,#+0
+   \      0x132   0xBD10             POP      {R4,PC}
+    493          			}
+    494          		
+    495          		}
+    496          	else
+    497          		{
+    498          		return(stepper.current_block->steps[Z_AXIS] > 0);
+   \                     ??Z_MOVE_TEST_0: (+1)
+   \      0x134   0x.... 0x....      LDR.W    R0,??DataTable26_7
+   \      0x138   0x6800             LDR      R0,[R0, #+0]
+   \      0x13A   0x68C0             LDR      R0,[R0, #+12]
+   \      0x13C   0x2801             CMP      R0,#+1
+   \      0x13E   0xDB01             BLT.N    ??Z_MOVE_TEST_18
+   \      0x140   0x2001             MOVS     R0,#+1
+   \      0x142   0xBD10             POP      {R4,PC}
+   \                     ??Z_MOVE_TEST_18: (+1)
+   \      0x144   0x2000             MOVS     R0,#+0
+   \      0x146   0xBD10             POP      {R4,PC}          ;; return
+    499          		}
+    500            }
+    501            
+
+   \                                 In section .text, align 2, keep-with-next
+    502            AxisEnum  Z_AXIS_HEAD()
+    503            {
+    504              if(MACHINETPYE & CORE_IS_XZ || MACHINETPYE & CORE_IS_YZ)
+   \                     _Z11Z_AXIS_HEADv: (+1)
+   \        0x0   0x.... 0x....      LDR.W    R0,??DataTable26
+   \        0x4   0xF890 0x0058      LDRB     R0,[R0, #+88]
+   \        0x8   0x21F0             MOVS     R1,#+240
+   \        0xA   0x4208             TST      R0,R1
+   \        0xC   0xD001             BEQ.N    ??Z_AXIS_HEAD_0
+    505          		  return Z_HEAD;
+   \        0xE   0x2006             MOVS     R0,#+6
+   \       0x10   0x4770             BX       LR
+    506          	  else
+    507          		  return Z_AXIS;
+   \                     ??Z_AXIS_HEAD_0: (+1)
+   \       0x12   0x2002             MOVS     R0,#+2
+   \       0x14   0x4770             BX       LR               ;; return
+    508            }
+    509          
+    510            /*----------------------------------------*/
+    511          
+    512          /*-----------------------------------------*/
+    513          
+    514          
+
+   \                                 In section .text, align 2, keep-with-next
+    515          void Endstops::update() {
+   \                     _ZN8Endstops6updateEv: (+1)
+   \        0x0   0xB570             PUSH     {R4-R6,LR}
+    516          
+    517            #define _ENDSTOP(AXIS, MINMAX) AXIS ##_## MINMAX
+    518            #define _ENDSTOP_PIN(AXIS, MINMAX) AXIS ##_## MINMAX ##_PIN
+    519            #define _ENDSTOP_INVERTING(AXIS, MINMAX) AXIS ##_## MINMAX ##_ENDSTOP_INVERTING
+    520            #define _ENDSTOP_HIT(AXIS) SBI(endstop_hit_bits, _ENDSTOP(AXIS, MIN))
+    521          
+    522            // UPDATE_ENDSTOP_BIT: set the current endstop bits for an endstop to its status
+    523          
+    524            /*--mks--*/
+    525            //#define UPDATE_ENDSTOP_BIT(AXIS, MINMAX) SET_BIT(current_endstop_bits, _ENDSTOP(AXIS, MINMAX), (READ(_ENDSTOP_PIN(AXIS, MINMAX)) != _ENDSTOP_INVERTING(AXIS, MINMAX)))
+    526          	#define UPDATE_ENDSTOP_BIT(AXIS, MINMAX) __SET_BIT(current_endstop_bits, _ENDSTOP(AXIS, MINMAX), (READ(_ENDSTOP_PIN(AXIS, MINMAX)) != _ENDSTOP_INVERTING(AXIS, MINMAX)))
+    527          	
+    528            // COPY_BIT: copy the value of SRC_BIT to DST_BIT in DST
+    529          
+    530          	/*--mks--*/
+    531           //#define COPY_BIT(DST, SRC_BIT, DST_BIT) SET_BIT(DST, DST_BIT, TEST(DST, SRC_BIT))
+    532            #define COPY_BIT(bits, COPY_BIT, BIT) __SET_BIT(bits, BIT, TEST(bits, COPY_BIT))
+    533          
+    534            #define UPDATE_ENDSTOP(AXIS,MINMAX) do { \
+    535                UPDATE_ENDSTOP_BIT(AXIS, MINMAX); \
+    536                if (TEST_ENDSTOP(_ENDSTOP(AXIS, MINMAX)) && stepper.current_block->steps[_AXIS(AXIS)] > 0) { \
+    537                  _ENDSTOP_HIT(AXIS); \
+    538                  stepper.endstop_triggered(_AXIS(AXIS)); \
+    539                } \
+    540              } while(0)
+    541          
+    542          //  #if ENABLED(G38_PROBE_TARGET) && PIN_EXISTS(Z_MIN_PROBE) && !(CORE_IS_XY || CORE_IS_XZ)
+    543          #if ENABLED(G38_PROBE_TARGET) && PIN_EXISTS(Z_MIN_PROBE)	//mks_delta
+    544          
+    545          	  // If G38 command is active check Z_MIN_PROBE for ALL movement
+    546              if (G38_move) {
+    547                UPDATE_ENDSTOP_BIT(Z, MIN_PROBE);
+    548                if (TEST_ENDSTOP(_ENDSTOP(Z, MIN_PROBE))) {
+    549                  if      (stepper.current_block->steps[_AXIS(X)] > 0) { _ENDSTOP_HIT(X); stepper.endstop_triggered(_AXIS(X)); }
+    550                  else if (stepper.current_block->steps[_AXIS(Y)] > 0) { _ENDSTOP_HIT(Y); stepper.endstop_triggered(_AXIS(Y)); }
+    551                  else if (stepper.current_block->steps[_AXIS(Z)] > 0) { _ENDSTOP_HIT(Z); stepper.endstop_triggered(_AXIS(Z)); }
+    552                  G38_endstop_hit = true;
+    553                }
+    554              }
+    555            #endif
+    556          
+    557          
+    558          
+    559            // With Dual X, endstops are only checked in the homing direction for the active extruder
+    560            #if ENABLED(DUAL_X_CARRIAGE)
+    561              #define E0_ACTIVE stepper.current_block->active_extruder == 0
+    562              #define X_MIN_TEST ((X_HOME_DIR < 0 && E0_ACTIVE) || (X2_HOME_DIR < 0 && !E0_ACTIVE))
+    563              #define X_MAX_TEST ((X_HOME_DIR > 0 && E0_ACTIVE) || (X2_HOME_DIR > 0 && !E0_ACTIVE))
+    564            #else
+    565              #define X_MIN_TEST true
+    566              #define X_MAX_TEST true
+    567            #endif
+    568          
+    569            /**
+    570             * Check and update endstops according to conditions
+    571             */
+    572          
+    573          //  if (X_MOVE_TEST) {	//mks_delta
+    574            if (X_MOVE_TEST()) {
+   \        0x2   0x....             LDR.N    R4,??DataTable26
+   \        0x4   0xF104 0x0580      ADD      R5,R4,#+128
+   \        0x8   0x.... 0x....      LDR.W    R6,??DataTable26_8
+   \        0xC   0x.... 0x....      BL       _Z11X_MOVE_TESTv
+   \       0x10   0x2800             CMP      R0,#+0
+   \       0x12   0xD055             BEQ.N    ??update_0
+    575          
+    576          //    if (stepper.motor_direction(X_AXIS_HEAD)) {	//mks_delta
+    577          	  if (stepper.motor_direction(X_AXIS_HEAD())) {
+   \       0x14   0x.... 0x....      BL       _Z11X_AXIS_HEADv
+   \       0x18   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0x1C   0x2800             CMP      R0,#+0
+   \       0x1E   0xD027             BEQ.N    ??update_1
+    578          
+    579                if (X_MIN_TEST) { // -direction
+    580                  #if HAS_X_MIN
+    581          		if(mksCfg.use_xmin_plug)
+   \       0x20   0x7828             LDRB     R0,[R5, #+0]
+   \       0x22   0x2800             CMP      R0,#+0
+   \       0x24   0xD04C             BEQ.N    ??update_0
+    582                    UPDATE_ENDSTOP(X, MIN);
+   \       0x26   0x....             LDR.N    R0,??DataTable26_4
+   \       0x28   0x8901             LDRH     R1,[R0, #+8]
+   \       0x2A   0x....             LDR.N    R0,??DataTable26_5
+   \       0x2C   0x6900             LDR      R0,[R0, #+16]
+   \       0x2E   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \       0x32   0xF894 0x1037      LDRB     R1,[R4, #+55]
+   \       0x36   0x4288             CMP      R0,R1
+   \       0x38   0xD001             BEQ.N    ??update_2
+   \       0x3A   0x2101             MOVS     R1,#+1
+   \       0x3C   0xE000             B.N      ??update_3
+   \                     ??update_2: (+1)
+   \       0x3E   0x2100             MOVS     R1,#+0
+   \                     ??update_3: (+1)
+   \       0x40   0x7870             LDRB     R0,[R6, #+1]
+   \       0x42   0x4249             RSBS     R1,R1,#+0
+   \       0x44   0x4041             EORS     R1,R0,R1
+   \       0x46   0xF001 0x0101      AND      R1,R1,#0x1
+   \       0x4A   0x4041             EORS     R1,R1,R0
+   \       0x4C   0x7071             STRB     R1,[R6, #+1]
+   \       0x4E   0x78B0             LDRB     R0,[R6, #+2]
+   \       0x50   0x4001             ANDS     R1,R0,R1
+   \       0x52   0x07C8             LSLS     R0,R1,#+31
+   \       0x54   0xD534             BPL.N    ??update_0
+   \       0x56   0x....             LDR.N    R0,??DataTable26_7
+   \       0x58   0x6800             LDR      R0,[R0, #+0]
+   \       0x5A   0x6840             LDR      R0,[R0, #+4]
+   \       0x5C   0x2800             CMP      R0,#+0
+   \       0x5E   0xDD2F             BLE.N    ??update_0
+   \       0x60   0x7830             LDRB     R0,[R6, #+0]
+   \       0x62   0xF040 0x0001      ORR      R0,R0,#0x1
+   \       0x66   0x7030             STRB     R0,[R6, #+0]
+   \       0x68   0x2000             MOVS     R0,#+0
+   \       0x6A   0x.... 0x....      BL       _ZN7Stepper17endstop_triggeredE8AxisEnum
+   \       0x6E   0xE027             B.N      ??update_0
+    583                  #endif
+    584                }
+    585              }
+    586              else if (X_MAX_TEST) { // +direction
+    587                #if HAS_X_MAX
+    588          	  if(mksCfg.use_xmax_plug)
+   \                     ??update_1: (+1)
+   \       0x70   0x78E8             LDRB     R0,[R5, #+3]
+   \       0x72   0x2800             CMP      R0,#+0
+   \       0x74   0xD024             BEQ.N    ??update_0
+    589                  UPDATE_ENDSTOP(X, MAX);
+   \       0x76   0x....             LDR.N    R0,??DataTable26_4
+   \       0x78   0x8901             LDRH     R1,[R0, #+8]
+   \       0x7A   0x....             LDR.N    R0,??DataTable26_5
+   \       0x7C   0x6900             LDR      R0,[R0, #+16]
+   \       0x7E   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \       0x82   0xF104 0x0137      ADD      R1,R4,#+55
+   \       0x86   0x78C9             LDRB     R1,[R1, #+3]
+   \       0x88   0x4288             CMP      R0,R1
+   \       0x8A   0xD001             BEQ.N    ??update_4
+   \       0x8C   0x2101             MOVS     R1,#+1
+   \       0x8E   0xE000             B.N      ??update_5
+   \                     ??update_4: (+1)
+   \       0x90   0x2100             MOVS     R1,#+0
+   \                     ??update_5: (+1)
+   \       0x92   0x7870             LDRB     R0,[R6, #+1]
+   \       0x94   0x4249             RSBS     R1,R1,#+0
+   \       0x96   0x4041             EORS     R1,R0,R1
+   \       0x98   0xF001 0x0110      AND      R1,R1,#0x10
+   \       0x9C   0x4041             EORS     R1,R1,R0
+   \       0x9E   0x7071             STRB     R1,[R6, #+1]
+   \       0xA0   0x78B0             LDRB     R0,[R6, #+2]
+   \       0xA2   0x4001             ANDS     R1,R0,R1
+   \       0xA4   0x06C8             LSLS     R0,R1,#+27
+   \       0xA6   0xD50B             BPL.N    ??update_0
+   \       0xA8   0x....             LDR.N    R0,??DataTable26_7
+   \       0xAA   0x6800             LDR      R0,[R0, #+0]
+   \       0xAC   0x6840             LDR      R0,[R0, #+4]
+   \       0xAE   0x2800             CMP      R0,#+0
+   \       0xB0   0xDD06             BLE.N    ??update_0
+   \       0xB2   0x7830             LDRB     R0,[R6, #+0]
+   \       0xB4   0xF040 0x0001      ORR      R0,R0,#0x1
+   \       0xB8   0x7030             STRB     R0,[R6, #+0]
+   \       0xBA   0x2000             MOVS     R0,#+0
+   \       0xBC   0x.... 0x....      BL       _ZN7Stepper17endstop_triggeredE8AxisEnum
+    590                #endif
+    591              }
+    592            }
+    593          
+    594            if (Y_MOVE_TEST()) {
+   \                     ??update_0: (+1)
+   \       0xC0   0x.... 0x....      BL       _Z11Y_MOVE_TESTv
+   \       0xC4   0x2800             CMP      R0,#+0
+   \       0xC6   0xD056             BEQ.N    ??update_6
+    595              if (stepper.motor_direction(Y_AXIS_HEAD())) { // -direction
+   \       0xC8   0x.... 0x....      BL       _Z11Y_AXIS_HEADv
+   \       0xCC   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \       0xD0   0x2800             CMP      R0,#+0
+   \       0xD2   0xD028             BEQ.N    ??update_7
+    596                #if HAS_Y_MIN
+    597          	  if(mksCfg.use_ymin_plug)
+   \       0xD4   0x7868             LDRB     R0,[R5, #+1]
+   \       0xD6   0x2800             CMP      R0,#+0
+   \       0xD8   0xD04D             BEQ.N    ??update_6
+    598                  UPDATE_ENDSTOP(Y, MIN);
+   \       0xDA   0x....             LDR.N    R0,??DataTable26_4
+   \       0xDC   0x89C1             LDRH     R1,[R0, #+14]
+   \       0xDE   0x....             LDR.N    R0,??DataTable26_5
+   \       0xE0   0x69C0             LDR      R0,[R0, #+28]
+   \       0xE2   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \       0xE6   0xF104 0x0137      ADD      R1,R4,#+55
+   \       0xEA   0x7849             LDRB     R1,[R1, #+1]
+   \       0xEC   0x4288             CMP      R0,R1
+   \       0xEE   0xD001             BEQ.N    ??update_8
+   \       0xF0   0x2101             MOVS     R1,#+1
+   \       0xF2   0xE000             B.N      ??update_9
+   \                     ??update_8: (+1)
+   \       0xF4   0x2100             MOVS     R1,#+0
+   \                     ??update_9: (+1)
+   \       0xF6   0x7870             LDRB     R0,[R6, #+1]
+   \       0xF8   0x4249             RSBS     R1,R1,#+0
+   \       0xFA   0x4041             EORS     R1,R0,R1
+   \       0xFC   0xF001 0x0102      AND      R1,R1,#0x2
+   \      0x100   0x4041             EORS     R1,R1,R0
+   \      0x102   0x7071             STRB     R1,[R6, #+1]
+   \      0x104   0x78B0             LDRB     R0,[R6, #+2]
+   \      0x106   0x4001             ANDS     R1,R0,R1
+   \      0x108   0x0788             LSLS     R0,R1,#+30
+   \      0x10A   0xD534             BPL.N    ??update_6
+   \      0x10C   0x....             LDR.N    R0,??DataTable26_7
+   \      0x10E   0x6800             LDR      R0,[R0, #+0]
+   \      0x110   0x6880             LDR      R0,[R0, #+8]
+   \      0x112   0x2800             CMP      R0,#+0
+   \      0x114   0xDD2F             BLE.N    ??update_6
+   \      0x116   0x7830             LDRB     R0,[R6, #+0]
+   \      0x118   0xF040 0x0002      ORR      R0,R0,#0x2
+   \      0x11C   0x7030             STRB     R0,[R6, #+0]
+   \      0x11E   0x2001             MOVS     R0,#+1
+   \      0x120   0x.... 0x....      BL       _ZN7Stepper17endstop_triggeredE8AxisEnum
+   \      0x124   0xE027             B.N      ??update_6
+    599                #endif
+    600              }
+    601              else { // +direction
+    602                #if HAS_Y_MAX
+    603          	  if(mksCfg.use_ymax_plug)
+   \                     ??update_7: (+1)
+   \      0x126   0x7928             LDRB     R0,[R5, #+4]
+   \      0x128   0x2800             CMP      R0,#+0
+   \      0x12A   0xD024             BEQ.N    ??update_6
+    604                  UPDATE_ENDSTOP(Y, MAX);
+   \      0x12C   0x....             LDR.N    R0,??DataTable26_4
+   \      0x12E   0x89C1             LDRH     R1,[R0, #+14]
+   \      0x130   0x....             LDR.N    R0,??DataTable26_5
+   \      0x132   0x69C0             LDR      R0,[R0, #+28]
+   \      0x134   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x138   0xF104 0x0137      ADD      R1,R4,#+55
+   \      0x13C   0x7909             LDRB     R1,[R1, #+4]
+   \      0x13E   0x4288             CMP      R0,R1
+   \      0x140   0xD001             BEQ.N    ??update_10
+   \      0x142   0x2101             MOVS     R1,#+1
+   \      0x144   0xE000             B.N      ??update_11
+   \                     ??update_10: (+1)
+   \      0x146   0x2100             MOVS     R1,#+0
+   \                     ??update_11: (+1)
+   \      0x148   0x7870             LDRB     R0,[R6, #+1]
+   \      0x14A   0x4249             RSBS     R1,R1,#+0
+   \      0x14C   0x4041             EORS     R1,R0,R1
+   \      0x14E   0xF001 0x0120      AND      R1,R1,#0x20
+   \      0x152   0x4041             EORS     R1,R1,R0
+   \      0x154   0x7071             STRB     R1,[R6, #+1]
+   \      0x156   0x78B0             LDRB     R0,[R6, #+2]
+   \      0x158   0x4001             ANDS     R1,R0,R1
+   \      0x15A   0x0688             LSLS     R0,R1,#+26
+   \      0x15C   0xD50B             BPL.N    ??update_6
+   \      0x15E   0x....             LDR.N    R0,??DataTable26_7
+   \      0x160   0x6800             LDR      R0,[R0, #+0]
+   \      0x162   0x6880             LDR      R0,[R0, #+8]
+   \      0x164   0x2800             CMP      R0,#+0
+   \      0x166   0xDD06             BLE.N    ??update_6
+   \      0x168   0x7830             LDRB     R0,[R6, #+0]
+   \      0x16A   0xF040 0x0002      ORR      R0,R0,#0x2
+   \      0x16E   0x7030             STRB     R0,[R6, #+0]
+   \      0x170   0x2001             MOVS     R0,#+1
+   \      0x172   0x.... 0x....      BL       _ZN7Stepper17endstop_triggeredE8AxisEnum
+    605                #endif
+    606              }
+    607            }
+    608          
+    609            if (Z_MOVE_TEST()) {
+   \                     ??update_6: (+1)
+   \      0x176   0x.... 0x....      BL       _Z11Z_MOVE_TESTv
+   \      0x17A   0x2800             CMP      R0,#+0
+   \      0x17C   0xF000 0x80BB      BEQ.W    ??update_12
+    610              if (stepper.motor_direction(Z_AXIS_HEAD())) { // Z -direction. Gantry down, bed up.
+   \      0x180   0x.... 0x....      BL       _Z11Z_AXIS_HEADv
+   \      0x184   0x.... 0x....      BL       _ZN7Stepper15motor_directionE8AxisEnum
+   \      0x188   0x2800             CMP      R0,#+0
+   \      0x18A   0xF000 0x8089      BEQ.W    ??update_13
+    611                #if HAS_Z_MIN
+    612          	  	if(mksCfg.use_zmin_plug)
+   \      0x18E   0x78A8             LDRB     R0,[R5, #+2]
+   \      0x190   0x2800             CMP      R0,#+0
+   \      0x192   0xD050             BEQ.N    ??update_14
+    613                	{
+    614                  #if ENABLED(Z_DUAL_ENDSTOPS)
+    615          
+    616                    UPDATE_ENDSTOP_BIT(Z, MIN);
+    617                    #if HAS_Z2_MIN
+    618                      UPDATE_ENDSTOP_BIT(Z2, MIN);
+    619                    #else
+    620                      COPY_BIT(current_endstop_bits, Z_MIN, Z2_MIN);
+    621                    #endif
+    622          
+    623                    test_dual_z_endstops(Z_MIN, Z2_MIN);
+    624          
+    625                  #else // !Z_DUAL_ENDSTOPS
+    626          
+    627                    //#if ENABLED(Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN)
+    628          		  if(Z_MIN_PROBE_PIN_MODE == Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN)
+   \      0x194   0x7E68             LDRB     R0,[R5, #+25]
+   \      0x196   0x2801             CMP      R0,#+1
+   \      0x198   0xD128             BNE.N    ??update_15
+    629                     { if (z_probe_enabled) UPDATE_ENDSTOP(Z, MIN); }
+   \      0x19A   0x78F0             LDRB     R0,[R6, #+3]
+   \      0x19C   0x2800             CMP      R0,#+0
+   \      0x19E   0xD04A             BEQ.N    ??update_14
+   \      0x1A0   0x....             LDR.N    R0,??DataTable26_4
+   \      0x1A2   0x8A81             LDRH     R1,[R0, #+20]
+   \      0x1A4   0x....             LDR.N    R0,??DataTable26_5
+   \      0x1A6   0x6A80             LDR      R0,[R0, #+40]
+   \      0x1A8   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x1AC   0xF104 0x0137      ADD      R1,R4,#+55
+   \      0x1B0   0x7889             LDRB     R1,[R1, #+2]
+   \      0x1B2   0x4288             CMP      R0,R1
+   \      0x1B4   0xD001             BEQ.N    ??update_16
+   \      0x1B6   0x2101             MOVS     R1,#+1
+   \      0x1B8   0xE000             B.N      ??update_17
+   \                     ??update_16: (+1)
+   \      0x1BA   0x2100             MOVS     R1,#+0
+   \                     ??update_17: (+1)
+   \      0x1BC   0x7870             LDRB     R0,[R6, #+1]
+   \      0x1BE   0x4249             RSBS     R1,R1,#+0
+   \      0x1C0   0x4041             EORS     R1,R0,R1
+   \      0x1C2   0xF001 0x0104      AND      R1,R1,#0x4
+   \      0x1C6   0x4041             EORS     R1,R1,R0
+   \      0x1C8   0x7071             STRB     R1,[R6, #+1]
+   \      0x1CA   0x78B0             LDRB     R0,[R6, #+2]
+   \      0x1CC   0x4001             ANDS     R1,R0,R1
+   \      0x1CE   0x0748             LSLS     R0,R1,#+29
+   \      0x1D0   0xD531             BPL.N    ??update_14
+   \      0x1D2   0x....             LDR.N    R0,??DataTable26_7
+   \      0x1D4   0x6800             LDR      R0,[R0, #+0]
+   \      0x1D6   0x68C0             LDR      R0,[R0, #+12]
+   \      0x1D8   0x2800             CMP      R0,#+0
+   \      0x1DA   0xDD2C             BLE.N    ??update_14
+   \      0x1DC   0x7830             LDRB     R0,[R6, #+0]
+   \      0x1DE   0xF040 0x0004      ORR      R0,R0,#0x4
+   \      0x1E2   0x7030             STRB     R0,[R6, #+0]
+   \      0x1E4   0x2002             MOVS     R0,#+2
+   \      0x1E6   0x.... 0x....      BL       _ZN7Stepper17endstop_triggeredE8AxisEnum
+   \      0x1EA   0xE024             B.N      ??update_14
+    630                    //#else
+    631          		  else
+    632                      UPDATE_ENDSTOP(Z, MIN);
+   \                     ??update_15: (+1)
+   \      0x1EC   0x....             LDR.N    R0,??DataTable26_4
+   \      0x1EE   0x8A81             LDRH     R1,[R0, #+20]
+   \      0x1F0   0x....             LDR.N    R0,??DataTable26_5
+   \      0x1F2   0x6A80             LDR      R0,[R0, #+40]
+   \      0x1F4   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x1F8   0xF104 0x0137      ADD      R1,R4,#+55
+   \      0x1FC   0x7889             LDRB     R1,[R1, #+2]
+   \      0x1FE   0x4288             CMP      R0,R1
+   \      0x200   0xD001             BEQ.N    ??update_18
+   \      0x202   0x2101             MOVS     R1,#+1
+   \      0x204   0xE000             B.N      ??update_19
+   \                     ??update_18: (+1)
+   \      0x206   0x2100             MOVS     R1,#+0
+   \                     ??update_19: (+1)
+   \      0x208   0x7870             LDRB     R0,[R6, #+1]
+   \      0x20A   0x4249             RSBS     R1,R1,#+0
+   \      0x20C   0x4041             EORS     R1,R0,R1
+   \      0x20E   0xF001 0x0104      AND      R1,R1,#0x4
+   \      0x212   0x4041             EORS     R1,R1,R0
+   \      0x214   0x7071             STRB     R1,[R6, #+1]
+   \      0x216   0x78B0             LDRB     R0,[R6, #+2]
+   \      0x218   0x4001             ANDS     R1,R0,R1
+   \      0x21A   0x0748             LSLS     R0,R1,#+29
+   \      0x21C   0xD50B             BPL.N    ??update_14
+   \      0x21E   0x....             LDR.N    R0,??DataTable26_7
+   \      0x220   0x6800             LDR      R0,[R0, #+0]
+   \      0x222   0x68C0             LDR      R0,[R0, #+12]
+   \      0x224   0x2800             CMP      R0,#+0
+   \      0x226   0xDD06             BLE.N    ??update_14
+   \      0x228   0x7830             LDRB     R0,[R6, #+0]
+   \      0x22A   0xF040 0x0004      ORR      R0,R0,#0x4
+   \      0x22E   0x7030             STRB     R0,[R6, #+0]
+   \      0x230   0x2002             MOVS     R0,#+2
+   \      0x232   0x.... 0x....      BL       _ZN7Stepper17endstop_triggeredE8AxisEnum
+    633                    //#endif
+    634          
+    635                  #endif // !Z_DUAL_ENDSTOPS
+    636                	}
+    637                #endif // HAS_Z_MIN
+    638          
+    639                // When closing the gap check the enabled probe
+    640               // #if ENABLED(Z_MIN_PROBE_ENDSTOP)
+    641          	   if(Z_MIN_PROBE_PIN_MODE == Z_MIN_PROBE_USES_Z_MAX_ENDSTOP_PIN)
+   \                     ??update_14: (+1)
+   \      0x236   0x7E68             LDRB     R0,[R5, #+25]
+   \      0x238   0x2802             CMP      R0,#+2
+   \      0x23A   0xD15C             BNE.N    ??update_12
+    642          	   	{
+    643                  if (z_probe_enabled) {
+   \      0x23C   0x78F0             LDRB     R0,[R6, #+3]
+   \      0x23E   0x2800             CMP      R0,#+0
+   \      0x240   0xD059             BEQ.N    ??update_12
+    644                    UPDATE_ENDSTOP(Z, MIN_PROBE);
+   \      0x242   0x....             LDR.N    R0,??DataTable26_4
+   \      0x244   0x8AC1             LDRH     R1,[R0, #+22]
+   \      0x246   0x....             LDR.N    R0,??DataTable26_5
+   \      0x248   0x6AC0             LDR      R0,[R0, #+44]
+   \      0x24A   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x24E   0xF104 0x0137      ADD      R1,R4,#+55
+   \      0x252   0x7989             LDRB     R1,[R1, #+6]
+   \      0x254   0x4288             CMP      R0,R1
+   \      0x256   0xD001             BEQ.N    ??update_20
+   \      0x258   0x2101             MOVS     R1,#+1
+   \      0x25A   0xE000             B.N      ??update_21
+   \                     ??update_20: (+1)
+   \      0x25C   0x2100             MOVS     R1,#+0
+   \                     ??update_21: (+1)
+   \      0x25E   0x7870             LDRB     R0,[R6, #+1]
+   \      0x260   0x4249             RSBS     R1,R1,#+0
+   \      0x262   0x4041             EORS     R1,R0,R1
+   \      0x264   0xF001 0x0108      AND      R1,R1,#0x8
+   \      0x268   0x4041             EORS     R1,R1,R0
+   \      0x26A   0x7071             STRB     R1,[R6, #+1]
+   \      0x26C   0x78B0             LDRB     R0,[R6, #+2]
+   \      0x26E   0x4001             ANDS     R1,R0,R1
+   \      0x270   0x0708             LSLS     R0,R1,#+28
+   \      0x272   0xD50B             BPL.N    ??update_22
+   \      0x274   0x....             LDR.N    R0,??DataTable26_7
+   \      0x276   0x6800             LDR      R0,[R0, #+0]
+   \      0x278   0x68C0             LDR      R0,[R0, #+12]
+   \      0x27A   0x2800             CMP      R0,#+0
+   \      0x27C   0xDD06             BLE.N    ??update_22
+   \      0x27E   0x7830             LDRB     R0,[R6, #+0]
+   \      0x280   0xF040 0x0004      ORR      R0,R0,#0x4
+   \      0x284   0x7030             STRB     R0,[R6, #+0]
+   \      0x286   0x2002             MOVS     R0,#+2
+   \      0x288   0x.... 0x....      BL       _ZN7Stepper17endstop_triggeredE8AxisEnum
+    645                    if (TEST_ENDSTOP(Z_MIN_PROBE)) SBI(endstop_hit_bits, Z_MIN_PROBE);
+   \                     ??update_22: (+1)
+   \      0x28C   0x7871             LDRB     R1,[R6, #+1]
+   \      0x28E   0x78B0             LDRB     R0,[R6, #+2]
+   \      0x290   0x4001             ANDS     R1,R0,R1
+   \      0x292   0x0708             LSLS     R0,R1,#+28
+   \      0x294   0xD52F             BPL.N    ??update_12
+   \      0x296   0x7830             LDRB     R0,[R6, #+0]
+   \      0x298   0xF040 0x0008      ORR      R0,R0,#0x8
+   \      0x29C   0x7030             STRB     R0,[R6, #+0]
+   \      0x29E   0xE02A             B.N      ??update_12
+    646                  }
+    647          	   	}
+    648                //#endif
+    649              }
+    650              else { // Z +direction. Gantry up, bed down.
+    651                #if HAS_Z_MAX
+    652           
+    653          	  if(Z_MIN_PROBE_PIN_MODE != Z_MIN_PROBE_USES_Z_MAX_ENDSTOP_PIN)  
+   \                     ??update_13: (+1)
+   \      0x2A0   0x7E68             LDRB     R0,[R5, #+25]
+   \      0x2A2   0x2802             CMP      R0,#+2
+   \      0x2A4   0xD027             BEQ.N    ??update_12
+    654          	  	{
+    655          	  	if(mksCfg.use_zmax_plug)
+   \      0x2A6   0x7968             LDRB     R0,[R5, #+5]
+   \      0x2A8   0x2800             CMP      R0,#+0
+   \      0x2AA   0xD024             BEQ.N    ??update_12
+    656                	{
+    657                  // Check both Z dual endstops
+    658                  #if ENABLED(Z_DUAL_ENDSTOPS)
+    659          
+    660                    UPDATE_ENDSTOP_BIT(Z, MAX);
+    661                    #if HAS_Z2_MAX
+    662                      UPDATE_ENDSTOP_BIT(Z2, MAX);
+    663                    #else
+    664                      COPY_BIT(current_endstop_bits, Z_MAX, Z2_MAX);
+    665                    #endif
+    666          
+    667                    test_dual_z_endstops(Z_MAX, Z2_MAX);
+    668          
+    669                  // If this pin is not hijacked for the bed probe
+    670                  // then it belongs to the Z endstop
+    671                  //#elif DISABLED(Z_MIN_PROBE_ENDSTOP) || Z_MAX_PIN != Z_MIN_PROBE_PIN
+    672          		#else
+    673          			if(Z_MIN_PROBE_PIN_MODE != Z_MIN_PROBE_USES_Z_MAX_ENDSTOP_PIN)		//mks
+    674          	          UPDATE_ENDSTOP(Z, MAX);
+   \      0x2AC   0x....             LDR.N    R0,??DataTable26_4
+   \      0x2AE   0x8AC1             LDRH     R1,[R0, #+22]
+   \      0x2B0   0x....             LDR.N    R0,??DataTable26_5
+   \      0x2B2   0x6AC0             LDR      R0,[R0, #+44]
+   \      0x2B4   0x.... 0x....      BL       HAL_GPIO_ReadPin
+   \      0x2B8   0xF104 0x0137      ADD      R1,R4,#+55
+   \      0x2BC   0x7949             LDRB     R1,[R1, #+5]
+   \      0x2BE   0x4288             CMP      R0,R1
+   \      0x2C0   0xD001             BEQ.N    ??update_23
+   \      0x2C2   0x2101             MOVS     R1,#+1
+   \      0x2C4   0xE000             B.N      ??update_24
+   \                     ??update_23: (+1)
+   \      0x2C6   0x2100             MOVS     R1,#+0
+   \                     ??update_24: (+1)
+   \      0x2C8   0x7870             LDRB     R0,[R6, #+1]
+   \      0x2CA   0x4249             RSBS     R1,R1,#+0
+   \      0x2CC   0x4041             EORS     R1,R0,R1
+   \      0x2CE   0xF001 0x0140      AND      R1,R1,#0x40
+   \      0x2D2   0x4041             EORS     R1,R1,R0
+   \      0x2D4   0x7071             STRB     R1,[R6, #+1]
+   \      0x2D6   0x78B0             LDRB     R0,[R6, #+2]
+   \      0x2D8   0x4001             ANDS     R1,R0,R1
+   \      0x2DA   0x0648             LSLS     R0,R1,#+25
+   \      0x2DC   0xD50B             BPL.N    ??update_12
+   \      0x2DE   0x....             LDR.N    R0,??DataTable26_7
+   \      0x2E0   0x6800             LDR      R0,[R0, #+0]
+   \      0x2E2   0x68C0             LDR      R0,[R0, #+12]
+   \      0x2E4   0x2800             CMP      R0,#+0
+   \      0x2E6   0xDD06             BLE.N    ??update_12
+   \      0x2E8   0x7830             LDRB     R0,[R6, #+0]
+   \      0x2EA   0xF040 0x0004      ORR      R0,R0,#0x4
+   \      0x2EE   0x7030             STRB     R0,[R6, #+0]
+   \      0x2F0   0x2002             MOVS     R0,#+2
+   \      0x2F2   0x.... 0x....      BL       _ZN7Stepper17endstop_triggeredE8AxisEnum
+    675          		
+    676                  #endif // !Z_MIN_PROBE_PIN...
+    677                	}
+    678          	  	}
+    679                #endif // Z_MAX_PIN
+    680              }
+    681            }
+    682          
+    683            old_endstop_bits = current_endstop_bits;
+   \                     ??update_12: (+1)
+   \      0x2F6   0x7870             LDRB     R0,[R6, #+1]
+   \      0x2F8   0x70B0             STRB     R0,[R6, #+2]
+    684          
+    685          } // Endstops::update()
+   \      0x2FA   0xBD70             POP      {R4-R6,PC}       ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18:
+   \        0x0   0x20 0x58          DC8      " X:"
+   \              0x3A 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_1:
+   \        0x0   0x20 0x59          DC8      " Y:"
+   \              0x3A 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_2:
+   \        0x0   0x20 0x5A          DC8      " Z:"
+   \              0x3A 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable18_3:
+   \        0x0   0x20 0x50          DC8      " P:"
+   \              0x3A 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_1:
+   \        0x0   0x20 0x58          DC8 " X:"
+   \              0x3A 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_2:
+   \        0x0   0x20 0x59          DC8 " Y:"
+   \              0x3A 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_3:
+   \        0x0   0x20 0x5A          DC8 " Z:"
+   \              0x3A 0x00    
+
+   \                                 In section .rodata, align 4, keep-with-next
+   \                     ?_4:
+   \        0x0   0x20 0x50          DC8 " P:"
+   \              0x3A 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_0:
+   \        0x0   0x65 0x6E          DC8 "endstops hit: "
+   \              0x64 0x73    
+   \              0x74 0x6F    
+   \              0x70 0x73    
+   \              0x20 0x68    
+   \              0x69 0x74    
+   \              0x3A 0x20    
+   \              0x00         
+   \        0xF   0x00               DC8 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable25:
+   \        0x0   0x....'....        DC32     _ZN8Endstops16endstop_hit_bitsE
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable25_1:
+   \        0x0   0x....'....        DC32     echomagic
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable26:
+   \        0x0   0x....'....        DC32     mksCfg
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable26_1:
+   \        0x0   0x....'....        DC32     from_wifi_flag
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable26_2:
+   \        0x0   0x....'....        DC32     customizedSerial
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable26_3:
+   \        0x0   0x....'....        DC32     serial2
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable26_4:
+   \        0x0   0x....'....        DC32     gArrayGpioPin
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable26_5:
+   \        0x0   0x....'....        DC32     gArrayGpioPort
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable26_6:
+   \        0x0   0x....'....        DC32     mksTmp
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable26_7:
+   \        0x0   0x....'....        DC32     _ZN7Stepper13current_blockE
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable26_8:
+   \        0x0   0x....'....        DC32     _ZN8Endstops16endstop_hit_bitsE
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_5:
+   \        0x0   0x45 0x6E          DC8 "Endstops %c %c %c %c"
+   \              0x64 0x73    
+   \              0x74 0x6F    
+   \              0x70 0x73    
+   \              0x20 0x25    
+   \              0x63 0x20    
+   \              0x25 0x63    
+   \              0x20 0x25    
+   \              0x63 0x20    
+   \              0x25 0x63    
+   \              0x00         
+   \       0x15   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_6:
+   \        0x0   0x52 0x65          DC8 "Reporting endstop status\012"
+   \              0x70 0x6F    
+   \              0x72 0x74    
+   \              0x69 0x6E    
+   \              0x67 0x20    
+   \              0x65 0x6E    
+   \              0x64 0x73    
+   \              0x74 0x6F    
+   \              0x70 0x20    
+   \              0x73 0x74    
+   \              0x61 0x74    
+   \              0x75 0x73    
+   \              0x0A 0x00    
+   \       0x1A   0x00 0x00          DC8 0, 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_7:
+   \        0x0   0x78 0x5F          DC8 "x_min: "
+   \              0x6D 0x69    
+   \              0x6E 0x3A    
+   \              0x20 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_8:
+   \        0x0   0x54 0x52          DC8 "TRIGGERED"
+   \              0x49 0x47    
+   \              0x47 0x45    
+   \              0x52 0x45    
+   \              0x44 0x00    
+   \        0xA   0x00 0x00          DC8 0, 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_9:
+   \        0x0   0x6F 0x70          DC8 "open"
+   \              0x65 0x6E    
+   \              0x00         
+   \        0x5   0x00 0x00          DC8 0, 0, 0
+   \              0x00         
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_10:
+   \        0x0   0x78 0x5F          DC8 "x_max: "
+   \              0x6D 0x61    
+   \              0x78 0x3A    
+   \              0x20 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_11:
+   \        0x0   0x79 0x5F          DC8 "y_min: "
+   \              0x6D 0x69    
+   \              0x6E 0x3A    
+   \              0x20 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_12:
+   \        0x0   0x79 0x5F          DC8 "y_max: "
+   \              0x6D 0x61    
+   \              0x78 0x3A    
+   \              0x20 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_13:
+   \        0x0   0x7A 0x5F          DC8 "z_min: "
+   \              0x6D 0x69    
+   \              0x6E 0x3A    
+   \              0x20 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_14:
+   \        0x0   0x7A 0x5F          DC8 "z_max: "
+   \              0x6D 0x61    
+   \              0x78 0x3A    
+   \              0x20 0x00    
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_15:
+   \        0x0   0x7A 0x5F          DC8 "z_probe: "
+   \              0x70 0x72    
+   \              0x6F 0x62    
+   \              0x65 0x3A    
+   \              0x20 0x00    
+   \        0xA   0x00 0x00          DC8 0, 0
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ?_16:
+   \        0x0   0x66 0x69          DC8 "filament: "
+   \              0x6C 0x61    
+   \              0x6D 0x65    
+   \              0x6E 0x74    
+   \              0x3A 0x20    
+   \              0x00         
+   \        0xB   0x00               DC8 0
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+      40   Endstops::M119()
+        40   -> HAL_GPIO_ReadPin
+        40   -> MarlinSerial::print(char const *)
+         0   -> MarlinSerial::print(char, int)
+        40   -> MarlinSerial::print(char, int)
+         0   -> MarlinSerial::write(uint8_t)
+        40   -> MarlinSerial::write(uint8_t)
+        40   -> serialprintPGM(char const *)
+       0   Endstops::hit_on_purpose()
+       0   Endstops::init()
+      32   Endstops::report_state()
+         0   -> Endstops::hit_on_purpose()
+        32   -> MarlinSerial::print(char, int)
+        32   -> MarlinSerial::write(uint8_t)
+        32   -> Stepper::triggered_position_mm(AxisEnum)
+        32   -> lcd_status_printf_P(uint8_t, char const *, ...)
+        32   -> serial_echopair_P(char const *, float)
+        32   -> serialprintPGM(char const *)
+      16   Endstops::update()
+        16   -> HAL_GPIO_ReadPin
+        16   -> Stepper::endstop_triggered(AxisEnum)
+        16   -> Stepper::motor_direction(AxisEnum)
+        16   -> X_AXIS_HEAD()
+        16   -> X_MOVE_TEST()
+        16   -> Y_AXIS_HEAD()
+        16   -> Y_MOVE_TEST()
+        16   -> Z_AXIS_HEAD()
+        16   -> Z_MOVE_TEST()
+      16   MarlinSerial::print(char const *)
+         0   -> MarlinSerial::write(char const *)
+         0   -> package_to_wifi
+        16   -> strlen
+      16   MarlinSerial::write(char const *)
+         0   -> BSP_UartIfQueueTxData
+        16   -> strlen
+       8   MarlinSerial::write(uint8_t)
+         8   -> BSP_UartIfQueueTxData
+       0   Stepper::motor_direction(AxisEnum)
+       8   Stepper::triggered_position_mm(AxisEnum)
+         0   -> __aeabi_fmul
+         8   -> __aeabi_i2f
+       0   X_AXIS_HEAD()
+       8   X_MOVE_TEST()
+         8   -> Stepper::motor_direction(AxisEnum)
+       0   Y_AXIS_HEAD()
+       8   Y_MOVE_TEST()
+         8   -> Stepper::motor_direction(AxisEnum)
+       0   Z_AXIS_HEAD()
+       8   Z_MOVE_TEST()
+         8   -> Stepper::motor_direction(AxisEnum)
+       0   serialprintPGM(char const *)
+         0   -> MarlinSerial::print(char const *)
+         0   -> MarlinSerial::write(char const *)
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable18
+       4  ??DataTable18_1
+       4  ??DataTable18_2
+       4  ??DataTable18_3
+       4  ??DataTable25
+       4  ??DataTable25_1
+       4  ??DataTable26
+       4  ??DataTable26_1
+       4  ??DataTable26_2
+       4  ??DataTable26_3
+       4  ??DataTable26_4
+       4  ??DataTable26_5
+       4  ??DataTable26_6
+       4  ??DataTable26_7
+       4  ??DataTable26_8
+      16  ?_0
+       4  ?_1
+       8  ?_10
+       8  ?_11
+       8  ?_12
+       8  ?_13
+       8  ?_14
+      12  ?_15
+      12  ?_16
+       4  ?_2
+       4  ?_3
+       4  ?_4
+      24  ?_5
+      28  ?_6
+       8  ?_7
+      12  ?_8
+       8  ?_9
+     984  Endstops::M119()
+       1  Endstops::enabled
+       1  Endstops::enabled_globally
+       4  Endstops::endstop_hit_bits
+          Endstops::current_endstop_bits
+          Endstops::old_endstop_bits
+          Endstops::z_probe_enabled
+      12  Endstops::hit_on_purpose()
+       2  Endstops::init()
+     238  Endstops::report_state()
+     764  Endstops::update()
+      64  MarlinSerial::print(char const *)
+      28  MarlinSerial::write(char const *)
+      12  MarlinSerial::write(uint8_t)
+      32  Stepper::motor_direction(AxisEnum)
+      36  Stepper::triggered_position_mm(AxisEnum)
+      22  X_AXIS_HEAD()
+     330  X_MOVE_TEST()
+      22  Y_AXIS_HEAD()
+     330  Y_MOVE_TEST()
+      22  Z_AXIS_HEAD()
+     328  Z_MOVE_TEST()
+       1  endstops
+      36  serialprintPGM(char const *)
+
+ 
+     6 bytes in section .bss
+     1 byte  in section .data
+    16 bytes in section .rodata
+ 3 482 bytes in section .text
+ 
+ 3 262 bytes of CODE  memory (+ 220 bytes shared)
+    16 bytes of CONST memory
+     7 bytes of DATA  memory
+
+Errors: none
+Warnings: 12

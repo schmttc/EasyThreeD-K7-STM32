@@ -1,0 +1,253 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.22.1.15669/W32 for ARM       28/Dec/2020  21:37:06
+# Copyright 1999-2018 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  
+#        F:\nano\Middlewares\Third_Party\u8glib_arm_v1.17\src\u8g_cursor.c
+#    Command line =  
+#        -f C:\Users\ADMINI~1\AppData\Local\Temp\EW41A3.tmp
+#        (F:\nano\Middlewares\Third_Party\u8glib_arm_v1.17\src\u8g_cursor.c -D
+#        USE_HAL_DRIVER -D STM32F103xE -D MKS_ROBIN -D MARLIN -D __arm__ -D
+#        USE_MKS_WIFI --preprocess=s F:\nano\EWARM\mksRobinLite\List -lC
+#        F:\nano\EWARM\mksRobinLite\List -lA F:\nano\EWARM\mksRobinLite\List
+#        --diag_suppress Pa050 -o F:\nano\EWARM\mksRobinLite\Obj --no_unroll
+#        --no_inline --no_tbaa --no_scheduling --debug --endian=little
+#        --cpu=Cortex-M3 -e --char_is_signed --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\INC\c\DLib_Config_Full.h" -I F:\nano\EWARM/../Inc\ -I
+#        F:\nano\EWARM/../Src\ -I
+#        F:\nano\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\ -I
+#        F:\nano\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy\ -I
+#        F:\nano\EWARM/../Drivers/STM32F10x_StdPeriph_Driver/Inc\ -I
+#        F:\nano\EWARM/../Drivers/CMSIS/Device/ST/STM32F1xx/Include\ -I
+#        F:\nano\EWARM/../Drivers/CMSIS/Include\ -I
+#        F:\nano\EWARM/../Drivers/BSP/STM32MKS-3dPrinter\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/Common\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/l6474\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/at24cxx\ -I
+#        F:\nano\EWARM/../Drivers/BSP/Components/w25qxx\ -I
+#        F:\nano\EWARM/../Drivers/BSP/MotorControl\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/FatFs/src\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/FatFs/src/drivers\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/Marlin\ -I
+#        F:\nano\EWARM/../Middlewares/Third_Party/u8glib_arm_v1.17/src\ -I
+#        F:\nano\EWARM/../Middlewares/arduino\ -I
+#        F:\nano\EWARM/../Middlewares/arduino/avr\ -I
+#        F:\nano\EWARM/../Inc/Logo\ -Om --use_c++_inline -I "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 8.0\arm\CMSIS\Core\Include\" -I
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\CMSIS\DSP\Include\")
+#    Locale       =  C
+#    List file    =  F:\nano\EWARM\mksRobinLite\List\u8g_cursor.lst
+#    Object file  =  F:\nano\EWARM\mksRobinLite\Obj\u8g_cursor.o
+#
+###############################################################################
+
+F:\nano\Middlewares\Third_Party\u8glib_arm_v1.17\src\u8g_cursor.c
+      1          /*
+      2          
+      3            u8g_cursor.c
+      4          
+      5            Universal 8bit Graphics Library
+      6            
+      7            Copyright (c) 2011, olikraus@gmail.com
+      8            All rights reserved.
+      9          
+     10            Redistribution and use in source and binary forms, with or without modification, 
+     11            are permitted provided that the following conditions are met:
+     12          
+     13            * Redistributions of source code must retain the above copyright notice, this list 
+     14              of conditions and the following disclaimer.
+     15              
+     16            * Redistributions in binary form must reproduce the above copyright notice, this 
+     17              list of conditions and the following disclaimer in the documentation and/or other 
+     18              materials provided with the distribution.
+     19          
+     20            THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND 
+     21            CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+     22            INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+     23            MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+     24            DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
+     25            CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+     26            SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+     27            NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+     28            LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+     29            CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+     30            STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+     31            ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+     32            ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
+     33            
+     34            
+     35          */
+     36          
+     37          #include "u8g.h"
+     38          
+
+   \                                 In section .text, align 2, keep-with-next
+     39          void u8g_SetCursorFont(u8g_t *u8g, const u8g_pgm_uint8_t *cursor_font)
+     40          {
+     41            u8g->cursor_font = cursor_font;
+   \                     u8g_SetCursorFont: (+1)
+   \   00000000   0x60C1             STR      R1,[R0, #+12]
+     42          }
+   \   00000002   0x4770             BX       LR               ;; return
+     43          
+
+   \                                 In section .text, align 2, keep-with-next
+     44          void u8g_SetCursorStyle(u8g_t *u8g, uint8_t encoding)
+     45          {
+     46            u8g->cursor_encoding = encoding;
+   \                     u8g_SetCursorStyle: (+1)
+   \   00000000   0x7481             STRB     R1,[R0, #+18]
+     47          }
+   \   00000002   0x4770             BX       LR               ;; return
+     48          
+
+   \                                 In section .text, align 2, keep-with-next
+     49          void u8g_SetCursorColor(u8g_t *u8g, uint8_t fg, uint8_t bg)
+     50          {
+     51            u8g->cursor_bg_color = bg;
+   \                     u8g_SetCursorColor: (+1)
+   \   00000000   0x7442             STRB     R2,[R0, #+17]
+     52            u8g->cursor_fg_color = fg;
+   \   00000002   0x7401             STRB     R1,[R0, #+16]
+     53          }
+   \   00000004   0x4770             BX       LR               ;; return
+     54          
+
+   \                                 In section .text, align 2, keep-with-next
+     55          void u8g_SetCursorPos(u8g_t *u8g, u8g_uint_t cursor_x, u8g_uint_t cursor_y)
+     56          {
+     57            u8g->cursor_x = cursor_x;
+   \                     u8g_SetCursorPos: (+1)
+   \   00000000   0x7501             STRB     R1,[R0, #+20]
+     58            u8g->cursor_y = cursor_y;
+   \   00000002   0x7542             STRB     R2,[R0, #+21]
+     59          }
+   \   00000004   0x4770             BX       LR               ;; return
+     60          
+
+   \                                 In section .text, align 2, keep-with-next
+     61          void u8g_EnableCursor(u8g_t *u8g)
+     62          {
+     63              u8g->cursor_fn = u8g_DrawCursor;
+   \                     u8g_EnableCursor: (+1)
+   \   00000000   0x.... 0x....      ADR.W    R1,u8g_DrawCursor
+   \   00000004   0x6181             STR      R1,[R0, #+24]
+     64          }
+   \   00000006   0x4770             BX       LR               ;; return
+     65          
+
+   \                                 In section .text, align 2, keep-with-next
+     66          void u8g_DisableCursor(u8g_t *u8g)
+     67          {
+     68              u8g->cursor_fn = (u8g_draw_cursor_fn)0;
+   \                     u8g_DisableCursor: (+1)
+   \   00000000   0x2100             MOVS     R1,#+0
+   \   00000002   0x6181             STR      R1,[R0, #+24]
+     69          }
+   \   00000004   0x4770             BX       LR               ;; return
+     70          
+
+   \                                 In section .text, align 4, keep-with-next
+     71          void u8g_DrawCursor(u8g_t *u8g)
+     72          {
+   \                     u8g_DrawCursor: (+1)
+   \   00000000   0xB5F8             PUSH     {R3-R7,LR}
+   \   00000002   0x4604             MOV      R4,R0
+     73            const u8g_pgm_uint8_t *font;
+     74            uint8_t color;
+     75            uint8_t encoding = u8g->cursor_encoding;
+   \   00000004   0x7CA5             LDRB     R5,[R4, #+18]
+     76            
+     77            /* get current values */
+     78            color = u8g_GetColorIndex(u8g);
+   \   00000006   0x.... 0x....      BL       u8g_GetColorIndex
+   \   0000000A   0x4606             MOV      R6,R0
+     79            font = u8g->font;
+   \   0000000C   0x68A7             LDR      R7,[R4, #+8]
+     80            
+     81            /* draw cursor */
+     82            u8g->font = u8g->cursor_font;  
+   \   0000000E   0x68E0             LDR      R0,[R4, #+12]
+   \   00000010   0x60A0             STR      R0,[R4, #+8]
+     83            encoding++;
+   \   00000012   0x1C6D             ADDS     R5,R5,#+1
+     84            u8g_SetColorIndex(u8g, u8g->cursor_bg_color); 
+   \   00000014   0x7C61             LDRB     R1,[R4, #+17]
+   \   00000016   0x4620             MOV      R0,R4
+   \   00000018   0x.... 0x....      BL       u8g_SetColorIndex
+     85            /* 27. Jan 2013: replaced call to u8g_DrawGlyph with call to u8g_draw_glyph */
+     86            /* required, because y adjustment should not happen to the cursor fonts */
+     87            u8g_draw_glyph(u8g, u8g->cursor_x, u8g->cursor_y, encoding);
+   \   0000001C   0x462B             MOV      R3,R5
+   \   0000001E   0xB2DB             UXTB     R3,R3
+   \   00000020   0x7D62             LDRB     R2,[R4, #+21]
+   \   00000022   0x7D21             LDRB     R1,[R4, #+20]
+   \   00000024   0x4620             MOV      R0,R4
+   \   00000026   0x.... 0x....      BL       u8g_draw_glyph
+     88            encoding--;
+     89            u8g_SetColorIndex(u8g, u8g->cursor_fg_color); 
+   \   0000002A   0x7C21             LDRB     R1,[R4, #+16]
+   \   0000002C   0x4620             MOV      R0,R4
+   \   0000002E   0x.... 0x....      BL       u8g_SetColorIndex
+     90            /* 27. Jan 2013: replaced call to u8g_DrawGlyph with call to u8g_draw_glyph */
+     91            /* required, because y adjustment should not happen to the cursor fonts */
+     92            /* u8g_DrawGlyph(u8g, u8g->cursor_x, u8g->cursor_y, encoding); */
+     93            u8g_draw_glyph(u8g, u8g->cursor_x, u8g->cursor_y, encoding);
+   \   00000032   0x1E6B             SUBS     R3,R5,#+1
+   \   00000034   0x7D62             LDRB     R2,[R4, #+21]
+   \   00000036   0x7D21             LDRB     R1,[R4, #+20]
+   \   00000038   0x4620             MOV      R0,R4
+   \   0000003A   0x.... 0x....      BL       u8g_draw_glyph
+     94            
+     95            /* restore previous values */
+     96            u8g->font = font;
+   \   0000003E   0x60A7             STR      R7,[R4, #+8]
+     97            u8g_SetColorIndex(u8g, color); 
+   \   00000040   0x4631             MOV      R1,R6
+   \   00000042   0x4620             MOV      R0,R4
+   \   00000044   0xE8BD 0x40F4      POP      {R2,R4-R7,LR}
+   \   00000048   0x.... 0x....      B.W      u8g_SetColorIndex
+     98          }
+     99          
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   u8g_DisableCursor
+      24   u8g_DrawCursor
+        24   -> u8g_GetColorIndex
+         0   -> u8g_SetColorIndex
+        24   -> u8g_SetColorIndex
+        24   -> u8g_draw_glyph
+       0   u8g_EnableCursor
+       0   u8g_SetCursorColor
+       0   u8g_SetCursorFont
+       0   u8g_SetCursorPos
+       0   u8g_SetCursorStyle
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       6  u8g_DisableCursor
+      76  u8g_DrawCursor
+       8  u8g_EnableCursor
+       6  u8g_SetCursorColor
+       4  u8g_SetCursorFont
+       6  u8g_SetCursorPos
+       4  u8g_SetCursorStyle
+
+ 
+ 110 bytes in section .text
+ 
+ 110 bytes of CODE memory
+
+Errors: none
+Warnings: none
