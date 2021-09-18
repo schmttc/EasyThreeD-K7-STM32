@@ -424,8 +424,79 @@ void startOrResumeJob() {
  *  - Check if an idle but hot extruder needs filament extruded (EXTRUDER_RUNOUT_PREVENT)
  *  - Pulse FET_SAFETY_PIN if it exists
  */
-  static uint32_t filament_time = 0;                                              
-  static uint8_t filament_status=0;                                               
+
+
+// EasyThreeD
+
+
+inline void LoadFilament() {       
+  static uint32_t filament_time = 0;
+  static uint8_t filament_status = 0;
+  static uint8_t flag = 0;
+
+  if(printingIsActive()) {
+    return;
+  }
+
+  if(filament_status == 0) {                                 
+    if(READ(RETRACT_PIN) == HIGH || READ(FEED_PIN) == HIGH) {                                                                           
+      filament_status++;                                                        
+      filament_time = millis();                                                 
+    }                                                                           
+  }                                                                                 
+  else if(filament_status == 1) {                            
+    if(filament_time+20<millis()) {                                                                         
+      if(READ(RETRACT_PIN) == HIGH || READ(FEED_PIN) == HIGH) {                                                                       
+        thermalManager.setTargetHotend(210, 0);                               
+        filament_status++;                                                    
+      }                                                                       
+      else {                                                                       
+        filament_status = 0;                                                  
+      }                                                                       
+    }	                                                                        
+  }                                                                                 
+  else if(filament_status == 2) {                           
+    if( thermalManager.degHotend(0) > float(180)) {        // Don't compare float and int
+        filament_status++;
+    }                                                            
+    if(READ(RETRACT_PIN) == LOW && READ(FEED_PIN) == LOW) {                         
+      filament_status = 0;                                                          
+      thermalManager.disable_all_heaters();                                         
+    }                                                                             
+  }
+  else if(filament_status == 3) { //This doens't seem to want to execute
+    flag = 0;
+    if(READ(RETRACT_PIN) == HIGH) {  
+      if(flag == 0) { 
+        queue.inject_P("G91");            
+        queue.inject_P("G0 E+25  F180");  
+        queue.inject_P("G0 E-120 F180");  
+        queue.inject_P("M109 S210");      
+        queue.inject_P("M104 S0");        
+        flag = 1; 
+      } 
+    } 
+    if(READ(FEED_PIN) == HIGH) { 
+      if(flag ==0) { 
+              queue.inject_P("G91");  
+              queue.inject_P("G0 E+100 F120");  
+              queue.inject_P("G90");  
+              queue.inject_P("M109 S210");  
+              queue.inject_P("M104 S0");  
+              flag = 1; 
+      } 
+    } 
+    if(READ(RETRACT_PIN) == LOW && READ(FEED_PIN) == LOW) { 
+      flag = 0; 
+      filament_status = 0;  
+      quickstop_stepper();  
+      thermalManager.disable_all_heaters(); 
+    } 
+  }
+  else { 
+    filament_status = 0;  
+  }	
+} //End of LoadFilament
 
 
   inline void manage_inactivity(const bool no_stepper_sleep=false) {
@@ -669,94 +740,7 @@ void startOrResumeJob() {
       CHECK_CUSTOM_USER_BUTTON(25);
     #endif
   
-   #endif
-
-//EasyThreeD Nano
-  #define feed_filament() do { \
-      queue.inject_P("G91");  \
-      queue.inject_P("G0 E+100 F120");  \
-      queue.inject_P("G90");  \
-      queue.inject_P("M109 S210");  \
-      queue.inject_P("M104 S0");  \
-    }while(0)
-  #define retract_filament() do {       \
-      queue.inject_P("G91");            \
-      queue.inject_P("G0 E+25  F180");  \
-      queue.inject_P("G0 E-120 F180");  \
-      queue.inject_P("M109 S210");      \
-      queue.inject_P("M104 S0");        \
-    }while(0)
-
-
-
-  #define LoadFilament() do {                                                       \
-  if(filament_status == 0 && !printingIsActive()) {                                 \
-        if(READ(RETRACT_PIN) == HIGH || READ(FEED_PIN) == HIGH)                                                \
-        {                                                                           \
-          filament_status++;                                                        \
-          filament_time = millis();                                                 \
-        }                                                                           \
-  }                                                                                 \
-  else if(filament_status == 1 && !printingIsActive()) {                            \
-          if(filament_time+20<millis())                                             \
-          {                                                                         \
-            if(READ(RETRACT_PIN) == HIGH || READ(FEED_PIN) == HIGH)                                             \
-            {                                                                       \
-              thermalManager.setTargetHotend(210, 0);                             \
-              filament_status++;                                                    \
-            }                                                                       \
-            else                                                                    \
-            {                                                                       \
-              filament_status = 0;                                                  \
-            }                                                                       \
-          }	                                                                        \
-  }   \
-  else if(filament_status == 2  && !printingIsActive()) { \
-        if( thermalManager.degHotend(0) > 180) {          \
-          filament_status++;		                          \
-        }	                                                \
-        if(READ(RETRACT_PIN) == LOW && READ(FEED_PIN) == LOW) \
-        {                                                     \
-          filament_status = 0;                                \
-          thermalManager.disable_all_heaters();                \
-        }                                                     \
-      }                                                       \
-  else if(filament_status == 3  && !printingIsActive()) { \
-        static uint8_t flag = 0;  \
-        if(READ(RETRACT_PIN) == HIGH) {  \
-          if(flag == 0) { \
-            queue.inject_P("G91");            \
-            queue.inject_P("G0 E+25  F180");  \
-            queue.inject_P("G0 E-120 F180");  \
-            queue.inject_P("M109 S210");      \
-            queue.inject_P("M104 S0");        \
-            flag = 1; \
-          } \
-        } \
-        if(READ(FEED_PIN) == HIGH)  \
-        { \
-          if(flag ==0)  \
-          { \
-            queue.inject_P("G91");  \
-            queue.inject_P("G0 E+100 F120");  \
-            queue.inject_P("G90");  \
-            queue.inject_P("M109 S210");  \
-            queue.inject_P("M104 S0");  \
-            flag = 1; \
-          } \
-        } \
-        if(READ(RETRACT_PIN) == LOW && READ(FEED_PIN) == LOW) \
-        { \
-          flag = 0; \
-          filament_status = 0;  \
-          quickstop_stepper();  \
-          thermalManager.disable_all_heaters(); \
-        } \
-  } else  \
-      { \
-        filament_status = 0;  \
-      }	\
-  }while(0)
+  #endif
   
   LoadFilament();
 
