@@ -2028,7 +2028,7 @@
 //
 // G2/G3 Arc Support
 //
-//#define ARC_SUPPORT                 // Disable this feature to save ~3226 bytes
+#define ARC_SUPPORT                 // Disable this feature to save ~3226 bytes
 #if ENABLED(ARC_SUPPORT)
   #define MM_PER_ARC_SEGMENT      1 // (mm) Length (or minimum length) of each arc segment
   //#define ARC_SEGMENTS_PER_R    1 // Max segment length, MM_PER = Min
@@ -3758,7 +3758,7 @@
  * Up to 25 may be defined.
  */
 // Home Button
-//#define CUSTOM_USER_BUTTONS
+#define CUSTOM_USER_BUTTONS
 #if ENABLED(CUSTOM_USER_BUTTONS)
   #define BUTTON1_PIN PC3
   #if PIN_EXISTS(BUTTON1)
@@ -3772,7 +3772,8 @@
   #if PIN_EXISTS(BUTTON2)
     #define BUTTON2_HIT_STATE     HIGH
     #define BUTTON2_WHEN_PRINTING false
-    #define BUTTON2_GCODE         "M701"
+    //#define BUTTON2_GCODE         "M701"
+    #define BUTTON2_GCODE         "M104 S200\nG1 F100 E0"
     #define BUTTON2_DESC          "Load Filament"
   #endif
 
