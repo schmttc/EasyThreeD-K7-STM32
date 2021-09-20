@@ -428,12 +428,83 @@ void startOrResumeJob() {
 
 // EasyThreeD
 
+uint16_t blink_time = 0;  
+enum LED_STATUD
+{
+	LED_ON=4000,
+	LED_BLINK_0=2500,
+	LED_BLINK_1=1500,
+	LED_BLINK_2=1000,
+	
+	LED_BLINK_3=800,
+	LED_BLINK_4=500,
+	LED_BLINK_5=300,
+	LED_BLINK_6=150,
+	LED_BLINK_7=50,
+	LED_OFF = 0,
+};
+#define BLINK_LED(MS)  blink_time = MS
 
-inline void LoadFilament() {       
-  static uint32_t filament_time = 0;
-  static uint8_t filament_status = 0;
-  static uint8_t flag = 0;
+void BlinkLed(void)
+{
+	static uint32_t blink_time_previous=0;
+	static uint32_t blink_time_start=0;
+	
+	if(blink_time == 0) //OFF
+	{
+		WRITE(PRINT_LED_PIN,1);
+		return;
+	}
+	if(blink_time > 3000) //ON
+	{
+		WRITE(PRINT_LED_PIN,0);
+		return;
+	}
+	
+	if(blink_time_previous!=blink_time)
+	{
+		blink_time_previous = blink_time;
+		blink_time_start = millis();
+	}
+	if(millis()<blink_time_start+blink_time)
+	{
+		WRITE(PRINT_LED_PIN,0);
+	}
+	else if(millis()<blink_time_start+2*blink_time)
+	{
+		WRITE(PRINT_LED_PIN,1);
+	}
+	else
+	{
+		blink_time_start = millis();
+	}	
+}
 
+/*
+void feed_filament(void)
+{
+  queue.inject_P("G91\nG0 E+100 F120\nG90\nM109 S210\nM104 S0");  
+  queue.inject_P("G0 E+100 F120");  
+  queue.inject_P("G90");  
+  queue.inject_P("M109 S210");  
+  queue.inject_P("M104 S0");  
+}
+
+void retract_filament(void)
+{
+  //multiple commands on mulitple lines fail. Multiple commands on one line is OK.
+  queue.inject_P("G91\nG0 E+25  F180\nG0 E-120 F180\nM109 S210\nM104 S0");            
+  //queue.inject_P("G0 E+25  F180");  
+  //queue.inject_P("G0 E-120 F180");  
+  //queue.inject_P("M109 S210");      
+  //queue.inject_P("M104 S0");     
+}
+*/
+
+static uint32_t filament_time = 0;
+static uint8_t filament_status = 0;
+
+void LoadFilament(void) {       
   if(printingIsActive()) {
     return;
   }
@@ -443,61 +514,199 @@ inline void LoadFilament() {
       filament_status++;                                                        
       filament_time = millis();                                                 
     }                                                                           
-  }                                                                                 
-  else if(filament_status == 1) {                            
+  } else if(filament_status == 1) {                            
     if(filament_time+20<millis()) {                                                                         
       if(READ(RETRACT_PIN) == HIGH || READ(FEED_PIN) == HIGH) {                                                                       
-        thermalManager.setTargetHotend(210, 0);                               
+        thermalManager.setTargetHotend(210, 0);  
+        BLINK_LED(LED_BLINK_7);                             
         filament_status++;                                                    
-      }                                                                       
-      else {                                                                       
+      } else {                                                                       
         filament_status = 0;                                                  
       }                                                                       
     }	                                                                        
-  }                                                                                 
-  else if(filament_status == 2) {                           
-    if( thermalManager.degHotend(0) > float(180)) {        // Don't compare float and int
+  } else if(filament_status == 2) {
+    if( thermalManager.degHotend(0) >= float(180)) {        // Don't compare float and int
         filament_status++;
-    }                                                            
+        BLINK_LED(LED_BLINK_5);
+    }
     if(READ(RETRACT_PIN) == LOW && READ(FEED_PIN) == LOW) {                         
+      BLINK_LED(LED_ON);
       filament_status = 0;                                                          
       thermalManager.disable_all_heaters();                                         
     }                                                                             
-  }
-  else if(filament_status == 3) { //This doens't seem to want to execute
-    flag = 0;
-    if(READ(RETRACT_PIN) == HIGH) {  
+  } else if(filament_status == 3) { 
+    static uint8_t flag = 0; 
+    if(READ(RETRACT_PIN) == HIGH) { 
       if(flag == 0) { 
-        queue.inject_P("G91");            
-        queue.inject_P("G0 E+25  F180");  
-        queue.inject_P("G0 E-120 F180");  
-        queue.inject_P("M109 S210");      
-        queue.inject_P("M104 S0");        
+        queue.inject_P("G91\nG0 E+25  F180\nG0 E-120 F180\nM109 S210\nM104 S0");            
+        BLINK_LED(LED_BLINK_5);
         flag = 1; 
       } 
-    } 
+    }
     if(READ(FEED_PIN) == HIGH) { 
       if(flag ==0) { 
-              queue.inject_P("G91");  
-              queue.inject_P("G0 E+100 F120");  
-              queue.inject_P("G90");  
-              queue.inject_P("M109 S210");  
-              queue.inject_P("M104 S0");  
-              flag = 1; 
+        queue.inject_P("G91\nG0 E+100 F120\nG90\nM109 S210\nM104 S0");  
+        BLINK_LED(LED_BLINK_5);
+        flag = 1; 
       } 
-    } 
+    }
     if(READ(RETRACT_PIN) == LOW && READ(FEED_PIN) == LOW) { 
       flag = 0; 
       filament_status = 0;  
       quickstop_stepper();  
+      BLINK_LED(LED_ON);
       thermalManager.disable_all_heaters(); 
     } 
-  }
-  else { 
+  } else { 
     filament_status = 0;  
   }	
 } //End of LoadFilament
 
+uint8_t print_key_flag = 0; 
+uint8_t print_pause = 0;
+
+/*
+inline void PrintOneKey(void)
+{
+	static uint8_t key_status=0;
+	static uint32_t key_time = 0;
+	//static uint8_t pause_flag = 0;
+  static uint8_t print_flag = 0;
+
+	if(key_status == 0)  
+	{
+		if(READ(PRINTER_PIN) == HIGH)//!READ(PRINT_PIN))
+		{
+			key_time = millis();
+			key_status = 1;
+		}
+      if(print_flag!=0 && !printingIsActive())
+		{
+			BLINK_LED(LED_ON);
+      print_key_flag = 0;
+      print_flag = 0;
+			
+		}
+	}
+	else if(key_status == 1) 
+	{
+		if(key_time+30<millis())
+		{
+			if(READ(PRINTER_PIN) == HIGH)//!READ(PRINT_PIN)) 
+			{
+				key_time = millis();
+				key_status = 2;
+			}
+			else
+			{
+				key_status = 0;
+			}
+		}	
+	}
+	else if(key_status == 2)  
+	{
+		if(READ(PRINTER_PIN))//READ(PRINT_PIN))
+		{
+			if(key_time + 1200 > millis()) //short press
+			{
+				if(print_key_flag == 0)  //SD print
+				{
+					if(!printingIsActive()) 
+					{
+            print_flag = 1;
+						//card.initsd();
+						if(!card.isMounted)
+						{
+							BLINK_LED(LED_OFF); 
+							key_status = 0;
+							key_time = 0;
+							return;
+						}
+						uint16_t filecnt = card.countFilesInWorkDir();//card.getfilecount(card.path);
+						if(filecnt==0) return;
+ 						card.getfilename_sorted(filecnt); //card.getfilename(filecnt,card.path);
+            card.openAndPrintFile(card.filename);
+//						card.openFile(card.filename,true);
+//						card.startFileprint();
+						
+						BLINK_LED(LED_BLINK_2); 
+						print_key_flag = 1;
+					}
+				}
+				else if(print_key_flag == 1)  //pause
+				{
+			
+                                        //MYSERIAL.print("pause");
+					BLINK_LED(LED_ON);	
+					//card.pauseSDPrint();
+                                //nano_sdcard_pause();
+					queue.inject_P("M25");
+          print_pause = 1;
+					print_key_flag = 2;
+				}
+				else if(print_key_flag == 2)  //back
+				{
+                                        //MYSERIAL.print("back");
+//					if(temperature_protect_last > 60)
+//					{
+//						thermalManager.target_temperature[0]= temperature_protect_last;
+//						temperature_protect_last = 0;
+//					}
+					BLINK_LED(LED_BLINK_0);
+					//card.startFileprint();
+          //                              nano_sdcard_resume();
+					queue.inject_P("M24");
+          print_pause = 0;
+					print_key_flag = 1;
+				}
+				else
+				{
+					print_key_flag = 0;
+				}		
+				
+			}
+			else 
+			{
+				if(print_key_flag==0) //long press Z up 10mm
+				{
+					queue.inject_P("G91");
+					queue.inject_P("G0 Z+10 F600");
+					queue.inject_P("G90");
+				}
+				else 
+				{	if(wait_for_heatup)
+                                        {
+                                            wait_for_heatup=false;
+                                        }
+					//cancel_heatup = true; //disable heat					
+					//card.isPrinting = false;
+                                        //card.sdprintflag = false;
+					//card.closefile();; // switch off all heaters.
+                                        //nano_sdcard_stop();
+					//quickstop_stepper();//quickStop();
+                                        print_flag = 0;
+					BLINK_LED(LED_OFF);
+				}
+				//while(blocks_queued()); 
+				//disable_x();
+				//disable_y();
+                                planner.synchronize();
+                                //disable_X();
+                                //disable_Y();
+                                void disableStepperDrivers();
+				print_key_flag = 0;	
+			}
+			key_status = 0;
+			key_time = 0;
+		}	
+	}
+	else
+	{
+		key_status = 0;
+		key_time = 0;
+	}
+} // End PrintKey
+*/
 
   inline void manage_inactivity(const bool no_stepper_sleep=false) {
 
@@ -741,9 +950,6 @@ inline void LoadFilament() {
     #endif
   
   #endif
-  
-  LoadFilament();
-
 
   TERN_(USE_CONTROLLER_FAN, controllerFan.update()); // Check if fan should be turned on to cool stepper drivers down
 
@@ -840,6 +1046,12 @@ inline void LoadFilament() {
       WRITE(FET_SAFETY_PIN, FET_SAFETY_INVERTED);
     }
   #endif
+
+  
+  LoadFilament();
+  BlinkLed();
+
+
 }
 
 /**
