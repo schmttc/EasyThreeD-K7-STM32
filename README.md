@@ -18,15 +18,20 @@ Original firmware source code. This is a MKS modified version of Marlin 1.1.1, f
 ## Folder: Marlin2
 Files relating to Marlin 2 firmware, WIP.
 - Compile using PlatformIO, board "mks_robin_lite_maple"
-- Physical buttons and LED currently not functional, printer must be controlled via USB cable
+- Physical buttons and LED currently not fully functional, printer must be controlled via USB cable
+- Home button and filament feed/retract slider now functional
+- LED on main button semi-functional
 - Serial baud rate is set to 115200, matching the original firmware
 ### EasyThreeD K7 configuration files for Marlin 2.0.9
 Default Marlin 2.0.9 configuration files, modified to match those in the manufacturer's 1.1.1 firmware
 - Configuration.h
 - Configuration_adv.h
+- pins_MKS_ROBIN_LITE.h - Pin definitions for EXP1 port reassigned from LCD to Buttons
+- MarlinCore.cpp - Includes additional functions to handle advanced button behaviour
 
 ### Notes on Marlin 2 Config
 - Make sure 'VALIDATE_HOMING_ENDSTOPS' is disabled, as we do not have X and Y stoppers to provide feedback, and the printer will halt.
+- Multiple calls in quick succession to queue.inject_P() will fail. Use a single call, with multiple commands seprated by "\n"
 
 ## Marlin 2 Button Functionality
 As noted above, buttons are not currently functional. These files from the original source code relate to the physical buttons. The intention is to configure Marlin's custom buttons in 'Configuration_adv.h' to provide this functionality.
