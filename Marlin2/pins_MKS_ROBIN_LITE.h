@@ -148,7 +148,7 @@
 #define SD_SS_PIN                           PA15
 
 
-//EXP1 replace lcd to keyboardk for EasyThreeD NANO, K7
+//EXP1 replace lcd to keys for EasyThreeD NANO, K7
   #if ENABLED(EASYTHREED_NANO)
     #define PRINT_HOME_PIN PC3 //PCin(3)
     #define HOME_GND_PIN PC2 //PCout(2)

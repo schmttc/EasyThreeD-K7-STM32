@@ -480,26 +480,6 @@ void BlinkLed(void)
 	}	
 }
 
-/*
-void feed_filament(void)
-{
-  queue.inject_P("G91\nG0 E+100 F120\nG90\nM109 S210\nM104 S0");  
-  queue.inject_P("G0 E+100 F120");  
-  queue.inject_P("G90");  
-  queue.inject_P("M109 S210");  
-  queue.inject_P("M104 S0");  
-}
-
-void retract_filament(void)
-{
-  //multiple commands on mulitple lines fail. Multiple commands on one line is OK.
-  queue.inject_P("G91\nG0 E+25  F180\nG0 E-120 F180\nM109 S210\nM104 S0");            
-  //queue.inject_P("G0 E+25  F180");  
-  //queue.inject_P("G0 E-120 F180");  
-  //queue.inject_P("M109 S210");      
-  //queue.inject_P("M104 S0");     
-}
-*/
 
 static uint32_t filament_time = 0;
 static uint8_t filament_status = 0;
@@ -510,13 +490,13 @@ void LoadFilament(void) {
   }
 
   if(filament_status == 0) {                                 
-    if(READ(RETRACT_PIN) == HIGH || READ(FEED_PIN) == HIGH) {                                                                           
+    if((!READ(RETRACT_PIN))||(!READ(FEED_PIN))) {                                                                           
       filament_status++;                                                        
       filament_time = millis();                                                 
     }                                                                           
   } else if(filament_status == 1) {                            
     if(filament_time+20<millis()) {                                                                         
-      if(READ(RETRACT_PIN) == HIGH || READ(FEED_PIN) == HIGH) {                                                                       
+      if((!READ(RETRACT_PIN))||(!READ(FEED_PIN))) {                 // (!READ(RETRACT_PIN))||(!READ(FEED_PIN))
         thermalManager.setTargetHotend(210, 0);  
         BLINK_LED(LED_BLINK_7);                             
         filament_status++;                                                    
@@ -525,35 +505,36 @@ void LoadFilament(void) {
       }                                                                       
     }	                                                                        
   } else if(filament_status == 2) {
-    if( thermalManager.degHotend(0) >= float(180)) {        // Don't compare float and int
+    if( thermalManager.degHotend(0) >= float(180)) { 
         filament_status++;
         BLINK_LED(LED_BLINK_5);
     }
-    if(READ(RETRACT_PIN) == LOW && READ(FEED_PIN) == LOW) {                         
+    if((READ(RETRACT_PIN))&&(READ(FEED_PIN))) {                         
       BLINK_LED(LED_ON);
       filament_status = 0;                                                          
       thermalManager.disable_all_heaters();                                         
     }                                                                             
   } else if(filament_status == 3) { 
     static uint8_t flag = 0; 
-    if(READ(RETRACT_PIN) == HIGH) { 
+    if(!READ(RETRACT_PIN)) { 
       if(flag == 0) { 
-        queue.inject_P("G91\nG0 E+25  F180\nG0 E-120 F180\nM109 S210\nM104 S0");            
+        queue.inject_P("G91\nG0 E+10  F180\nG0 E-120 F180\nM104 S0");            
         BLINK_LED(LED_BLINK_5);
         flag = 1; 
       } 
     }
-    if(READ(FEED_PIN) == HIGH) { 
+    if(!READ(FEED_PIN)) { 
       if(flag ==0) { 
-        queue.inject_P("G91\nG0 E+100 F120\nG90\nM109 S210\nM104 S0");  
+        queue.inject_P("G91\nG0 E+100 F120\nM104 S0");
         BLINK_LED(LED_BLINK_5);
         flag = 1; 
       } 
     }
-    if(READ(RETRACT_PIN) == LOW && READ(FEED_PIN) == LOW) { 
+    if((READ(RETRACT_PIN))&&(READ(FEED_PIN))) { 
       flag = 0; 
       filament_status = 0;  
       quickstop_stepper();  
+      planner.cleaning_buffer_counter=2;
       BLINK_LED(LED_ON);
       thermalManager.disable_all_heaters(); 
     } 
@@ -565,8 +546,7 @@ void LoadFilament(void) {
 uint8_t print_key_flag = 0; 
 uint8_t print_pause = 0;
 
-/*
-inline void PrintOneKey(void)
+void PrintOneKey(void)
 {
 	static uint8_t key_status=0;
 	static uint32_t key_time = 0;
@@ -575,7 +555,7 @@ inline void PrintOneKey(void)
 
 	if(key_status == 0)  
 	{
-		if(READ(PRINTER_PIN) == HIGH)//!READ(PRINT_PIN))
+		if(!PRINTER_PIN)
 		{
 			key_time = millis();
 			key_status = 1;
@@ -592,7 +572,7 @@ inline void PrintOneKey(void)
 	{
 		if(key_time+30<millis())
 		{
-			if(READ(PRINTER_PIN) == HIGH)//!READ(PRINT_PIN)) 
+			if(!PRINTER_PIN)//!READ(PRINT_PIN)) 
 			{
 				key_time = millis();
 				key_status = 2;
@@ -605,7 +585,7 @@ inline void PrintOneKey(void)
 	}
 	else if(key_status == 2)  
 	{
-		if(READ(PRINTER_PIN))//READ(PRINT_PIN))
+		if(READ(PRINTER_PIN) == HIGH)//READ(PRINT_PIN))
 		{
 			if(key_time + 1200 > millis()) //short press
 			{
@@ -614,7 +594,7 @@ inline void PrintOneKey(void)
 					if(!printingIsActive()) 
 					{
             print_flag = 1;
-						//card.initsd();
+						card.mount();
 						if(!card.isMounted)
 						{
 							BLINK_LED(LED_OFF); 
@@ -669,9 +649,9 @@ inline void PrintOneKey(void)
 			{
 				if(print_key_flag==0) //long press Z up 10mm
 				{
-					queue.inject_P("G91");
-					queue.inject_P("G0 Z+10 F600");
-					queue.inject_P("G90");
+					queue.inject_P("G91\nG0 Z+10 F600\nG90");
+					//queue.inject_P("G0 Z+10 F600");
+					//queue.inject_P("G90");
 				}
 				else 
 				{	if(wait_for_heatup)
@@ -706,7 +686,7 @@ inline void PrintOneKey(void)
 		key_time = 0;
 	}
 } // End PrintKey
-*/
+
 
   inline void manage_inactivity(const bool no_stepper_sleep=false) {
 
@@ -1047,10 +1027,10 @@ inline void PrintOneKey(void)
     }
   #endif
 
-  
+  //EasyThreeD Nano
   LoadFilament();
   BlinkLed();
-
+  PrintOneKey();
 
 }
 
@@ -1920,14 +1900,14 @@ void setup() {
   #endif
 
   #if ENABLED(EASYTHREED_NANO) //EXP1 replace LCD to physical buttons for EasyThreeD NANO, K7
-    SET_INPUT_PULLDOWN(PC3);
-    OUT_WRITE(PC2,HIGH);
-    SET_INPUT_PULLDOWN(PB3); //Feed
-    SET_INPUT_PULLDOWN(PB5); //Retract
-    OUT_WRITE(PB4,HIGH);
-    OUT_WRITE(PC1,HIGH);
-    SET_INPUT_PULLDOWN(PA11);
-    OUT_WRITE(PD2,HIGH);
+    SET_INPUT_PULLUP(PRINT_HOME_PIN);
+    SET_OUTPUT(HOME_GND_PIN);
+    SET_INPUT_PULLUP(FEED_PIN); //Feed
+    SET_INPUT_PULLUP(RETRACT_PIN); //Retract
+    SET_OUTPUT(FEED_GND_PIN);
+    SET_OUTPUT(RETRACT_GND_PIN);
+    SET_INPUT_PULLUP(PRINTER_PIN); //Play
+    SET_OUTPUT(PRINT_LED_PIN);
   #endif
 
 

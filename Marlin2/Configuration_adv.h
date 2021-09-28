@@ -3762,7 +3762,7 @@
 #if ENABLED(CUSTOM_USER_BUTTONS)
   #define BUTTON1_PIN PC3
   #if PIN_EXISTS(BUTTON1)
-    #define BUTTON1_HIT_STATE     HIGH      // State of the triggered button. NC=LOW. NO=HIGH.
+    #define BUTTON1_HIT_STATE     LOW      // State of the triggered button. NC=LOW. NO=HIGH.
     #define BUTTON1_WHEN_PRINTING false     // Button allowed to trigger during printing?
     #define BUTTON1_GCODE         "G28"
     #define BUTTON1_DESC          "Homing"  // Optional string to set the LCD status
