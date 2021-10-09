@@ -21,13 +21,15 @@ Modified files relating to Marlin 2 firmware, WIP
 - Physical buttons and LED currently not fully functional, printer must be controlled via USB cable
 - Home button and filament feed/retract slider functional
 - LED on main button semi-functional
+- Long press print button to raise print head 10mm while not printing - is functional
+- Short press print button to print most recent file on SD card - is functional
 - Serial baud rate is set to 115200, matching the original firmware
 ### EasyThreeD K7 configuration files for Marlin 2.0.9
-Default Marlin 2.0.9 configuration files, modified to mirror those in the manufacturer's 1.1.1 firmware
-- Configuration.h
-- Configuration_adv.h
+Marlin 2.0.9 configuration files, modified to mirror those in the manufacturer's 1.1.1 firmware
+- Configuration.h - configured for EasyThreeD K7
+- Configuration_adv.h - configured for EasyThreeD K7
 - src\pins\stm32f1\pins_MKS_ROBIN_LITE.h - Added pin definitions for EXP1 port reassigned from LCD to Buttons
-- src\MarlinCore.cpp - Includes additional functions to handle button behaviour
+- src\MarlinCore.cpp - Includes additional functions to handle complex button behaviour
 
 ### Notes on Marlin 2 Config
 - Make sure 'VALIDATE_HOMING_ENDSTOPS' is disabled, as we do not have X and Y stoppers to provide feedback, and the printer will halt.
