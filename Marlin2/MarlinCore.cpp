@@ -496,7 +496,7 @@ void LoadFilament(void) {
     }                                                                           
   } else if(filament_status == 1) {                            
     if(filament_time+20<millis()) {                                                                         
-      if((!READ(RETRACT_PIN))||(!READ(FEED_PIN))) {                 // (!READ(RETRACT_PIN))||(!READ(FEED_PIN))
+      if((!READ(RETRACT_PIN))||(!READ(FEED_PIN))) { 
         thermalManager.setTargetHotend(210, 0);  
         BLINK_LED(LED_BLINK_7);                             
         filament_status++;                                                    
@@ -555,7 +555,7 @@ void PrintOneKey(void)
 
 	if(key_status == 0)  
 	{
-		if(!PRINTER_PIN)
+		if(!READ(PRINTER_PIN))
 		{
 			key_time = millis();
 			key_status = 1;
@@ -565,14 +565,13 @@ void PrintOneKey(void)
 			BLINK_LED(LED_ON);
       print_key_flag = 0;
       print_flag = 0;
-			
 		}
 	}
 	else if(key_status == 1) 
 	{
 		if(key_time+30<millis())
 		{
-			if(!PRINTER_PIN)//!READ(PRINT_PIN)) 
+			if(!READ(PRINTER_PIN)) 
 			{
 				key_time = millis();
 				key_status = 2;
@@ -585,48 +584,47 @@ void PrintOneKey(void)
 	}
 	else if(key_status == 2)  
 	{
-		if(READ(PRINTER_PIN) == HIGH)//READ(PRINT_PIN))
+		if(READ(PRINTER_PIN))
 		{
 			if(key_time + 1200 > millis()) //short press
 			{
-				if(print_key_flag == 0)  //SD print
+				if(print_key_flag == 0)  
 				{
 					if(!printingIsActive()) 
 					{
             print_flag = 1;
 						card.mount();
-						if(!card.isMounted)
+            if(!card.isMounted)
 						{
 							BLINK_LED(LED_OFF); 
 							key_status = 0;
 							key_time = 0;
+              print_flag = 0;
 							return;
 						}
-						uint16_t filecnt = card.countFilesInWorkDir();//card.getfilecount(card.path);
-						if(filecnt==0) return;
- 						card.getfilename_sorted(filecnt); //card.getfilename(filecnt,card.path);
+
+            card.ls(); // we need to have listed the files before a filescan be selected
+						uint16_t filecnt = card.countFilesInWorkDir();  //card.getfilecount(card.path);
+            if(filecnt==0) return;
+            card.selectFileByIndex(filecnt);
             card.openAndPrintFile(card.filename);
-//						card.openFile(card.filename,true);
-//						card.startFileprint();
-						
 						BLINK_LED(LED_BLINK_2); 
-						print_key_flag = 1;
+						print_key_flag = 1; 
 					}
 				}
-				else if(print_key_flag == 1)  //pause
+				else if(print_key_flag == 1)  //pause does not work while bed or hotend is pre-heating?
 				{
-			
-                                        //MYSERIAL.print("pause");
+			   	//MYSERIAL.print("pause");
 					BLINK_LED(LED_ON);	
-					//card.pauseSDPrint();
-                                //nano_sdcard_pause();
-					queue.inject_P("M25");
+					card.pauseSDPrint();
+          //nano_sdcard_pause(); 
+					//queue.inject_P("M25");
           print_pause = 1;
 					print_key_flag = 2;
 				}
-				else if(print_key_flag == 2)  //back
+				else if(print_key_flag == 2)  //back resume - print
 				{
-                                        //MYSERIAL.print("back");
+            //MYSERIAL.print("back");
 //					if(temperature_protect_last > 60)
 //					{
 //						thermalManager.target_temperature[0]= temperature_protect_last;
@@ -636,7 +634,7 @@ void PrintOneKey(void)
 					//card.startFileprint();
           //                              nano_sdcard_resume();
 					queue.inject_P("M24");
-          print_pause = 0;
+         	print_pause = 0;
 					print_key_flag = 1;
 				}
 				else
@@ -655,16 +653,21 @@ void PrintOneKey(void)
 				}
 				else 
 				{	if(wait_for_heatup)
-                                        {
-                                            wait_for_heatup=false;
-                                        }
+            {
+              wait_for_heatup=false;
+            }
 					//cancel_heatup = true; //disable heat					
 					//card.isPrinting = false;
-                                        //card.sdprintflag = false;
+          //card.sdprintflag = false;
 					//card.closefile();; // switch off all heaters.
-                                        //nano_sdcard_stop();
+          //nano_sdcard_stop();
 					//quickstop_stepper();//quickStop();
-                                        print_flag = 0;
+
+          quickstop_stepper();  
+          planner.cleaning_buffer_counter=2;
+          thermalManager.disable_all_heaters(); 
+          
+          print_flag = 0;
 					BLINK_LED(LED_OFF);
 				}
 				//while(blocks_queued()); 
