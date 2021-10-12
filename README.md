@@ -4,46 +4,37 @@ The K7 printer has been sold with either an 8-bit or 32-bit board, with the latt
 
 The board's bootloader is proprietary by MKS, which reads a binary firmware file mksLite.bin, and a configuration file lite_cfg.txt from the SD card on first boot. After a short time (<30s) the firmware is written to the board, and the files on the SD card renamed *.CUR.
 
-# Index
+# Branch: master
+This is a clone of Marlin 2.0.9.1, modified to include the button functionality for the EasyThreeD K7/Nano. Button functionality is applied in a non-standard manner and so this can not be directly rolled into the main Marlin codebase.
 
-## Folder: EasyThreeDSupplied
-Files supplied by the manufacturer, EasyThreeD.
-### Default firmware
-Binary firmware and MKS configuration file
-### Hotbed firmware
-Binary firmware and MKS configuration file supplied with the optional mainboard controlled hotbed. The only difference I can see is in the configuration file hotbed option.
-### mksRobinLite_nano
-Original firmware source code. This is a MKS modified version of Marlin 1.1.1, further customised by EasyThreeD.
+For the original firmware source and binaries based on Marlin 1.1.1 supplied by the manufacturer, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Original-Firmware-Marlin-1.1.1
 
-## Folder: Marlin2
-Modified files relating to Marlin 2 firmware, WIP
+## Overview
 - Compile using PlatformIO, board "mks_robin_lite_maple"
 - Physical buttons and LED currently not fully functional, printer must be controlled via USB cable
-- Home button and filament feed/retract slider functional
+- Home button and filament feed/retract slider - is functional
 - LED on main button semi-functional
 - Long press print button to raise print head 10mm while not printing - is functional
 - Short press print button to print most recent file on SD card - is functional
 - Serial baud rate is set to 115200, matching the original firmware
-### EasyThreeD K7 configuration files for Marlin 2.0.9
-Marlin 2.0.9 configuration files, modified to mirror those in the manufacturer's 1.1.1 firmware
+
+## Modified Files
+Marlin 2.0.9.1 configuration files, modified to mirror those in the manufacturer's 1.1.1 firmware
 - Configuration.h - configured for EasyThreeD K7
 - Configuration_adv.h - configured for EasyThreeD K7
 - src\pins\stm32f1\pins_MKS_ROBIN_LITE.h - Added pin definitions for EXP1 port reassigned from LCD to Buttons
 - src\MarlinCore.cpp - Includes additional functions to handle complex button behaviour
 
-### Notes on Marlin 2 Config
+## Notes on Marlin 2 Config
 - Make sure 'VALIDATE_HOMING_ENDSTOPS' is disabled, as we do not have X and Y stoppers to provide feedback, and the printer will halt.
 - Multiple calls in quick succession to queue.inject_P() will fail. Use a single call, with multiple commands seprated by "\n"
 
-## Marlin 2 Button Functionality
-As noted above, buttons are not all currently functional. These files from the original source code relate to the physical buttons. The intention is to configure Marlin's custom buttons in 'Configuration_adv.h' to provide this functionality.
-
-### EasyThreeDSupplied\mksRobinLite_nano\inc\main.h
+## References to button code in original firmware
+https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Original-Firmware-Marlin-1.1.1/mksRobinLite_nano/Inc/main.h
 EXP1 (LCD Expansion Port) pins defined for use by physical buttons. Search for line "//EXP1 FOR NANO" at bottom of file.
 
-### EasyThreeDSupplied\mksRobinLite_nano\Src\nano.cpp
+https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Original-Firmware-Marlin-1.1.1/mksRobinLite_nano/Src/nano.cpp
 Contains the custom MKS code defining button behaviour. Some of the macros used here are an older style, and no longer compatible with Marlin 2.
-
 
 
 ## License
