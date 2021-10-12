@@ -63,20 +63,20 @@
 #include "sd/cardreader.h"
 
 #include "lcd/marlinui.h"
-#if HAS_TOUCH_BUTTONS
+#if HAS_TOUCH_
   #include "lcd/touch/touch_buttons.h"
 #endif
 
 #if HAS_TFT_LVGL_UI
   #include "lcd/extui/mks_ui/tft_lvgl_configuration.h"
   #include "lcd/extui/mks_ui/draw_ui.h"
-  #include "lcd/extui/mks_ui/mks_hardware_test.h"
+  #include "lcd/extui/mks_ui/mks_hardware.h"
   #include <lvgl.h>
 #endif
 
 #if ENABLED(DWIN_CREALITY_LCD)
-  #include "lcd/dwin/e3v2/dwin.h"
-  #include "lcd/dwin/e3v2/rotary_encoder.h"
+  #include "lcd/e3v2/creality/dwin.h"
+  #include "lcd/e3v2/creality/rotary_encoder.h"
 #endif
 
 #if ENABLED(EXTENSIBLE_UI)
@@ -135,7 +135,7 @@
   #include "module/servo.h"
 #endif
 
-#if ENABLED(HAS_MOTOR_CURRENT_DAC)
+#if HAS_MOTOR_CURRENT_DAC
   #include "feature/dac/stepper_dac.h"
 #endif
 
@@ -424,7 +424,274 @@ void startOrResumeJob() {
  *  - Check if an idle but hot extruder needs filament extruded (EXTRUDER_RUNOUT_PREVENT)
  *  - Pulse FET_SAFETY_PIN if it exists
  */
-inline void manage_inactivity(const bool no_stepper_sleep=false) {
+
+
+// EasyThreeD
+
+uint16_t blink_time = 0;  
+enum LED_STATUD
+{
+	LED_ON=4000,
+	LED_BLINK_0=2500,
+	LED_BLINK_1=1500,
+	LED_BLINK_2=1000,
+	
+	LED_BLINK_3=800,
+	LED_BLINK_4=500,
+	LED_BLINK_5=300,
+	LED_BLINK_6=150,
+	LED_BLINK_7=50,
+	LED_OFF = 0,
+};
+#define BLINK_LED(MS)  blink_time = MS
+
+void BlinkLed(void)
+{
+	static uint32_t blink_time_previous=0;
+	static uint32_t blink_time_start=0;
+	
+	if(blink_time == 0) //OFF
+	{
+		WRITE(PRINT_LED_PIN,1);
+		return;
+	}
+	if(blink_time > 3000) //ON
+	{
+		WRITE(PRINT_LED_PIN,0);
+		return;
+	}
+	
+	if(blink_time_previous!=blink_time)
+	{
+		blink_time_previous = blink_time;
+		blink_time_start = millis();
+	}
+	if(millis()<blink_time_start+blink_time)
+	{
+		WRITE(PRINT_LED_PIN,0);
+	}
+	else if(millis()<blink_time_start+2*blink_time)
+	{
+		WRITE(PRINT_LED_PIN,1);
+	}
+	else
+	{
+		blink_time_start = millis();
+	}	
+}
+
+
+static uint32_t filament_time = 0;
+static uint8_t filament_status = 0;
+
+void LoadFilament(void) {       
+  if(printingIsActive()) {
+    return;
+  }
+
+  if(filament_status == 0) {                                 
+    if((!READ(RETRACT_PIN))||(!READ(FEED_PIN))) {                                                                           
+      filament_status++;                                                        
+      filament_time = millis();                                                 
+    }                                                                           
+  } else if(filament_status == 1) {                            
+    if(filament_time+20<millis()) {                                                                         
+      if((!READ(RETRACT_PIN))||(!READ(FEED_PIN))) { 
+        thermalManager.setTargetHotend(210, 0);  
+        BLINK_LED(LED_BLINK_7);                             
+        filament_status++;                                                    
+      } else {                                                                       
+        filament_status = 0;                                                  
+      }                                                                       
+    }	                                                                        
+  } else if(filament_status == 2) {
+    if( thermalManager.degHotend(0) >= float(180)) { 
+        filament_status++;
+        BLINK_LED(LED_BLINK_5);
+    }
+    if((READ(RETRACT_PIN))&&(READ(FEED_PIN))) {                         
+      BLINK_LED(LED_ON);
+      filament_status = 0;                                                          
+      thermalManager.disable_all_heaters();                                         
+    }                                                                             
+  } else if(filament_status == 3) { 
+    static uint8_t flag = 0; 
+    if(!READ(RETRACT_PIN)) { 
+      if(flag == 0) { 
+        queue.inject_P("G91\nG0 E+10  F180\nG0 E-120 F180\nM104 S0");            
+        BLINK_LED(LED_BLINK_5);
+        flag = 1; 
+      } 
+    }
+    if(!READ(FEED_PIN)) { 
+      if(flag ==0) { 
+        queue.inject_P("G91\nG0 E+100 F120\nM104 S0");
+        BLINK_LED(LED_BLINK_5);
+        flag = 1; 
+      } 
+    }
+    if((READ(RETRACT_PIN))&&(READ(FEED_PIN))) { 
+      flag = 0; 
+      filament_status = 0;  
+      quickstop_stepper();  
+      planner.cleaning_buffer_counter=2;
+      BLINK_LED(LED_ON);
+      thermalManager.disable_all_heaters(); 
+    } 
+  } else { 
+    filament_status = 0;  
+  }	
+} //End of LoadFilament
+
+uint8_t print_key_flag = 0; 
+uint8_t print_pause = 0;
+
+void PrintOneKey(void)
+{
+	static uint8_t key_status=0;
+	static uint32_t key_time = 0;
+	//static uint8_t pause_flag = 0;
+  static uint8_t print_flag = 0;
+
+	if(key_status == 0)  
+	{
+		if(!READ(PRINTER_PIN))
+		{
+			key_time = millis();
+			key_status = 1;
+		}
+      if(print_flag!=0 && !printingIsActive())
+		{
+			BLINK_LED(LED_ON);
+      print_key_flag = 0;
+      print_flag = 0;
+		}
+	}
+	else if(key_status == 1) 
+	{
+		if(key_time+30<millis())
+		{
+			if(!READ(PRINTER_PIN)) 
+			{
+				key_time = millis();
+				key_status = 2;
+			}
+			else
+			{
+				key_status = 0;
+			}
+		}	
+	}
+	else if(key_status == 2)  
+	{
+		if(READ(PRINTER_PIN))
+		{
+			if(key_time + 1200 > millis()) //short press
+			{
+				if(print_key_flag == 0)  
+				{
+					if(!printingIsActive()) 
+					{
+            print_flag = 1;
+						card.mount();
+            if(!card.isMounted)
+						{
+							BLINK_LED(LED_OFF); 
+							key_status = 0;
+							key_time = 0;
+              print_flag = 0;
+							return;
+						}
+
+            card.ls(); // we need to have listed the files before a filescan be selected
+						uint16_t filecnt = card.countFilesInWorkDir();  //card.getfilecount(card.path);
+            if(filecnt==0) return;
+            card.selectFileByIndex(filecnt);
+            card.openAndPrintFile(card.filename);
+						BLINK_LED(LED_BLINK_2); 
+						print_key_flag = 1; 
+					}
+				}
+				else if(print_key_flag == 1)  //pause does not work while bed or hotend is pre-heating?
+				{
+			   	//MYSERIAL.print("pause");
+					BLINK_LED(LED_ON);	
+					card.pauseSDPrint();
+          //nano_sdcard_pause(); 
+					//queue.inject_P("M25");
+          print_pause = 1;
+					print_key_flag = 2;
+				}
+				else if(print_key_flag == 2)  //back resume - print
+				{
+            //MYSERIAL.print("back");
+//					if(temperature_protect_last > 60)
+//					{
+//						thermalManager.target_temperature[0]= temperature_protect_last;
+//						temperature_protect_last = 0;
+//					}
+					BLINK_LED(LED_BLINK_0);
+					//card.startFileprint();
+          //                              nano_sdcard_resume();
+					queue.inject_P("M24");
+         	print_pause = 0;
+					print_key_flag = 1;
+				}
+				else
+				{
+					print_key_flag = 0;
+				}		
+				
+			}
+			else 
+			{
+				if(print_key_flag==0) //long press Z up 10mm
+				{
+					queue.inject_P("G91\nG0 Z+10 F600\nG90");
+					//queue.inject_P("G0 Z+10 F600");
+					//queue.inject_P("G90");
+				}
+				else 
+				{	if(wait_for_heatup)
+            {
+              wait_for_heatup=false;
+            }
+					//cancel_heatup = true; //disable heat					
+					//card.isPrinting = false;
+          //card.sdprintflag = false;
+					//card.closefile();; // switch off all heaters.
+          //nano_sdcard_stop();
+					//quickstop_stepper();//quickStop();
+
+          quickstop_stepper();  
+          planner.cleaning_buffer_counter=2;
+          thermalManager.disable_all_heaters(); 
+          
+          print_flag = 0;
+					BLINK_LED(LED_OFF);
+				}
+				//while(blocks_queued()); 
+				//disable_x();
+				//disable_y();
+                                planner.synchronize();
+                                //disable_X();
+                                //disable_Y();
+                                void disableStepperDrivers();
+				print_key_flag = 0;	
+			}
+			key_status = 0;
+			key_time = 0;
+		}	
+	}
+	else
+	{
+		key_status = 0;
+		key_time = 0;
+	}
+} // End PrintKey
+
+
+  inline void manage_inactivity(const bool no_stepper_sleep=false) {
 
   queue.get_available_commands();
 
@@ -510,7 +777,6 @@ inline void manage_inactivity(const bool no_stepper_sleep=false) {
     constexpr millis_t HOME_DEBOUNCE_DELAY = 1000UL;
     static millis_t next_home_key_ms; // = 0
     if (!IS_SD_PRINTING() && !READ(HOME_PIN)) { // HOME_PIN goes LOW when pressed
-      const millis_t ms = millis();
       if (ELAPSED(ms, next_home_key_ms)) {
         next_home_key_ms = ms + HOME_DEBOUNCE_DELAY;
         LCD_MESSAGEPGM(MSG_AUTO_HOME);
@@ -522,102 +788,155 @@ inline void manage_inactivity(const bool no_stepper_sleep=false) {
   #if ENABLED(CUSTOM_USER_BUTTONS)
     // Handle a custom user button if defined
     const bool printer_not_busy = !printingIsActive();
-    #define HAS_CUSTOM_USER_BUTTON(N) (PIN_EXISTS(BUTTON##N) && defined(BUTTON##N##_HIT_STATE) && defined(BUTTON##N##_GCODE) && defined(BUTTON##N##_DESC))
-    #define CHECK_CUSTOM_USER_BUTTON(N) do{                            \
+    #define HAS_CUSTOM_USER_BUTTON(N) (PIN_EXISTS(BUTTON##N) && defined(BUTTON##N##_HIT_STATE) && defined(BUTTON##N##_GCODE))
+    #define HAS_BETTER_USER_BUTTON(N) HAS_CUSTOM_USER_BUTTON(N) && defined(BUTTON##N##_DESC)
+    #define _CHECK_CUSTOM_USER_BUTTON(N, CODE) do{                     \
       constexpr millis_t CUB_DEBOUNCE_DELAY_##N = 250UL;               \
       static millis_t next_cub_ms_##N;                                 \
       if (BUTTON##N##_HIT_STATE == READ(BUTTON##N##_PIN)               \
         && (ENABLED(BUTTON##N##_WHEN_PRINTING) || printer_not_busy)) { \
-        const millis_t ms = millis();                                  \
         if (ELAPSED(ms, next_cub_ms_##N)) {                            \
           next_cub_ms_##N = ms + CUB_DEBOUNCE_DELAY_##N;               \
-          if (strlen(BUTTON##N##_DESC))                                \
-            LCD_MESSAGEPGM_P(PSTR(BUTTON##N##_DESC));                  \
+          CODE;                                                        \
           queue.inject_P(PSTR(BUTTON##N##_GCODE));                     \
         }                                                              \
       }                                                                \
     }while(0)
 
-    #if HAS_CUSTOM_USER_BUTTON(1)
+    #define CHECK_CUSTOM_USER_BUTTON(N)     _CHECK_CUSTOM_USER_BUTTON(N, NOOP)
+    #define CHECK_BETTER_USER_BUTTON(N) _CHECK_CUSTOM_USER_BUTTON(N, if (strlen(BUTTON##N##_DESC)) LCD_MESSAGEPGM_P(PSTR(BUTTON##N##_DESC)))
+
+    #if HAS_BETTER_USER_BUTTON(1)
+      CHECK_BETTER_USER_BUTTON(1);
+    #elif HAS_CUSTOM_USER_BUTTON(1)
       CHECK_CUSTOM_USER_BUTTON(1);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(2)
+    #if HAS_BETTER_USER_BUTTON(2)
+      CHECK_BETTER_USER_BUTTON(2);
+    #elif HAS_CUSTOM_USER_BUTTON(2)
       CHECK_CUSTOM_USER_BUTTON(2);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(3)
+    #if HAS_BETTER_USER_BUTTON(3)
+      CHECK_BETTER_USER_BUTTON(3);
+    #elif HAS_CUSTOM_USER_BUTTON(3)
       CHECK_CUSTOM_USER_BUTTON(3);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(4)
+    #if HAS_BETTER_USER_BUTTON(4)
+      CHECK_BETTER_USER_BUTTON(4);
+    #elif HAS_CUSTOM_USER_BUTTON(4)
       CHECK_CUSTOM_USER_BUTTON(4);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(5)
+    #if HAS_BETTER_USER_BUTTON(5)
+      CHECK_BETTER_USER_BUTTON(5);
+    #elif HAS_CUSTOM_USER_BUTTON(5)
       CHECK_CUSTOM_USER_BUTTON(5);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(6)
+    #if HAS_BETTER_USER_BUTTON(6)
+      CHECK_BETTER_USER_BUTTON(6);
+    #elif HAS_CUSTOM_USER_BUTTON(6)
       CHECK_CUSTOM_USER_BUTTON(6);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(7)
+    #if HAS_BETTER_USER_BUTTON(7)
+      CHECK_BETTER_USER_BUTTON(7);
+    #elif HAS_CUSTOM_USER_BUTTON(7)
       CHECK_CUSTOM_USER_BUTTON(7);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(8)
+    #if HAS_BETTER_USER_BUTTON(8)
+      CHECK_BETTER_USER_BUTTON(8);
+    #elif HAS_CUSTOM_USER_BUTTON(8)
       CHECK_CUSTOM_USER_BUTTON(8);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(9)
+    #if HAS_BETTER_USER_BUTTON(9)
+      CHECK_BETTER_USER_BUTTON(9);
+    #elif HAS_CUSTOM_USER_BUTTON(9)
       CHECK_CUSTOM_USER_BUTTON(9);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(10)
+    #if HAS_BETTER_USER_BUTTON(10)
+      CHECK_BETTER_USER_BUTTON(10);
+    #elif HAS_CUSTOM_USER_BUTTON(10)
       CHECK_CUSTOM_USER_BUTTON(10);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(11)
+    #if HAS_BETTER_USER_BUTTON(11)
+      CHECK_BETTER_USER_BUTTON(11);
+    #elif HAS_CUSTOM_USER_BUTTON(11)
       CHECK_CUSTOM_USER_BUTTON(11);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(12)
+    #if HAS_BETTER_USER_BUTTON(12)
+      CHECK_BETTER_USER_BUTTON(12);
+    #elif HAS_CUSTOM_USER_BUTTON(12)
       CHECK_CUSTOM_USER_BUTTON(12);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(13)
+    #if HAS_BETTER_USER_BUTTON(13)
+      CHECK_BETTER_USER_BUTTON(13);
+    #elif HAS_CUSTOM_USER_BUTTON(13)
       CHECK_CUSTOM_USER_BUTTON(13);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(14)
+    #if HAS_BETTER_USER_BUTTON(14)
+      CHECK_BETTER_USER_BUTTON(14);
+    #elif HAS_CUSTOM_USER_BUTTON(14)
       CHECK_CUSTOM_USER_BUTTON(14);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(15)
+    #if HAS_BETTER_USER_BUTTON(15)
+      CHECK_BETTER_USER_BUTTON(15);
+    #elif HAS_CUSTOM_USER_BUTTON(15)
       CHECK_CUSTOM_USER_BUTTON(15);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(16)
+    #if HAS_BETTER_USER_BUTTON(16)
+      CHECK_BETTER_USER_BUTTON(16);
+    #elif HAS_CUSTOM_USER_BUTTON(16)
       CHECK_CUSTOM_USER_BUTTON(16);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(17)
+    #if HAS_BETTER_USER_BUTTON(17)
+      CHECK_BETTER_USER_BUTTON(17);
+    #elif HAS_CUSTOM_USER_BUTTON(17)
       CHECK_CUSTOM_USER_BUTTON(17);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(18)
+    #if HAS_BETTER_USER_BUTTON(18)
+      CHECK_BETTER_USER_BUTTON(18);
+    #elif HAS_CUSTOM_USER_BUTTON(18)
       CHECK_CUSTOM_USER_BUTTON(18);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(19)
+    #if HAS_BETTER_USER_BUTTON(19)
+      CHECK_BETTER_USER_BUTTON(19);
+    #elif HAS_CUSTOM_USER_BUTTON(19)
       CHECK_CUSTOM_USER_BUTTON(19);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(20)
+    #if HAS_BETTER_USER_BUTTON(20)
+      CHECK_BETTER_USER_BUTTON(20);
+    #elif HAS_CUSTOM_USER_BUTTON(20)
       CHECK_CUSTOM_USER_BUTTON(20);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(21)
+    #if HAS_BETTER_USER_BUTTON(21)
+      CHECK_BETTER_USER_BUTTON(21);
+    #elif HAS_CUSTOM_USER_BUTTON(21)
       CHECK_CUSTOM_USER_BUTTON(21);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(22)
+    #if HAS_BETTER_USER_BUTTON(22)
+      CHECK_BETTER_USER_BUTTON(22);
+    #elif HAS_CUSTOM_USER_BUTTON(22)
       CHECK_CUSTOM_USER_BUTTON(22);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(23)
+    #if HAS_BETTER_USER_BUTTON(23)
+      CHECK_BETTER_USER_BUTTON(23);
+    #elif HAS_CUSTOM_USER_BUTTON(23)
       CHECK_CUSTOM_USER_BUTTON(23);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(24)
+    #if HAS_BETTER_USER_BUTTON(24)
+      CHECK_BETTER_USER_BUTTON(24);
+    #elif HAS_CUSTOM_USER_BUTTON(24)
       CHECK_CUSTOM_USER_BUTTON(24);
     #endif
-    #if HAS_CUSTOM_USER_BUTTON(25)
+    #if HAS_BETTER_USER_BUTTON(25)
+      CHECK_BETTER_USER_BUTTON(25);
+    #elif HAS_CUSTOM_USER_BUTTON(25)
       CHECK_CUSTOM_USER_BUTTON(25);
     #endif
+  
   #endif
 
   TERN_(USE_CONTROLLER_FAN, controllerFan.update()); // Check if fan should be turned on to cool stepper drivers down
 
-  TERN_(AUTO_POWER_CONTROL, powerManager.check());
+  TERN_(AUTO_POWER_CONTROL, powerManager.check(!ui.on_status_screen() || printJobOngoing() || printingIsPaused()));
 
   TERN_(HOTEND_IDLE_TIMEOUT, hotend_idle.check());
 
@@ -710,6 +1029,12 @@ inline void manage_inactivity(const bool no_stepper_sleep=false) {
       WRITE(FET_SAFETY_PIN, FET_SAFETY_INVERTED);
     }
   #endif
+
+  //EasyThreeD Nano
+  LoadFilament();
+  BlinkLed();
+  PrintOneKey();
+
 }
 
 /**
@@ -771,10 +1096,8 @@ void idle(bool no_stepper_sleep/*=false*/) {
 
   // Run StallGuard endstop checks
   #if ENABLED(SPI_ENDSTOPS)
-    if (endstops.tmc_spi_homing.any
-      && TERN1(IMPROVE_HOMING_RELIABILITY, ELAPSED(millis(), sg_guard_period))
-    ) LOOP_L_N(i, 4) // Read SGT 4 times per idle loop
-        if (endstops.tmc_spi_homing_check()) break;
+    if (endstops.tmc_spi_homing.any && TERN1(IMPROVE_HOMING_RELIABILITY, ELAPSED(millis(), sg_guard_period)))
+      LOOP_L_N(i, 4) if (endstops.tmc_spi_homing_check()) break; // Read SGT 4 times per idle loop
   #endif
 
   // Handle SD Card insert / remove
@@ -890,11 +1213,11 @@ void minkill(const bool steppers_off/*=false*/) {
   #if EITHER(HAS_KILL, SOFT_RESET_ON_KILL)
 
     // Wait for both KILL and ENC to be released
-    while (TERN0(HAS_KILL, !kill_state()) || TERN0(SOFT_RESET_ON_KILL, !ui.button_pressed()))
+    while (TERN0(HAS_KILL, kill_state()) || TERN0(SOFT_RESET_ON_KILL, ui.button_pressed()))
       watchdog_refresh();
 
-    // Wait for either KILL or ENC press
-    while (TERN1(HAS_KILL, kill_state()) && TERN1(SOFT_RESET_ON_KILL, ui.button_pressed()))
+    // Wait for either KILL or ENC to be pressed again
+    while (TERN1(HAS_KILL, !kill_state()) && TERN1(SOFT_RESET_ON_KILL, !ui.button_pressed()))
       watchdog_refresh();
 
     // Reboot the board
@@ -1077,6 +1400,10 @@ inline void tmc_standby_setup() {
  *  - Set Marlin to RUNNING State
  */
 void setup() {
+  #ifdef FASTIO_INIT
+    FASTIO_INIT();
+  #endif
+
   #ifdef BOARD_PREINIT
     BOARD_PREINIT(); // Low-level init (before serial init)
   #endif
@@ -1156,23 +1483,16 @@ void setup() {
     #endif
   #endif
 
-  #if BOTH(HAS_TFT_LVGL_UI, MKS_WIFI_MODULE)
-    mks_esp_wifi_init();
-    WIFISERIAL.begin(WIFI_BAUDRATE);
-    serial_connect_timeout = millis() + 1000UL;
-    while (/*!WIFISERIAL && */PENDING(millis(), serial_connect_timeout)) { /*nada*/ }
-  #endif
-
   TERN_(DYNAMIC_VECTORTABLE, hook_cpu_exceptions()); // If supported, install Marlin exception handlers at runtime
 
   SETUP_RUN(HAL_init());
 
   // Init and disable SPI thermocouples; this is still needed
   #if TEMP_SENSOR_0_IS_MAX_TC || (TEMP_SENSOR_REDUNDANT_IS_MAX_TC && TEMP_SENSOR_REDUNDANT_SOURCE == 0)
-    OUT_WRITE(MAX6675_SS_PIN, HIGH);  // Disable
+    OUT_WRITE(TEMP_0_CS_PIN, HIGH);  // Disable
   #endif
   #if TEMP_SENSOR_1_IS_MAX_TC || (TEMP_SENSOR_REDUNDANT_IS_MAX_TC && TEMP_SENSOR_REDUNDANT_SOURCE == 1)
-    OUT_WRITE(MAX6675_SS2_PIN, HIGH); // Disable
+    OUT_WRITE(TEMP_1_CS_PIN, HIGH);
   #endif
 
   #if ENABLED(DUET_SMART_EFFECTOR) && PIN_EXISTS(SMART_EFFECTOR_MOD)
@@ -1228,9 +1548,7 @@ void setup() {
   if (mcu & RST_SOFTWARE) SERIAL_ECHOLNPGM(STR_SOFTWARE_RESET);
   HAL_clear_reset_source();
 
-  SERIAL_ECHOPGM_P(GET_TEXT(MSG_MARLIN));
-  SERIAL_CHAR(' ');
-  SERIAL_ECHOLNPGM(SHORT_BUILD_VERSION);
+  SERIAL_ECHOLNPGM("Marlin " SHORT_BUILD_VERSION);
   SERIAL_EOL();
   #if defined(STRING_DISTRIBUTION_DATE) && defined(STRING_CONFIG_H_AUTHOR)
     SERIAL_ECHO_MSG(
@@ -1266,11 +1584,7 @@ void setup() {
   // (because EEPROM code calls the UI).
 
   #if ENABLED(DWIN_CREALITY_LCD)
-    delay(800);   // Required delay (since boot?)
-    SERIAL_ECHOPGM("\nDWIN handshake ");
-    if (DWIN_Handshake()) SERIAL_ECHOLNPGM("ok."); else SERIAL_ECHOLNPGM("error.");
-    DWIN_Frame_SetDir(1); // Orientation 90°
-    DWIN_UpdateLCD();     // Show bootscreen (first image)
+    SETUP_RUN(DWIN_Startup());
   #else
     SETUP_RUN(ui.init());
     #if BOTH(HAS_WIRED_LCD, SHOW_BOOTSCREEN)
@@ -1355,7 +1669,7 @@ void setup() {
     SETUP_RUN(digipot_i2c.init());
   #endif
 
-  #if ENABLED(HAS_MOTOR_CURRENT_DAC)
+  #if HAS_MOTOR_CURRENT_DAC
     SETUP_RUN(stepper_dac.init());
   #endif
 
@@ -1366,6 +1680,7 @@ void setup() {
   #if HAS_HOME
     SET_INPUT_PULLUP(HOME_PIN);
   #endif
+
 
   #if ENABLED(CUSTOM_USER_BUTTONS)
     #define INIT_CUSTOM_USER_BUTTON_PIN(N) do{ SET_INPUT(BUTTON##N##_PIN); WRITE(BUTTON##N##_PIN, !BUTTON##N##_HIT_STATE); }while(0)
@@ -1547,9 +1862,9 @@ void setup() {
   #if ENABLED(DWIN_CREALITY_LCD)
     Encoder_Configuration();
     HMI_Init();
-    DWIN_JPG_CacheTo1(Language_English);
+    HMI_SetLanguageCache();
     HMI_StartFrame(true);
-    DWIN_StatusChanged(GET_TEXT(WELCOME_MSG));
+    DWIN_StatusChanged_P(GET_TEXT(WELCOME_MSG));
   #endif
 
   #if HAS_SERVICE_INTERVALS && DISABLED(DWIN_CREALITY_LCD)
@@ -1587,7 +1902,21 @@ void setup() {
     ui.check_touch_calibration();
   #endif
 
+  #if ENABLED(EASYTHREED_NANO) //EXP1 replace LCD to physical buttons for EasyThreeD NANO, K7
+    SET_INPUT_PULLUP(PRINT_HOME_PIN);
+    SET_OUTPUT(HOME_GND_PIN);
+    SET_INPUT_PULLUP(FEED_PIN); //Feed
+    SET_INPUT_PULLUP(RETRACT_PIN); //Retract
+    SET_OUTPUT(FEED_GND_PIN);
+    SET_OUTPUT(RETRACT_GND_PIN);
+    SET_INPUT_PULLUP(PRINTER_PIN); //Play
+    SET_OUTPUT(PRINT_LED_PIN);
+  #endif
+
+
+
   marlin_state = MF_RUNNING;
+
 
   SETUP_LOG("setup() completed.");
 }
