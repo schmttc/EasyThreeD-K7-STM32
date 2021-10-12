@@ -143,6 +143,19 @@
 //
 #define SPI_DEVICE                             2
 #define SD_SCK_PIN                          PB13
-#define SD_MISO_PIN                         P1B4
-#define SD_MOSI_PIN                         P1B5
+#define SD_MISO_PIN                         PB14
+#define SD_MOSI_PIN                         PB15
 #define SD_SS_PIN                           PA15
+
+
+//EXP1 replace lcd to keys for EasyThreeD NANO, K7
+  #if ENABLED(EASYTHREED_NANO)
+    #define PRINT_HOME_PIN PC3 //PCin(3)
+    #define HOME_GND_PIN PC2 //PCout(2)
+    #define FEED_PIN PB3 //PBin(3)
+    #define RETRACT_PIN PB5 //PBin(5)
+    #define FEED_GND_PIN PB4 //PBout(4)
+    #define RETRACT_GND_PIN PC1 //PCout(1)
+    #define PRINTER_PIN PA11 //PAin(11), was "PRINT_PIN"
+    #define PRINT_LED_PIN PD2 //PDout(2)
+  #endif
