@@ -1,4 +1,4 @@
-# EasyThreeD K7 STM32 (ET4000+ Board)
+# Marlin 2 for EasyThreeD K7 STM32 (ET4000+ Board)
 This repository reflects my work on the EasyThreeD K7 3D printer.
 The K7 printer has been sold with either an 8-bit or 32-bit board, with the latter appearing in more recent purchases. My printer has the 32-bit board 'ET4000+', which is shared by the Nano and Dora printers from the same manufacturer, and so these files only apply to that model.
 
