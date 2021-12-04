@@ -2,20 +2,23 @@
 This repository reflects my work on the EasyThreeD K7 3D printer.
 The K7 printer has been sold with either an 8-bit or 32-bit board, with the latter appearing in more recent purchases. My printer has the 32-bit board 'ET4000+', which is shared by the Nano and Dora printers from the same manufacturer, and so these files only apply to that model.
 
-The board's bootloader is proprietary by MKS, which reads a binary firmware file mksLite.bin, and a configuration file lite_cfg.txt from the SD card on first boot. After a short time (<30s) the firmware is written to the board, and the files on the SD card renamed *.CUR.
+The board's bootloader is proprietary by MKS, which reads a binary firmware file mksLite.bin from the SD card on boot. After a short time (<30s) the firmware is written to the board, and the files on the SD card renamed *.CUR.
 
 # Branch: master
-This is a clone of Marlin 2.0.9.1, modified to include the button functionality for the EasyThreeD K7/Nano. Button functionality is applied in a non-standard manner and so this can not be directly rolled into the main Marlin codebase.
+This is a clone of Marlin 2.0.9.1, modified to include the button functionality for the EasyThreeD K7/Nano. Button functionality is applied as a /feature, and has been merged into the 2.0.9.2 bugfix release. Unfortunately there seems to be layer shift issue when using the later version, so this repo will remain on 2.0.9.1 for the time being.
 
 For the original firmware source and binaries based on Marlin 1.1.1 supplied by the manufacturer, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Original-Firmware-Marlin-1.1.1
 
 ## Overview
-- Compile using PlatformIO, board "mks_robin_lite_maple"
-- Physical buttons and LED currently not fully functional, printer must be controlled via USB cable
-- Home button and filament feed/retract slider - is functional
-- LED on main button semi-functional
-- Long press print button to raise print head 10mm while not printing - is functional
-- Short press print button to print most recent file on SD card - is functional
+- Compile using PlatformIO, board "mks_robin_lite" (From Marlin 2.0.9.2 use mks_robin_lite_maple)
+- Physical buttons and LED currently are functional as per standrd behaviour
+- Start button LED (improved feedback)
+  - LED blinks slowly when printing/processing
+  - When paused blinks LED quickly
+  - LED is on when job is cancelled or completed
+- Home button and filament feed/retract slider working
+- Long press print button to raise print head 10mm while not printing
+- Short press print button to print most recent file on SD card
 - Serial baud rate is set to 115200, matching the original firmware
 
 ## Modified Files
@@ -24,6 +27,16 @@ Marlin 2.0.9.1 configuration files, modified to mirror those in the manufacturer
 - Configuration_adv.h - configured for EasyThreeD K7
 - src\pins\stm32f1\pins_MKS_ROBIN_LITE.h - Added pin definitions for EXP1 port reassigned from LCD to Buttons
 - src\MarlinCore.cpp - Includes additional functions to handle complex button behaviour
+- src\feature\easythreed_ui.cpp - Button behavour main code
+- src\feature\easythreed_ui.h - C header file
+
+## Additional Files
+Compiled binary - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/master/mksLite.bin
+- Hotbed is enabled. If you do not have a hotbed, make sure the temp is set to 0 in your slicer
+- Backlash correction is enabled, with all settings on 0 by default
+
+Cura Profile - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/master/K7.curaprofile
+- A slow but consistent profile that works for me in Cura 4.10
 
 ## Notes on Marlin 2 Config
 - Make sure 'VALIDATE_HOMING_ENDSTOPS' is disabled, as we do not have X and Y stoppers to provide feedback, and the printer will halt.
