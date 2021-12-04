@@ -236,6 +236,10 @@
   #include "feature/stepper_driver_safety.h"
 #endif
 
+#if ENABLED(EASYTHREED_UI)
+  #include "feature/easythreed_ui.h"
+#endif
+
 PGMSTR(M112_KILL_STR, "M112 Shutdown");
 
 MarlinState marlin_state = MF_INITIALIZING;
@@ -424,271 +428,6 @@ void startOrResumeJob() {
  *  - Check if an idle but hot extruder needs filament extruded (EXTRUDER_RUNOUT_PREVENT)
  *  - Pulse FET_SAFETY_PIN if it exists
  */
-
-
-// EasyThreeD
-
-uint16_t blink_time = 0;  
-enum LED_STATUD
-{
-	LED_ON=4000,
-	LED_BLINK_0=2500,
-	LED_BLINK_1=1500,
-	LED_BLINK_2=1000,
-	
-	LED_BLINK_3=800,
-	LED_BLINK_4=500,
-	LED_BLINK_5=300,
-	LED_BLINK_6=150,
-	LED_BLINK_7=50,
-	LED_OFF = 0,
-};
-#define BLINK_LED(MS)  blink_time = MS
-
-void BlinkLed(void)
-{
-	static uint32_t blink_time_previous=0;
-	static uint32_t blink_time_start=0;
-	
-	if(blink_time == 0) //OFF
-	{
-		WRITE(PRINT_LED_PIN,1);
-		return;
-	}
-	if(blink_time > 3000) //ON
-	{
-		WRITE(PRINT_LED_PIN,0);
-		return;
-	}
-	
-	if(blink_time_previous!=blink_time)
-	{
-		blink_time_previous = blink_time;
-		blink_time_start = millis();
-	}
-	if(millis()<blink_time_start+blink_time)
-	{
-		WRITE(PRINT_LED_PIN,0);
-	}
-	else if(millis()<blink_time_start+2*blink_time)
-	{
-		WRITE(PRINT_LED_PIN,1);
-	}
-	else
-	{
-		blink_time_start = millis();
-	}	
-}
-
-
-static uint32_t filament_time = 0;
-static uint8_t filament_status = 0;
-
-void LoadFilament(void) {       
-  if(printingIsActive()) {
-    return;
-  }
-
-  if(filament_status == 0) {                                 
-    if((!READ(RETRACT_PIN))||(!READ(FEED_PIN))) {                                                                           
-      filament_status++;                                                        
-      filament_time = millis();                                                 
-    }                                                                           
-  } else if(filament_status == 1) {                            
-    if(filament_time+20<millis()) {                                                                         
-      if((!READ(RETRACT_PIN))||(!READ(FEED_PIN))) { 
-        thermalManager.setTargetHotend(210, 0);  
-        BLINK_LED(LED_BLINK_7);                             
-        filament_status++;                                                    
-      } else {                                                                       
-        filament_status = 0;                                                  
-      }                                                                       
-    }	                                                                        
-  } else if(filament_status == 2) {
-    if( thermalManager.degHotend(0) >= float(180)) { 
-        filament_status++;
-        BLINK_LED(LED_BLINK_5);
-    }
-    if((READ(RETRACT_PIN))&&(READ(FEED_PIN))) {                         
-      BLINK_LED(LED_ON);
-      filament_status = 0;                                                          
-      thermalManager.disable_all_heaters();                                         
-    }                                                                             
-  } else if(filament_status == 3) { 
-    static uint8_t flag = 0; 
-    if(!READ(RETRACT_PIN)) { 
-      if(flag == 0) { 
-        queue.inject_P("G91\nG0 E+10  F180\nG0 E-120 F180\nM104 S0");            
-        BLINK_LED(LED_BLINK_5);
-        flag = 1; 
-      } 
-    }
-    if(!READ(FEED_PIN)) { 
-      if(flag ==0) { 
-        queue.inject_P("G91\nG0 E+100 F120\nM104 S0");
-        BLINK_LED(LED_BLINK_5);
-        flag = 1; 
-      } 
-    }
-    if((READ(RETRACT_PIN))&&(READ(FEED_PIN))) { 
-      flag = 0; 
-      filament_status = 0;  
-      quickstop_stepper();  
-      planner.cleaning_buffer_counter=2;
-      BLINK_LED(LED_ON);
-      thermalManager.disable_all_heaters(); 
-    } 
-  } else { 
-    filament_status = 0;  
-  }	
-} //End of LoadFilament
-
-uint8_t print_key_flag = 0; 
-uint8_t print_pause = 0;
-
-void PrintOneKey(void)
-{
-	static uint8_t key_status=0;
-	static uint32_t key_time = 0;
-	//static uint8_t pause_flag = 0;
-  static uint8_t print_flag = 0;
-
-	if(key_status == 0)  
-	{
-		if(!READ(PRINTER_PIN))
-		{
-			key_time = millis();
-			key_status = 1;
-		}
-      if(print_flag!=0 && !printingIsActive())
-		{
-			BLINK_LED(LED_ON);
-      print_key_flag = 0;
-      print_flag = 0;
-		}
-	}
-	else if(key_status == 1) 
-	{
-		if(key_time+30<millis())
-		{
-			if(!READ(PRINTER_PIN)) 
-			{
-				key_time = millis();
-				key_status = 2;
-			}
-			else
-			{
-				key_status = 0;
-			}
-		}	
-	}
-	else if(key_status == 2)  
-	{
-		if(READ(PRINTER_PIN))
-		{
-			if(key_time + 1200 > millis()) //short press
-			{
-				if(print_key_flag == 0)  
-				{
-					if(!printingIsActive()) 
-					{
-            print_flag = 1;
-						card.mount();
-            if(!card.isMounted)
-						{
-							BLINK_LED(LED_OFF); 
-							key_status = 0;
-							key_time = 0;
-              print_flag = 0;
-							return;
-						}
-
-            card.ls(); // we need to have listed the files before a filescan be selected
-						uint16_t filecnt = card.countFilesInWorkDir();  //card.getfilecount(card.path);
-            if(filecnt==0) return;
-            card.selectFileByIndex(filecnt);
-            card.openAndPrintFile(card.filename);
-						BLINK_LED(LED_BLINK_2); 
-						print_key_flag = 1; 
-					}
-				}
-				else if(print_key_flag == 1)  //pause does not work while bed or hotend is pre-heating?
-				{
-			   	//MYSERIAL.print("pause");
-					BLINK_LED(LED_ON);	
-					card.pauseSDPrint();
-          //nano_sdcard_pause(); 
-					//queue.inject_P("M25");
-          print_pause = 1;
-					print_key_flag = 2;
-				}
-				else if(print_key_flag == 2)  //back resume - print
-				{
-            //MYSERIAL.print("back");
-//					if(temperature_protect_last > 60)
-//					{
-//						thermalManager.target_temperature[0]= temperature_protect_last;
-//						temperature_protect_last = 0;
-//					}
-					BLINK_LED(LED_BLINK_0);
-					//card.startFileprint();
-          //                              nano_sdcard_resume();
-					queue.inject_P("M24");
-         	print_pause = 0;
-					print_key_flag = 1;
-				}
-				else
-				{
-					print_key_flag = 0;
-				}		
-				
-			}
-			else 
-			{
-				if(print_key_flag==0) //long press Z up 10mm
-				{
-					queue.inject_P("G91\nG0 Z+10 F600\nG90");
-					//queue.inject_P("G0 Z+10 F600");
-					//queue.inject_P("G90");
-				}
-				else 
-				{	if(wait_for_heatup)
-            {
-              wait_for_heatup=false;
-            }
-					//cancel_heatup = true; //disable heat					
-					//card.isPrinting = false;
-          //card.sdprintflag = false;
-					//card.closefile();; // switch off all heaters.
-          //nano_sdcard_stop();
-					//quickstop_stepper();//quickStop();
-
-          quickstop_stepper();  
-          planner.cleaning_buffer_counter=2;
-          thermalManager.disable_all_heaters(); 
-          
-          print_flag = 0;
-					BLINK_LED(LED_OFF);
-				}
-				//while(blocks_queued()); 
-				//disable_x();
-				//disable_y();
-                                planner.synchronize();
-                                //disable_X();
-                                //disable_Y();
-                                void disableStepperDrivers();
-				print_key_flag = 0;	
-			}
-			key_status = 0;
-			key_time = 0;
-		}	
-	}
-	else
-	{
-		key_status = 0;
-		key_time = 0;
-	}
-} // End PrintKey
 
 
   inline void manage_inactivity(const bool no_stepper_sleep=false) {
@@ -934,6 +673,8 @@ void PrintOneKey(void)
   
   #endif
 
+  TERN_(EASYTHREED_UI, easythreed_ui.run());
+
   TERN_(USE_CONTROLLER_FAN, controllerFan.update()); // Check if fan should be turned on to cool stepper drivers down
 
   TERN_(AUTO_POWER_CONTROL, powerManager.check(!ui.on_status_screen() || printJobOngoing() || printingIsPaused()));
@@ -1029,11 +770,6 @@ void PrintOneKey(void)
       WRITE(FET_SAFETY_PIN, FET_SAFETY_INVERTED);
     }
   #endif
-
-  //EasyThreeD Nano
-  LoadFilament();
-  BlinkLed();
-  PrintOneKey();
 
 }
 
@@ -1537,6 +1273,7 @@ void setup() {
     BOARD_INIT();
   #endif
 
+
   SETUP_RUN(esp_wifi_init());
 
   // Check startup - does nothing if bootloader sets MCUSR to 0
@@ -1913,7 +1650,9 @@ void setup() {
     SET_OUTPUT(PRINT_LED_PIN);
   #endif
 
-
+  #if ENABLED(EASYTHREED_UI)
+    SETUP_RUN(easythreed_ui.init());
+  #endif
 
   marlin_state = MF_RUNNING;
 
