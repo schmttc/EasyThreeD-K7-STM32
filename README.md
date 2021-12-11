@@ -35,9 +35,6 @@ Compiled binary - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/master/mks
 - Hotbed is enabled. If you do not have a hotbed, make sure the temp is set to 0 in your slicer
 - Backlash correction is enabled, with all settings on 0 by default
 
-Cura Profile - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/master/K7.curaprofile
-- A slow but consistent profile that works for me in Cura 4.10
-
 ## Notes on Marlin 2 Config
 - Make sure 'VALIDATE_HOMING_ENDSTOPS' is disabled, as we do not have X and Y stoppers to provide feedback, and the printer will halt.
 - Multiple calls in quick succession to queue.inject_P() will fail. Use a single call, with multiple commands seprated by "\n"
