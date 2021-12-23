@@ -9,6 +9,8 @@ This is a clone of Marlin 2.0.9.1, modified to include the button functionality 
 
 For the original firmware source and binaries based on Marlin 1.1.1 supplied by the manufacturer, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Original-Firmware-Marlin-1.1.1
 
+For additional files including compiled binaries, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Additional-Files
+
 ## Overview
 - Compile using PlatformIO, board "mks_robin_lite" (From Marlin 2.0.9.2 use mks_robin_lite_maple)
 - Physical buttons and LED currently are functional as per standrd behaviour
