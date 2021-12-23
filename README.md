@@ -9,6 +9,8 @@ Original firmware source and binaries supplied by the manufacturer, EasyThreeD.
 
 For Marlin 2 firmware see the master branch https://github.com/schmttc/EasyThreeD-K7-STM32
 
+For additional files including compiled binaries, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Additional-Files
+
 # Index
 update.firmware.docx - Instructions to update firmware from binary
 ## Default firmware
