@@ -18,6 +18,16 @@ Compiled binary - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional
 Cura Profile - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/K7.curaprofile
 - A profiles from Cura 4.10 that works for me
 
+Carriage Back - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/EasyThreeD-CarriageBack.stl
+- A replacement carriage back shell, with increased lower clearance for trying alternate fan ducts
+
+Carriage Duct - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/EasyThreeD-CarriageDuct-5015.stl
+- A carriage front shell with integrated 5015 radial fan duct
+- Compatible with the standard back shell
+- Significantly improves cooling performance, I suggest running the fan at 40% as a start point
+- Requires a seprate top shell (modelling in progress).
+- Based on https://www.thingiverse.com/thing:2494981
+
 ## License
 Marlin Firmware: https://github.com/MarlinFirmware/Marlin
 
