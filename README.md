@@ -11,17 +11,20 @@ This branch contains additional files related to the EasyThreeD K7.
 - For the original firmware source and binaries based on Marlin 1.1.1 supplied by the manufacturer, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Original-Firmware-Marlin-1.1.1
 
 ## Overview
-Compiled binary - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/mksLite.bin
+**Compiled binary** - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/mksLite.bin
 - Hotbed is enabled. If you do not have a hotbed, make sure the temp is set to 0 in your slicer
 - Backlash correction is enabled, with all settings on 0 by default. Please note https://github.com/schmttc/EasyThreeD-K7-STM32/issues/2
 
-Cura Profile - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/K7.curaprofile
-- A profiles from Cura 4.10 that works for me
+**Cura Profile** - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/K7.curaprofile
+- A profile from Cura 4.10 that works for me
 
-Carriage Back - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/EasyThreeD-CarriageBack.stl
+**Pin-out Schematic** - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/ET4000%2B.pdf
+- Pin-out Diagrams provided by EasyThreeD
+
+**Carriage Back** - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/EasyThreeD-CarriageBack.stl
 - A replacement carriage back shell, with increased lower clearance for trying alternate fan ducts
 
-Carriage Duct - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/EasyThreeD-CarriageDuct-5015.stl
+**Carriage Duct** - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/EasyThreeD-CarriageDuct-5015.stl
 - A carriage front shell with integrated 5015 radial fan duct
 - Compatible with the standard back shell
 - Significantly improves cooling performance, I suggest running the fan at 40% as a start point
