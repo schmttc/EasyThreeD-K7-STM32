@@ -18,6 +18,10 @@ This branch contains additional files related to the EasyThreeD K7.
 
 ## Hardware Information
 
+**Photos of Mainboard**
+https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/ET4000PLUS.1.jpg
+https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/ET4000PLUS.2.jpg
+
 **Pin-out Schematic** - https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Additional-Files/ET4000%2B.pdf
 - Pin-out Diagrams provided by EasyThreeD
 
