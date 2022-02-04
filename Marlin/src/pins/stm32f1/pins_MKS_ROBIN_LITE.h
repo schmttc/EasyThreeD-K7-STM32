@@ -43,7 +43,7 @@
 #define X_STOP_PIN                          PC13
 #define Y_STOP_PIN                          PC0
 #define Z_MIN_PIN                           PC12
-#define Z_MAX_PIN                           PB9
+#define Z_MAX_PIN                           PB9 
 
 //
 // Steppers
@@ -78,6 +78,7 @@
 #define TEMP_0_PIN                          PA0
 
 #define FIL_RUNOUT_PIN                      PB8   // MT_DET
+#define SERVO0_PIN                          PA3     // PA3 Wifi RX repurpose for BLTOUCH
 
 /**                ------
  *   (BEEPER) PD2 |10  9 | PB3  (BTN_ENC)
