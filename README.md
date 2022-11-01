@@ -2,6 +2,8 @@
 This repository reflects my work on the EasyThreeD K7 3D printer.
 The K7 printer has been sold with either an 8-bit or 32-bit board, with the latter appearing in more recent purchases. My printer has the 32-bit board 'ET4000+', which is shared by the Nano and Dora printers from the same manufacturer, and so these files only apply to that model.
 
+If you have a K7 with the ET-4000-V2 board, please see https://github.com/tux-friend/Easythreed-K7-ET-4000-V2
+
 The board's bootloader is proprietary by MKS, which reads a binary firmware file mksLite.bin from the SD card on boot. After a short time (<30s) the firmware is written to the board, and the files on the SD card renamed *.CUR.
 
 # Branch: master
