@@ -1,8 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- *
  * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
- * SAMD51 HAL developed by Giuliano Zaro (AKA GMagician)
+ *
+ * Based on Sprinter and grbl.
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +20,10 @@
  *
  */
 #pragma once
+
+/**
+ * SAMD51 HAL developed by Giuliano Zaro (AKA GMagician)
+ */
 
 /**
  * Fast IO functions for SAMD51
@@ -131,7 +136,7 @@
    */
   #define PWM_PIN(P)        (WITHIN(P, 2, 13) || WITHIN(P, 22, 23) || WITHIN(P, 44, 45) || P == 48)
 
-  // Return fullfilled ADCx->INPUTCTRL.reg
+  // Return fulfilled ADCx->INPUTCTRL.reg
   #define PIN_TO_INPUTCTRL(P)     (  (PIN_TO_AIN(P) == 0) ? ADC_INPUTCTRL_MUXPOS_AIN0   \
                                    : (PIN_TO_AIN(P) == 1) ? ADC_INPUTCTRL_MUXPOS_AIN1   \
                                    : (PIN_TO_AIN(P) == 2) ? ADC_INPUTCTRL_MUXPOS_AIN2   \

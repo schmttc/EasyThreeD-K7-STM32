@@ -171,9 +171,9 @@ void ChangeFilamentScreen::onRedraw(draw_mode_t what) {
 
     const bool t_ok = getActualTemp_celsius(e) > getSoftenTemp() - 10;
 
-    if (mydata.t_tag && !t_ok) {
+    if (mydata.t_tag && !t_ok)
       cmd.text(HEATING_LBL_POS, GET_TEXT_F(MSG_HEATING));
-    } else if (getActualTemp_celsius(e) > 100) {
+    else if (getActualTemp_celsius(e) > 100) {
       cmd.cmd(COLOR_RGB(0xFF0000))
          .text(CAUTION_LBL_POS, GET_TEXT_F(MSG_CAUTION))
          .colors(normal_btn)
@@ -224,7 +224,7 @@ void ChangeFilamentScreen::onRedraw(draw_mode_t what) {
        .tag(6)                .enabled(t_ok).button (LOAD_MOMN_POS, GET_TEXT_F(MSG_MOMENTARY))
        .tag(7).TOG_STYLE(tog7).enabled(t_ok).button (UNLD_CONT_POS, GET_TEXT_F(MSG_CONTINUOUS))
        .tag(8).TOG_STYLE(tog8).enabled(t_ok).button (LOAD_CONT_POS, GET_TEXT_F(MSG_CONTINUOUS))
-       .tag(1).colors(action_btn)           .button (BACK_POS, GET_TEXT_F(MSG_BACK));
+       .tag(1).colors(action_btn)           .button (BACK_POS, GET_TEXT_F(MSG_BUTTON_DONE));
   }
 }
 

@@ -213,7 +213,7 @@ void EasythreedUI::printButton() {
                 print_flag = false;                                 // Set UI print state flag
                 return;                                             // Bail out
             }
-            card.ls();                                            // List all files to serial output
+            card.ls('L');                                            // List all files to serial output. I think this may be here just to ensure the SD card is mounted. This command is broken in Marlin 2.1.2
             const uint16_t filecnt = card.countFilesInWorkDir();  // Count printable files in cwd
             if (filecnt == 0) return;                             // None are printable?
             card.selectFileByIndex(filecnt);                      // Select the last file according to current sort options

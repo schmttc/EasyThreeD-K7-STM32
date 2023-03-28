@@ -52,18 +52,13 @@ void InterfaceSettingsScreen::onEntry() {
   BaseScreen::onEntry();
 }
 
+#define GRID_COLS 4
+#define GRID_ROWS TERN(TOUCH_UI_PORTRAIT, 7, 6)
+
 void InterfaceSettingsScreen::onRedraw(draw_mode_t what) {
   CommandProcessor cmd;
 
   if (what & BACKGROUND) {
-
-    #define GRID_COLS 4
-    #if ENABLED(TOUCH_UI_PORTRAIT)
-      #define GRID_ROWS 7
-    #else
-      #define GRID_ROWS 6
-    #endif
-
     cmd.cmd(CLEAR_COLOR_RGB(bg_color))
        .cmd(CLEAR(true,true,true))
        .cmd(COLOR_RGB(bg_text_enabled))
@@ -77,21 +72,19 @@ void InterfaceSettingsScreen::onRedraw(draw_mode_t what) {
     #if DISABLED(LCD_FYSETC_TFT81050)
        .text(BTN_POS(1,2), BTN_SIZE(2,1), GET_TEXT_F(MSG_LCD_BRIGHTNESS), OPT_RIGHTX | OPT_CENTERY)
     #endif
-       .text(BTN_POS(1,3), BTN_SIZE(2,1), GET_TEXT_F(MSG_SOUND_VOLUME),   OPT_RIGHTX | OPT_CENTERY)
-       .text(BTN_POS(1,4), BTN_SIZE(2,1), GET_TEXT_F(MSG_SCREEN_LOCK),    OPT_RIGHTX | OPT_CENTERY);
+       .text(BTN_POS(1,3), BTN_SIZE(2,1), GET_TEXT_F(MSG_SOUND_VOLUME),   OPT_RIGHTX | OPT_CENTERY);
+    #if ENABLED(FTDI_LOCK_SCREEN)
+      cmd.text(BTN_POS(1,4), BTN_SIZE(2,1), GET_TEXT_F(MSG_SCREEN_LOCK),    OPT_RIGHTX | OPT_CENTERY);
+    #endif
     #if DISABLED(TOUCH_UI_NO_BOOTSCREEN)
-    cmd.text(BTN_POS(1,5), BTN_SIZE(2,1), GET_TEXT_F(MSG_BOOT_SCREEN),    OPT_RIGHTX | OPT_CENTERY);
+      cmd.text(BTN_POS(1,5), BTN_SIZE(2,1), GET_TEXT_F(MSG_BOOT_SCREEN),    OPT_RIGHTX | OPT_CENTERY);
     #endif
     #undef EDGE_R
   }
 
   if (what & FOREGROUND) {
-    #if defined(FTDI_LOCK_SCREEN) || DISABLED(TOUCH_UI_NO_BOOTSCREEN)
-      #if ENABLED(TOUCH_UI_PORTRAIT)
-        constexpr uint8_t w = 2;
-      #else
-        constexpr uint8_t w = 1;
-      #endif
+    #if ENABLED(FTDI_LOCK_SCREEN) || DISABLED(TOUCH_UI_NO_BOOTSCREEN)
+      constexpr uint8_t w = TERN(TOUCH_UI_PORTRAIT, 2, 1);
     #endif
 
     cmd.font(font_medium)
@@ -101,7 +94,7 @@ void InterfaceSettingsScreen::onRedraw(draw_mode_t what) {
        .tag(2).slider(BTN_POS(3,2), BTN_SIZE(2,1), mydata.brightness, 128)
     #endif
        .tag(3).slider(BTN_POS(3,3), BTN_SIZE(2,1), mydata.volume,     0xFF)
-    #ifdef FTDI_LOCK_SCREEN
+    #if ENABLED(FTDI_LOCK_SCREEN)
        .colors(ui_toggle)
        .tag(4).toggle2(BTN_POS(3,4), BTN_SIZE(w,1), GET_TEXT_F(MSG_NO), GET_TEXT_F(MSG_YES), LockScreen::is_enabled())
     #endif
@@ -110,15 +103,15 @@ void InterfaceSettingsScreen::onRedraw(draw_mode_t what) {
     #endif
     #undef EDGE_R
     #define EDGE_R 0
-    #if ENABLED(TOUCH_UI_PORTRAIT)
        .colors(normal_btn)
+    #if ENABLED(TOUCH_UI_PORTRAIT)
        .tag(6).button (BTN_POS(1,6), BTN_SIZE(4,1), GET_TEXT_F(MSG_SOUNDS))
        .colors(action_btn)
-       .tag(1).button (BTN_POS(1,7), BTN_SIZE(4,1), GET_TEXT_F(MSG_BACK));
+       .tag(1).button (BTN_POS(1,7), BTN_SIZE(4,1), GET_TEXT_F(MSG_BUTTON_DONE));
     #else
        .tag(6).button (BTN_POS(1,6), BTN_SIZE(2,1), GET_TEXT_F(MSG_SOUNDS))
        .colors(action_btn)
-       .tag(1).button (BTN_POS(3,6), BTN_SIZE(2,1), GET_TEXT_F(MSG_BACK));
+       .tag(1).button (BTN_POS(3,6), BTN_SIZE(2,1), GET_TEXT_F(MSG_BUTTON_DONE));
     #endif
   }
 }
@@ -126,7 +119,7 @@ void InterfaceSettingsScreen::onRedraw(draw_mode_t what) {
 bool InterfaceSettingsScreen::onTouchEnd(uint8_t tag) {
   switch (tag) {
     case 1: GOTO_PREVIOUS(); return true;
-    #ifdef FTDI_LOCK_SCREEN
+    #if ENABLED(FTDI_LOCK_SCREEN)
       case 4:
         if (!LockScreen::is_enabled())
           LockScreen::enable();
@@ -134,7 +127,7 @@ bool InterfaceSettingsScreen::onTouchEnd(uint8_t tag) {
           LockScreen::disable();
         break;
     #endif
-    case 5: UIData::enable_animations(!UIData::animations_enabled());; break;
+    case 5: UIData::enable_animations(!UIData::animations_enabled()); break;
     case 6: GOTO_SCREEN(InterfaceSoundsScreen); return true;
     default:
       return false;
@@ -154,8 +147,6 @@ bool InterfaceSettingsScreen::onTouchStart(uint8_t tag) {
   }
   #undef EDGE_R
   #define EDGE_R 0
-  #undef GRID_COLS
-  #undef GRID_ROWS
   return true;
 }
 
@@ -185,8 +176,7 @@ void InterfaceSettingsScreen::onIdle() {
 }
 
 void InterfaceSettingsScreen::failSafeSettings() {
-  // Reset settings that may make the printer interface
-  // unusable.
+  // Reset settings that may make the printer interface unusable.
   CLCD::mem_write_32(CLCD::REG::ROTATE, 0);
   CLCD::default_touch_transform();
   CLCD::default_display_orientation();
@@ -197,9 +187,7 @@ void InterfaceSettingsScreen::failSafeSettings() {
 }
 
 void InterfaceSettingsScreen::defaultSettings() {
-  #ifdef FTDI_LOCK_SCREEN
-    LockScreen::passcode = 0;
-  #endif
+  TERN_(FTDI_LOCK_SCREEN, LockScreen::passcode = 0);
   SoundPlayer::set_volume(255);
   CLCD::set_brightness(255);
   UIData::reset_persistent_data();
@@ -218,11 +206,7 @@ void InterfaceSettingsScreen::saveSettings(char *buff) {
 
   persistent_data_t eeprom;
 
-  #ifdef FTDI_LOCK_SCREEN
-    eeprom.passcode           = LockScreen::passcode;
-  #else
-    eeprom.passcode           = 0;
-  #endif
+  eeprom.passcode             = TERN0(FTDI_LOCK_SCREEN, LockScreen::passcode);
   eeprom.sound_volume         = SoundPlayer::get_volume();
   eeprom.display_brightness   = CLCD::get_brightness();
   eeprom.bit_flags            = UIData::get_persistent_data();
@@ -251,7 +235,7 @@ void InterfaceSettingsScreen::loadSettings(const char *buff) {
 
   SERIAL_ECHOLNPGM("Loading setting from EEPROM");
 
-  #ifdef FTDI_LOCK_SCREEN
+  #if ENABLED(FTDI_LOCK_SCREEN)
     LockScreen::passcode = eeprom.passcode;
   #endif
   SoundPlayer::set_volume(eeprom.sound_volume);
@@ -282,10 +266,7 @@ void InterfaceSettingsScreen::loadSettings(const char *buff) {
     if (success)
       success = persistentStore.write_data(0, data, ARCHIM2_SPI_FLASH_EEPROM_BACKUP_SIZE) == PERSISTENT_STORE_SUCCESS;
 
-    if (success)
-      StatusScreen::setStatusMessage(GET_TEXT_F(MSG_EEPROM_RESTORED));
-    else
-      StatusScreen::setStatusMessage(GET_TEXT_F(MSG_EEPROM_RESET));
+    StatusScreen::setStatusMessage(success ? GET_TEXT_F(MSG_EEPROM_RESTORED) : GET_TEXT_F(MSG_EEPROM_RESET));
 
     return success;
   }

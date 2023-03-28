@@ -19,7 +19,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-#if defined(ARDUINO_ARCH_STM32) && !defined(STM32GENERIC)
+#include "../../platforms.h"
+
+#ifdef HAL_STM32
 
 #include "../../../inc/MarlinConfig.h"
 
@@ -354,7 +356,7 @@ void TFT_LTDC::WriteReg(uint16_t Reg) {
   reg = Reg;
 }
 
-void TFT_LTDC::TransmitDMA(uint32_t MemoryIncrease, uint16_t *Data, uint16_t Count) {
+void TFT_LTDC::Transmit(uint32_t MemoryIncrease, uint16_t *Data, uint16_t Count) {
 
   while (x_cur != x_min && Count) {
     Transmit(*Data);
@@ -370,9 +372,9 @@ void TFT_LTDC::TransmitDMA(uint32_t MemoryIncrease, uint16_t *Data, uint16_t Cou
     if (MemoryIncrease == DMA_PINC_ENABLE) {
       DrawImage(x_min, y_cur, x_min + width, y_cur + height, Data);
       Data += width * height;
-    } else {
-      DrawRect(x_min, y_cur, x_min + width, y_cur + height, *Data);
     }
+    else
+      DrawRect(x_min, y_cur, x_min + width, y_cur + height, *Data);
     y_cur += height;
   }
 
@@ -384,4 +386,4 @@ void TFT_LTDC::TransmitDMA(uint32_t MemoryIncrease, uint16_t *Data, uint16_t Cou
 }
 
 #endif // HAS_LTDC_TFT
-#endif // ARDUINO_ARCH_STM32 && !STM32GENERIC
+#endif // HAL_STM32
