@@ -40,8 +40,8 @@ The files below are included in Marlin mainline from 2.0.9.3, and are listed for
 ## Additional Files
 Compiled binary - mksLite.bin
 - Hotbed is enabled. If you do not have a hotbed, make sure the temp is set to 0 in your slicer
-- Backlash correction is enabled - testing to see if layer shift bug still exists
-- Input Shaping: Disabled, default 0 damping factor
+- Backlash correction is disabled - there is a layer shift bug in Marlin
+- Input Shaping: Disabled, not yet tested
 
 ## Notes on Marlin 2 Config
 - Make sure 'VALIDATE_HOMING_ENDSTOPS' is disabled, as we do not have X and Y stoppers to provide feedback, and the printer will halt.
