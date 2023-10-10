@@ -47,7 +47,9 @@ Compiled binary - mksLite.bin
 ## Notes on Marlin 2 Config
 - Make sure 'VALIDATE_HOMING_ENDSTOPS' is disabled, as we do not have X and Y stoppers to provide feedback, and the printer will halt.
 - Multiple calls in quick succession to queue.inject_P() will fail. Use a single call, with multiple commands seprated by "\n"
-- Setting acceleration of around 100 or higher results in layer shifting when backlash compensation is enabled; therefore max acceleration is set to 50 (see https://github.com/schmttc/EasyThreeD-K7-STM32/issues/2 )
+- Setting acceleration of around 100 or higher may result in layer shifting when backlash compensation is enabled; therefore max acceleration is set to 50. This can be overridden with M201. (see https://github.com/schmttc/EasyThreeD-K7-STM32/issues/2 )
+  - Some users are reporting minimal or no layer shift with version 2.1.2, so YMMV
+  - Branch 'backlashfix' has a fix enabled that seems to be working, please try this if you experience backlash and let me know how it goes
 
 ## References to button code in original firmware
 https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Original-Firmware-Marlin-1.1.1/mksRobinLite_nano/Inc/main.h
