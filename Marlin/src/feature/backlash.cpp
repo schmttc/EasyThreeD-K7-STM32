@@ -63,7 +63,7 @@ Backlash backlash;
  * spread over multiple segments, smoothing out artifacts even more.
  */
 
-void Backlash::add_correction_steps(const int32_t &da, const int32_t &db, const int32_t &dc, const axis_bits_t dm, block_t * const block) {
+void Backlash::add_correction_steps(const int32_t &da, const int32_t &db, const int32_t &dc, const axis_bits_t dm, block_t * const block,const xyze_long_t &dist) {
   axis_bits_t changed_dir = last_direction_bits ^ dm;
   // Ignore direction change unless steps are taken in that direction
   #if DISABLED(CORE_BACKLASH) || EITHER(MARKFORGED_XY, MARKFORGED_YX)
@@ -121,7 +121,7 @@ void Backlash::add_correction_steps(const int32_t &da, const int32_t &db, const 
 
       // Don't correct backlash in the opposite direction to movement on this axis and for accuracy in
       // updating block->millimeters, don't add too many steps to the movement on this axis
-      if (forward)
+      if (!reverse)
         LIMIT(error_correction, 0, dist[axis]);
       else
         LIMIT(error_correction, dist[axis], 0);
