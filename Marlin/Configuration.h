@@ -3205,7 +3205,7 @@
 //
 #define EASYTHREED_UI
 //#define EASYTHREED_K7_ET4000PLUS
-#define EASYTHREED_K9_ET4000PLUS // Mainboard model for Nano/recent K7
+#define EASYTHREED_K9_ET4000PLUS // Mainboard model for ET4000+ based K9
 
 //=============================================================================
 //=============================== Extra Features ==============================
