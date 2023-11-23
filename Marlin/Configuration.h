@@ -3204,7 +3204,8 @@
 // EasyThreeD ET-4000+ with button input and status LED
 //
 #define EASYTHREED_UI
-#define EASYTHREED_ET4000PLUS // Mainboard model for Nano/recent K7
+//#define EASYTHREED_K7_ET4000PLUS
+#define EASYTHREED_K9_ET4000PLUS // Mainboard model for Nano/recent K7
 
 //=============================================================================
 //=============================== Extra Features ==============================
