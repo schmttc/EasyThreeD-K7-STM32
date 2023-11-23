@@ -163,7 +163,7 @@
 #define SD_SS_PIN                           PA15
 
 // EXP1 replace LCD with keys for EasyThreeD ET4000+ Mainboard
-#if ENABLED(EASYTHREED_UI)
+#if ENABLED(EASYTHREED_K7_ET4000PLUS)
   #define BTN_HOME                   EXP3_07_PIN  // INPUT_PULLUP (unused)
   #define BTN_FEED                   EXP3_02_PIN  // Run E Forward
   #define BTN_RETRACT                EXP3_03_PIN  // Run E Backward
@@ -172,4 +172,15 @@
   #define BTN_FEED_GND               EXP3_05_PIN  // OUTPUT (LOW)
   #define BTN_RETRACT_GND            EXP3_06_PIN  // OUTPUT (LOW)
   #define EASYTHREED_LED_PIN         EXP3_01_PIN  // Indicator LED
+#endif
+
+#if ENABLED(EASYTHREED_K9_ET4000PLUS)
+  #define BTN_HOME                   EXP3_07_PIN  // INPUT_PULLUP (unused) same
+  #define BTN_FEED                   EXP3_02_PIN  // Run E Forward /same?
+  #define BTN_RETRACT                EXP3_03_PIN  // Run E Backward /same?
+  #define BTN_PRINT                  PC7          // Start File Print K9 only
+  #define BTN_HOME_GND               EXP3_08_PIN  // OUTPUT (LOW) same
+  #define BTN_FEED_GND               EXP3_05_PIN  // OUTPUT (LOW) same?
+  #define BTN_RETRACT_GND            EXP3_06_PIN  // OUTPUT (LOW) same?
+  #define EASYTHREED_LED_PIN         EXP3_01_PIN  // Indicator LED same
 #endif
