@@ -3815,21 +3815,36 @@
     #define BUTTON1_DESC          "Homing"  // Optional string to set the LCD status
   #endif
 
-  //#define BUTTON2_PIN PB3
+  #define BUTTON2_PIN PC7
   #if PIN_EXISTS(BUTTON2)
     #define BUTTON2_HIT_STATE     HIGH
     #define BUTTON2_WHEN_PRINTING false
-    //#define BUTTON2_GCODE         "M701"
-    #define BUTTON2_GCODE         "M104 S200\nG1 F100 E0"
-    #define BUTTON2_DESC          "Load Filament"
+    #define BUTTON2_GCODE         "G28"
+    #define BUTTON2_DESC          "Levelling Position 1"
   #endif
 
-  //#define BUTTON3_PIN PB5
+  #define BUTTON3_PIN PC11
   #if PIN_EXISTS(BUTTON3)
     #define BUTTON3_HIT_STATE     HIGH
     #define BUTTON3_WHEN_PRINTING false
-    #define BUTTON3_GCODE         "M702"
-    #define BUTTON3_DESC          "Unload Filament"
+    #define BUTTON3_GCODE         "G0 Z5\nG0 X0 Y100\nG0 Z0"
+    #define BUTTON3_DESC          "Levelling Position 2"
+  #endif
+
+  #define BUTTON2_PIN PA2
+  #if PIN_EXISTS(BUTTON2)
+    #define BUTTON2_HIT_STATE     LOW
+    #define BUTTON2_WHEN_PRINTING false
+    #define BUTTON2_GCODE         "G0 Z5\nG0 X100 Y100\nG0 Z0"
+    #define BUTTON2_DESC          "Levelling Position 3"
+  #endif
+
+  #define BUTTON3_PIN PA3
+  #if PIN_EXISTS(BUTTON3)
+    #define BUTTON3_HIT_STATE     LOW
+    #define BUTTON3_WHEN_PRINTING false
+    #define BUTTON3_GCODE         "G0 Z5\nG0 X100 Y0\nG0 Z0"
+    #define BUTTON3_DESC          "Levelling Position 4"
   #endif
 #endif
 
