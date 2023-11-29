@@ -3807,44 +3807,49 @@
 // Home Button
 #define CUSTOM_USER_BUTTONS
 #if ENABLED(CUSTOM_USER_BUTTONS)
-  #define BUTTON1_PIN PC3
+  // Levelling button 1
+  #define BUTTON1_PIN PC7
+  #if PIN_EXISTS(BUTTON1)
+    #define BUTTON1_HIT_STATE     HIGH
+    #define BUTTON1_WHEN_PRINTING false
+    #define BUTTON1_GCODE         "G28"
+    #define BUTTON1_DESC          "Levelling Position 1"
+  #endif
+
+  // Levelling button 2
+  #define BUTTON2_PIN PC11
+  #if PIN_EXISTS(BUTTON2)
+    #define BUTTON2_HIT_STATE     HIGH
+    #define BUTTON2_WHEN_PRINTING false
+    #define BUTTON2_GCODE         "G0 Z5\nG0 X0 Y100\nG0 Z0"
+    #define BUTTON2_DESC          "Levelling Position 2"
+  #endif
+
+  // Levelling button 3
+  #define BUTTON3_PIN PA2
+  #if PIN_EXISTS(BUTTON3)
+    #define BUTTON3_HIT_STATE     LOW
+    #define BUTTON3_WHEN_PRINTING false
+    #define BUTTON3_GCODE         "G0 Z5\nG0 X100 Y100\nG0 Z0"
+    #define BUTTON3_DESC          "Levelling Position 3"
+  #endif
+
+  // Levelling button 4
+  #define BUTTON4_PIN PA3
+  #if PIN_EXISTS(BUTTON4)
+    #define BUTTON4_HIT_STATE     LOW
+    #define BUTTON4_WHEN_PRINTING false
+    #define BUTTON4_GCODE         "G0 Z5\nG0 X100 Y0\nG0 Z0"
+    #define BUTTON4_DESC          "Levelling Position 4"
+  #endif
+
+  // Homing button at the back
+  #define BUTTON5_PIN PC3
   #if PIN_EXISTS(BUTTON1)
     #define BUTTON1_HIT_STATE     LOW       // State of the triggered button. NC=LOW. NO=HIGH.
     #define BUTTON1_WHEN_PRINTING false     // Button allowed to trigger during printing?
     #define BUTTON1_GCODE         "G28"
     #define BUTTON1_DESC          "Homing"  // Optional string to set the LCD status
-  #endif
-
-  #define BUTTON2_PIN PC7
-  #if PIN_EXISTS(BUTTON2)
-    #define BUTTON2_HIT_STATE     HIGH
-    #define BUTTON2_WHEN_PRINTING false
-    #define BUTTON2_GCODE         "G28"
-    #define BUTTON2_DESC          "Levelling Position 1"
-  #endif
-
-  #define BUTTON3_PIN PC11
-  #if PIN_EXISTS(BUTTON3)
-    #define BUTTON3_HIT_STATE     HIGH
-    #define BUTTON3_WHEN_PRINTING false
-    #define BUTTON3_GCODE         "G0 Z5\nG0 X0 Y100\nG0 Z0"
-    #define BUTTON3_DESC          "Levelling Position 2"
-  #endif
-
-  #define BUTTON2_PIN PA2
-  #if PIN_EXISTS(BUTTON2)
-    #define BUTTON2_HIT_STATE     LOW
-    #define BUTTON2_WHEN_PRINTING false
-    #define BUTTON2_GCODE         "G0 Z5\nG0 X100 Y100\nG0 Z0"
-    #define BUTTON2_DESC          "Levelling Position 3"
-  #endif
-
-  #define BUTTON3_PIN PA3
-  #if PIN_EXISTS(BUTTON3)
-    #define BUTTON3_HIT_STATE     LOW
-    #define BUTTON3_WHEN_PRINTING false
-    #define BUTTON3_GCODE         "G0 Z5\nG0 X100 Y0\nG0 Z0"
-    #define BUTTON3_DESC          "Levelling Position 4"
   #endif
 #endif
 
