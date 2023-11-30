@@ -178,7 +178,7 @@
   #define BTN_HOME                   EXP3_07_PIN  // INPUT_PULLUP (unused) same
   #define BTN_FEED                   EXP3_02_PIN  // Run E Forward /same?
   #define BTN_RETRACT                EXP3_03_PIN  // Run E Backward /same?
-  #define BTN_PRINT                  PC7          // Start File Print K9 only
+  #define BTN_PRINT                  PA10          // Start File Print K9 only
   #define BTN_HOME_GND               EXP3_08_PIN  // OUTPUT (LOW) same
   #define BTN_FEED_GND               EXP3_05_PIN  // OUTPUT (LOW) same?
   #define BTN_RETRACT_GND            EXP3_06_PIN  // OUTPUT (LOW) same?
