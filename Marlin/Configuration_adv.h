@@ -3845,7 +3845,7 @@
 
   // Homing button at the back
   #define BUTTON5_PIN PC3
-  #if PIN_EXISTS(BUTTON1)
+  #if PIN_EXISTS(BUTTON5)
     #define BUTTON5_HIT_STATE     LOW       // State of the triggered button. NC=LOW. NO=HIGH.
     #define BUTTON5_WHEN_PRINTING false     // Button allowed to trigger during printing?
     #define BUTTON5_GCODE         "G28"
