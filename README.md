@@ -20,12 +20,12 @@ EXP1 pins 2, 4, 9 and 10 are not connected to any peripherals.
 
 ### Main front button
 
-| Physical pin number | EXP1 pin | Role    |
-|---------------------|----------|---------|
-| 1                   | 11       | GND     |
-| 2                   | 12       | 3V3     |
-| 3                   | 14       | Unknown |
-| 4                   | 13       | Unknown |
+| Physical pin number | EXP1 pin | Role                    | MCU pin |
+|---------------------|----------|-------------------------|---------|
+| 1                   | 11       | GND                     | GND     |
+| 2                   | 12       | LED+ (Connected to 3V3) | VDDA    |
+| 3                   | 14       | LED-                    | PD2     |
+| 4                   | 13       | SW                      | PA10    |
 
 ### Front leveling buttons
 
