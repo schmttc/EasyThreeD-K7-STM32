@@ -1170,7 +1170,7 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 606, 606, 1167, 1140 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 606, 606, 606, 1040 }
 
 /**
  * Default Max Feed Rate (linear=mm/s, rotational=°/s)
@@ -1643,7 +1643,7 @@
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
 #define INVERT_X_DIR true
-#define INVERT_Y_DIR false
+#define INVERT_Y_DIR true
 #define INVERT_Z_DIR true
 //#define INVERT_I_DIR false
 //#define INVERT_J_DIR false
@@ -2100,7 +2100,7 @@
 #endif
 
 // Homing speeds (linear=mm/min, rotational=°/min)
-#define HOMING_FEEDRATE_MM_M { (50*60), (50*60), 600 }
+#define HOMING_FEEDRATE_MM_M { 2400, 2400, 600 }
 
 // Validate that endstops are triggered on homing moves
 //#define VALIDATE_HOMING_ENDSTOPS
@@ -3205,7 +3205,7 @@
 //
 #define EASYTHREED_UI
 //#define EASYTHREED_K7_ET4000PLUS
-#define EASYTHREED_K9_ET4000PLUS // Mainboard model for Nano/recent K7
+#define EASYTHREED_K9_ET4000PLUS // Mainboard model for ET4000+ based K9
 
 //=============================================================================
 //=============================== Extra Features ==============================
