@@ -1,17 +1,23 @@
-# Marlin 2 for EasyThreeD K7 STM32 (ET4000+ Board)
-This repository reflects my work on the EasyThreeD K7 3D printer.
-The K7 printer has been sold with a number of mainboards. My printer has the 32-bit board 'ET4000+', which is shared by the Nano and Dora printers from the same manufacturer, and so these files only apply to that model.
+# Marlin 2 for EasyThreeD ET4000+ Board (STM32), K7 and K9 Printer Models
+This repository reflects my work on the EasyThreeD ET4000+ 3D printer mainboard.
+The K7 and K9 printers have been sold with a number of mainboards. My printer has the 32-bit board 'ET4000+', which is shared by the K9 and Nano and Dora printers from the same manufacturer, and so these files only apply to that model.
+- For the K7 printer with ET-4000+ board, see main branch https://github.com/schmttc/EasyThreeD-K7-STM32/tree/master
+- For the K9 printer with ET-4000+ board, see branch https://github.com/schmttc/EasyThreeD-K7-STM32/tree/ET4000PLUS-K9
 - If you have a K7 with the ET-4000-V2 board, please see https://github.com/tux-friend/Easythreed-K7-ET-4000-V2
 - Recently, a N32 processor board CF-M12 has appeared, which I have not seem firmware for https://github.com/schmttc/EasyThreeD-K7-STM32/issues/4
 - This firmware is compatible with the AT32F403ARCT7 processor
 
-The board's bootloader is proprietary by MKS, which reads a binary firmware file mksLite.bin from the SD card on boot. After a short time (<30s) the firmware is written to the board, and the files on the SD card renamed *.CUR.
+# Installation
+The board's bootloader is proprietary by MKS, which reads a binary firmware file mksLite.bin from the SD card on boot.
+- Make a copy of mksLite.CUR from your SD card. This is the original firmware, and is required if you run into any issues
+- Copy mksLite.bin to the SD card, and restart the printer
+- After a short time (<30s) the firmware is written to the board, and mksLite.bin on the SD card is renamed to mksLite.CUR
 
 # Branch: master
-This is a clone of Marlin 2.1.2.1, configured for the EasyThreeD K7 ET4000+. All changes have been submitted to the main Marlin repository.
+This is a clone of Marlin 2.1.2.1, configured for the EasyThreeD K7 ET4000+.
 
 - For the original firmware source and binaries based on Marlin 1.1.1 supplied by the manufacturer, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Original-Firmware-Marlin-1.1.1
-- For additional files related to the printer including schematic, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Additional-Files
+- For additional files related to the printer and mainboard, including schematic, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Additional-Files
 
 ## Overview
 - Compile using PlatformIO, board "mks_robin_lite_maple" 
