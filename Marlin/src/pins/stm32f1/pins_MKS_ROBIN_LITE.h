@@ -38,6 +38,14 @@
 #define DISABLE_JTAG
 
 //
+// EEPROM
+//
+#if NO_EEPROM_SELECTED
+  #define I2C_EEPROM                             // AT24Cxx
+  #define MARLIN_EEPROM_SIZE              0x800  // 2K (24C16)
+#endif
+
+//
 // Limit Switches
 //
 #define X_STOP_PIN                          PC13
