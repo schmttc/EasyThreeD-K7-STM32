@@ -11,7 +11,7 @@ The board's bootloader is proprietary by MKS, which reads a binary firmware file
 This is a clone of Marlin 2.1.2.1, configured for the EasyThreeD K7 ET4000+. All changes have been submitted to the main Marlin repository.
 
 - For the original firmware source and binaries based on Marlin 1.1.1 supplied by the manufacturer, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Original-Firmware-Marlin-1.1.1
-- For additional files related to the printer, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Additional-Files
+- For additional files related to the printer including schematic, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Additional-Files
 
 ## Overview
 - Compile using PlatformIO, board "mks_robin_lite_maple" 
@@ -24,11 +24,13 @@ This is a clone of Marlin 2.1.2.1, configured for the EasyThreeD K7 ET4000+. All
 - Long press print button to raise print head 10mm while not printing
 - Short press print button to print most recent file on SD card
 - Serial baud rate is set to 115200, matching the original firmware
+- Onboard EEPROM is enabled, matching the original firmware
 
 ## Modified Files
 - Configuration_adv.h - SD_DETECT set to LOW (bugfix)
 - ini/stm32f1-maple.ini - Compile bugfix https://github.com/MarlinFirmware/Marlin/issues/25346
 - src\feature\easythreed_ui.cpp - Button behaviours
+- src\pins\stm32f1\pins_MKS_ROBIN_LITE.h - Enable EEPROM
 
 The files below are included in Marlin mainline from 2.0.9.3, and are listed for reference.
 - Configuration.h - configured for EasyThreeD K7
@@ -42,7 +44,7 @@ The files below are included in Marlin mainline from 2.0.9.3, and are listed for
 Compiled binary - mksLite.bin
 - Hotbed is enabled. If you do not have a hotbed, make sure the temp is set to 0 in your slicer
 - Backlash correction is enabled
-- Input Shaping: Disabled, not yet tested
+- Input Shaping: Disabled
 
 ## Notes on Marlin 2 Config
 - Make sure 'VALIDATE_HOMING_ENDSTOPS' is disabled, as we do not have X and Y stoppers to provide feedback, and the printer will halt.
