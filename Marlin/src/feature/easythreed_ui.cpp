@@ -131,18 +131,19 @@ void EasythreedUI::loadButton() {
       break;
 
     case FS_PROCEED: {
-      // Feed or Retract just once. Hard abort all moves and return to idle on swicth release.
+      // Feed or Retract just once. Hard abort all moves and return to idle on switch release.
       static bool flag = false;
       if (READ(BTN_RETRACT) && READ(BTN_FEED)) {                    // Switch in center position (stop)
         flag = false;                                               // Restore flag to false
         filament_status = FS_IDLE;                                  // Go back to idle state
         quickstop_stepper();                                        // Hard-stop all the steppers ... now!
         thermalManager.disable_all_heaters();                       // And disable all the heaters
+   //     queue.inject(F("G90"));                                     // Ensure we return to absolute positioning
         blink_interval_ms = LED_ON;
       }
       else if (!flag) {
         flag = true;
-        queue.inject(!READ(BTN_RETRACT) ? F("G91\nG0 E10 F180\nG0 E-120 F180\nM104 S0") : F("G91\nG0 E100 F120\nM104 S0"));
+        queue.inject(!READ(BTN_RETRACT) ? F("G91\nG0 E10 F180\nG0 E-120 F180\nG90\nM104 S0") : F("G91\nG0 E100 F120\nG90\nM104 S0"));
       }
     } break;
   }
