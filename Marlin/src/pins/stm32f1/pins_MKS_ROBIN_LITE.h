@@ -154,7 +154,7 @@
 #define MOTOR_CURRENT_PWM_Z_PIN             PA7
 #define MOTOR_CURRENT_PWM_E_PIN             PA6
 #define MOTOR_CURRENT_PWM_RANGE (65535/10/3.3) // (255 * (1000mA / 65535)) * 257 = 1000 is equal 1.6v Vref in turn equal 1Amp
-#define DEFAULT_PWM_MOTOR_CURRENT { 1000, 1000, 1000 } // 1.05Amp per driver, here is XY, Z and E. This values determined empirically.
+#define DEFAULT_PWM_MOTOR_CURRENT { 500, 500, 500 } // 1.05Amp per driver, here is XY, Z and E. This values determined empirically.
 
 //
 // SD Card
