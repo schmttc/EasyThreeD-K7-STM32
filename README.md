@@ -3,6 +3,7 @@ This repository reflects my work on the EasyThreeD ET4000+ 3D printer mainboard.
 The K7 and K9 printers have been sold with a number of mainboards. My printer has the 32-bit board 'ET4000+', which is shared by the K9 and Nano and Dora printers from the same manufacturer, and so these files only apply to that model.
 - For the K7 printer with ET-4000+ board, see main branch https://github.com/schmttc/EasyThreeD-K7-STM32/tree/master
 - For the K9 printer with ET-4000+ board, see branch https://github.com/schmttc/EasyThreeD-K7-STM32/tree/ET4000PLUS-K9
+- For the K7 printer with ET-4000+ board and 4 levelling butons, please see https://github.com/Vexisu/EasyThreeD-K7-STM32/tree/ET4000PLUS-K7-rev-B
 - If you have a K7 with the ET-4000-V2 board, please see https://github.com/tux-friend/Easythreed-K7-ET-4000-V2
 - Recently, a N32 processor board CF-M12 has appeared, which I have not seem firmware for https://github.com/schmttc/EasyThreeD-K7-STM32/issues/4
 - This firmware is compatible with the AT32F403ARCT7 processor
