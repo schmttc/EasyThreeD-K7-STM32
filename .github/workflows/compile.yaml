@@ -2,7 +2,8 @@ name: PlatformIO CI
 
 on:
   workflow_dispatch:
-
+    branches:
+      - buildtest
 
 jobs:
   build:
