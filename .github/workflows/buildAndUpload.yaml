@@ -1,4 +1,4 @@
-name: PlatformIO CI
+name: PlatformIO CI - Build and Self-Upload
 
 on:
   workflow_dispatch:
