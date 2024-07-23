@@ -63,7 +63,7 @@ Backlash backlash;
  * spread over multiple segments, smoothing out artifacts even more.
  */
 
-void Backlash::add_correction_steps(const int32_t &da, const int32_t &db, const int32_t &dc, const axis_bits_t dm, block_t * const block) {
+void Backlash::add_correction_steps(const int32_t &da, const int32_t &db, const int32_t &dc, const axis_bits_t dm, block_t * const block,const xyze_long_t &dist) {
   axis_bits_t changed_dir = last_direction_bits ^ dm;
   // Ignore direction change unless steps are taken in that direction
   #if DISABLED(CORE_BACKLASH) || EITHER(MARKFORGED_XY, MARKFORGED_YX)
@@ -97,6 +97,9 @@ void Backlash::add_correction_steps(const int32_t &da, const int32_t &db, const 
 
   const float f_corr = float(correction) / all_on;
 
+  bool changed = false;
+  float millimeters_delta = 0.0f;
+  
   LOOP_NUM_AXES(axis) {
     if (distance_mm[axis]) {
       const bool reverse = TEST(dm, axis);
@@ -107,9 +110,7 @@ void Backlash::add_correction_steps(const int32_t &da, const int32_t &db, const 
 
       // Decide how much of the residual error to correct in this segment
       int32_t error_correction = residual_error[axis];
-      if (reverse != (error_correction < 0))
-        error_correction = 0; // Don't take up any backlash in this segment, as it would subtract steps
-
+      
       #ifdef BACKLASH_SMOOTHING_MM
         if (error_correction && smoothing_mm != 0) {
           // Take up a portion of the residual_error in this segment
@@ -118,9 +119,18 @@ void Backlash::add_correction_steps(const int32_t &da, const int32_t &db, const 
         }
       #endif
 
+      // Don't correct backlash in the opposite direction to movement on this axis and for accuracy in
+      // updating block->millimeters, don't add too many steps to the movement on this axis
+      if (!reverse)
+        LIMIT(error_correction, 0, dist[axis]);
+      else
+        LIMIT(error_correction, dist[axis], 0);
+      
       // This correction reduces the residual error and adds block steps
       if (error_correction) {
+        changed = true;
         block->steps[axis] += ABS(error_correction);
+        millimeters_delta += dist[axis] * error_correction * sq(planner.mm_per_step[axis]);
         #if ENABLED(CORE_BACKLASH)
           switch (axis) {
             case CORE_AXIS_1:
@@ -142,6 +152,10 @@ void Backlash::add_correction_steps(const int32_t &da, const int32_t &db, const 
       }
     }
   }
+
+  // if backlash correction steps were added, modify block->millimeters with a linear approximation
+  if (changed)
+    block->millimeters += millimeters_delta / block->millimeters;
 }
 
 int32_t Backlash::get_applied_steps(const AxisEnum axis) {
