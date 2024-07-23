@@ -23,8 +23,14 @@ jobs:
       - name: Build PlatformIO Project
         run: pio run -e mks_robin_lite_maple
 
-      - name: Upload compiled binary
-        uses: actions/upload-artifact@v4
-        with:
-          path: .pio/build/mks_robin_lite_maple/mksLite.bin
-          name: mksLite.bin
+      - name: Move firmware to base folder
+        run: |
+          cp .pio/build/mks_robin_lite_maple/mksLite.bin ./
+
+      - name: Push firmware
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add mksLite.bin
+          git commit -m "Compiled firmware"
+          git push
