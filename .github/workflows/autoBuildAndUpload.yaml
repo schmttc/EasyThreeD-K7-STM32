@@ -20,17 +20,31 @@ jobs:
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
 
-      - name: Build PlatformIO Project
-        run: pio run -e mks_robin_lite_maple
-
-      - name: Move firmware to base folder
+      - name: Import K7 Config
         run: |
-          cp .pio/build/mks_robin_lite_maple/mksLite.bin ./
+          cp -f config/EasyThreeD/ET4000PLUS/K7/Configuration.h Marlin/Configuration.h
+          cp -f config/EasyThreeD/ET4000PLUS/K7/Configuration_adv.h Marlin/Configuration_adv.h
+      - name: Build PlatformIO Project - K7
+        run: pio run -e mks_robin_lite_maple
+      - name: Move firmware to config folder - K7
+        run: |
+          cp .pio/build/mks_robin_lite_maple/mksLite.bin config/EasyThreeD/ET4000PLUS/K7/
+
+      - name: Import K9 Config
+        run: |
+          cp -f config/EasyThreeD/ET4000PLUS/K9/Configuration.h Marlin/Configuration.h
+          cp -f config/EasyThreeD/ET4000PLUS/K9/Configuration_adv.h Marlin/Configuration_adv.h
+      - name: Build PlatformIO Project - K9
+        run: pio run -e mks_robin_lite_maple
+      - name: Move firmware to config folder - K9
+        run: |
+          cp .pio/build/mks_robin_lite_maple/mksLite.bin config/EasyThreeD/ET4000PLUS/K9/
 
       - name: Push firmware
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add mksLite.bin
+          git add config/EasyThreeD/ET4000PLUS/K7/mksLite.bin
+          git add config/EasyThreeD/ET4000PLUS/K9/mksLite.bin
           git commit -m "Compiled firmware"
           git push

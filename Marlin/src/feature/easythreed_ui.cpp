@@ -142,7 +142,6 @@ void EasythreedUI::loadButton() {
         filament_status = FS_IDLE;                                  // Go back to idle state
         quickstop_stepper();                                        // Hard-stop all the steppers ... now!
         thermalManager.disable_all_heaters();                       // And disable all the heaters
-   //     queue.inject(F("G90"));                                     // Ensure we return to absolute positioning
         blink_interval_ms = LED_ON;
       }
       else if (!flag) {
