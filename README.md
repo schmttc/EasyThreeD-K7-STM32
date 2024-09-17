@@ -10,12 +10,14 @@ The K7 and K9 printers have been sold with a number of mainboards. My printer ha
 
 # Installation
 The board's bootloader is proprietary by MKS, which reads a binary firmware file mksLite.bin from the SD card on boot.
+Firmware files are found in config/EasyThreeD/ET4000PLUS/ under the folder of the printer model
 - Make a copy of mksLite.CUR from your SD card. This is the original firmware, and is required if you run into any issues
 - Copy mksLite.bin to the SD card, and restart the printer
 - After a short time (<30s) the firmware is written to the board, and mksLite.bin on the SD card is renamed to mksLite.CUR
 
 # Branch: master
-This is a clone of Marlin 2.1.2.1, configured for the EasyThreeD K7 ET4000+.
+Marlin 2.1.2.1, configured for the EasyThreeD K7 ET4000+.
+See different model configuration files under config/EasyThreeD/ET4000PLUS/ under the folder of the printer model
 
 - For the original firmware source and binaries based on Marlin 1.1.1 supplied by the manufacturer, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Original-Firmware-Marlin-1.1.1
 - For additional files related to the printer and mainboard, including schematic, see https://github.com/schmttc/EasyThreeD-K7-STM32/tree/Additional-Files
@@ -56,9 +58,7 @@ Compiled binary - mksLite.bin
 ## Notes on Marlin 2 Config
 - Make sure 'VALIDATE_HOMING_ENDSTOPS' is disabled, as we do not have X and Y stoppers to provide feedback, and the printer will halt.
 - Multiple calls in quick succession to queue.inject_P() will fail. Use a single call, with multiple commands seprated by "\n"
-- Setting acceleration of around 100 or higher may result in layer shifting when backlash compensation is enabled; therefore max acceleration is set to 50. This can be overridden with M201. (see https://github.com/schmttc/EasyThreeD-K7-STM32/issues/2 )
-  - Some users are reporting minimal or no layer shift with version 2.1.2, so YMMV
-  - Branch 'backlashfix' has a fix enabled that seems to be working, please try this if you experience backlash and let me know how it goes
+- Setting acceleration of around 100 or higher may result in layer shifting when backlash compensation is enabled (see https://github.com/schmttc/EasyThreeD-K7-STM32/issues/2 )
 
 ## References to button code in original firmware
 https://github.com/schmttc/EasyThreeD-K7-STM32/blob/Original-Firmware-Marlin-1.1.1/mksRobinLite_nano/Inc/main.h
