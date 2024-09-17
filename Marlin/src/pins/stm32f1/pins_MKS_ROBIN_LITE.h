@@ -154,7 +154,7 @@
 #define MOTOR_CURRENT_PWM_Z_PIN             PA7
 #define MOTOR_CURRENT_PWM_E_PIN             PA6
 #define MOTOR_CURRENT_PWM_RANGE (65535/10/3.3) // (255 * (1000mA / 65535)) * 257 = 1000 is equal 1.6v Vref in turn equal 1Amp
-#define DEFAULT_PWM_MOTOR_CURRENT { 1000, 1000, 1000 } // 1.05Amp per driver, here is XY, Z and E. This values determined empirically.
+#define DEFAULT_PWM_MOTOR_CURRENT { 800, 800, 800 } // 1.05Amp per driver, here is XY, Z and E. This values determined empirically.
 
 //
 // SD Card
@@ -171,7 +171,7 @@
 #define SD_SS_PIN                           PA15
 
 // EXP1 replace LCD with keys for EasyThreeD ET4000+ Mainboard
-#if ENABLED(EASYTHREED_UI)
+#if ENABLED(EASYTHREED_K7_ET4000PLUS)
   #define BTN_HOME                   EXP3_07_PIN  // INPUT_PULLUP (unused)
   #define BTN_FEED                   EXP3_02_PIN  // Run E Forward
   #define BTN_RETRACT                EXP3_03_PIN  // Run E Backward
@@ -180,4 +180,15 @@
   #define BTN_FEED_GND               EXP3_05_PIN  // OUTPUT (LOW)
   #define BTN_RETRACT_GND            EXP3_06_PIN  // OUTPUT (LOW)
   #define EASYTHREED_LED_PIN         EXP3_01_PIN  // Indicator LED
+#endif
+
+#if ENABLED(EASYTHREED_K9_ET4000PLUS)
+  #define BTN_HOME                   EXP3_07_PIN  // INPUT_PULLUP (unused) same
+  #define BTN_FEED                   EXP3_02_PIN  // Run E Forward /same?
+  #define BTN_RETRACT                EXP3_03_PIN  // Run E Backward /same?
+  #define BTN_PRINT                  PA11         // Start File Print K9 only
+  #define BTN_HOME_GND               EXP3_08_PIN  // OUTPUT (LOW) same
+  #define BTN_FEED_GND               EXP3_05_PIN  // OUTPUT (LOW) same?
+  #define BTN_RETRACT_GND            EXP3_06_PIN  // OUTPUT (LOW) same?
+  #define EASYTHREED_LED_PIN         EXP3_01_PIN  // Indicator LED same
 #endif

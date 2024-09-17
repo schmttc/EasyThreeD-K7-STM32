@@ -44,6 +44,10 @@ void EasythreedUI::init() {
   SET_INPUT_PULLUP(BTN_RETRACT);  SET_OUTPUT(BTN_RETRACT_GND);
   SET_INPUT_PULLUP(BTN_PRINT);
   SET_OUTPUT(EASYTHREED_LED_PIN);
+#ifdef EASYTHREED_K9_ET4000PLUS
+  SET_INPUT_PULLDOWN(PA2);
+  SET_INPUT_PULLDOWN(PA3);
+#endif
 }
 
 void EasythreedUI::run() {
@@ -202,7 +206,7 @@ void EasythreedUI::printButton() {
             card.openAndPrintFile(card.filename);                   // Start printing it
             break;
           }
-          case PF_PAUSE: {                                          // Pause printing (not currently firing)
+          case PF_PAUSE: {                                          // Pause printing 
             if (!printingIsActive()) break;
             blink_interval_ms = LED_ON;                             // Set indicator to steady ON
             queue.inject(F("M25"));                                 // Queue Pause
@@ -224,7 +228,7 @@ void EasythreedUI::printButton() {
           queue.inject(F("G91\nG0 Z10 F600\nG90"));                 // Raise Z soon after returning to main loop
         }
         else {                                                      // While printing, cancel print
-          card.abortFilePrintSoon();                                // There is a delay while the current steps play out
+          card.abortFilePrintNow();                                 // Stop print NOW!
           blink_interval_ms = LED_OFF;                              // Turn off LED
         }
         planner.synchronize();                                      // Wait for commands already in the planner to finish
