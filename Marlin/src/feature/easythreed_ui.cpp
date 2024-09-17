@@ -227,7 +227,7 @@ void EasythreedUI::printButton() {
           queue.inject(F("G91\nG0 Z10 F600\nG90"));                 // Raise Z soon after returning to main loop
         }
         else {                                                      // While printing, cancel print
-          card.abortFilePrintNow();                                // There is a delay while the current steps play out
+          card.abortFilePrintNow();                                 // Stop print NOW!
           blink_interval_ms = LED_OFF;                              // Turn off LED
         }
         planner.synchronize();                                      // Wait for commands already in the planner to finish
