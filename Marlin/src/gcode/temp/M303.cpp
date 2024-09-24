@@ -25,13 +25,12 @@
 #if HAS_PID_HEATING
 
 #include "../gcode.h"
+#include "../queue.h" // for flush_tx
 #include "../../lcd/marlinui.h"
 #include "../../module/temperature.h"
 
 #if ENABLED(EXTENSIBLE_UI)
   #include "../../lcd/extui/ui_api.h"
-#elif ENABLED(DWIN_LCD_PROUI)
-  #include "../../lcd/e3v2/proui/dwin.h"
 #endif
 
 /**
@@ -67,8 +66,7 @@ void GcodeSuite::M303() {
     default:
       SERIAL_ECHOPGM(STR_PID_AUTOTUNE);
       SERIAL_ECHOLNPGM(STR_PID_BAD_HEATER_ID);
-      TERN_(EXTENSIBLE_UI, ExtUI::onPidTuning(ExtUI::result_t::PID_BAD_EXTRUDER_NUM));
-      TERN_(DWIN_LCD_PROUI, DWIN_PidTuning(PID_BAD_EXTRUDER_NUM));
+      TERN_(EXTENSIBLE_UI, ExtUI::onPIDTuning(ExtUI::pidresult_t::PID_BAD_HEATER_ID));
       return;
   }
 
@@ -78,24 +76,15 @@ void GcodeSuite::M303() {
   const celsius_t temp = seenS ? parser.value_celsius() : default_temp;
   const bool u = parser.boolval('U');
 
-  #if ENABLED(DWIN_LCD_PROUI) && EITHER(PIDTEMP, PIDTEMPBED)
-    if (seenC) HMI_data.PidCycles = c;
-    if (seenS) {
-      switch (hid) {
-        OPTCODE(PIDTEMP,    case 0 ... HOTENDS - 1: HMI_data.HotendPidT = temp; break)
-        OPTCODE(PIDTEMPBED, case H_BED:             HMI_data.BedPidT = temp;    break)
-        default: break;
-      }
-    }
-  #endif
+  TERN_(EXTENSIBLE_UI, ExtUI::onStartM303(c, hid, temp));
 
-  #if DISABLED(BUSY_WHILE_HEATING)
-    KEEPALIVE_STATE(NOT_BUSY);
-  #endif
+  IF_DISABLED(BUSY_WHILE_HEATING, KEEPALIVE_STATE(NOT_BUSY));
 
   LCD_MESSAGE(MSG_PID_AUTOTUNE);
   thermalManager.PID_autotune(temp, hid, c, u);
   ui.reset_status();
+
+  queue.flush_rx();
 }
 
 #endif // HAS_PID_HEATING

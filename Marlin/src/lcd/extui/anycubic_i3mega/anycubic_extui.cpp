@@ -35,24 +35,53 @@
 
 namespace ExtUI {
 
-  void onStartup()        { AnycubicTFT.OnSetup(); }
-  void onIdle()           { AnycubicTFT.OnCommandScan(); }
-  void onPrinterKilled(FSTR_P const error, FSTR_P const component) { AnycubicTFT.OnKillTFT(); }
-  void onMediaInserted()  { AnycubicTFT.OnSDCardStateChange(true); }
-  void onMediaError()     { AnycubicTFT.OnSDCardError(); }
-  void onMediaRemoved()   { AnycubicTFT.OnSDCardStateChange(false); }
-  void onPlayTone(const uint16_t frequency, const uint16_t duration) {
+  void onStartup()        { anycubicTFT.onSetup(); }
+  void onIdle()           { anycubicTFT.onCommandScan(); }
+  void onPrinterKilled(FSTR_P const error, FSTR_P const component) { anycubicTFT.onKillTFT(); }
+
+  void onMediaMounted()   { anycubicTFT.onSDCardStateChange(true); }
+  void onMediaError()     { anycubicTFT.onSDCardError(); }
+  void onMediaRemoved()   { anycubicTFT.onSDCardStateChange(false); }
+
+  void onHeatingError(const heater_id_t header_id) {}
+  void onMinTempError(const heater_id_t header_id) {}
+  void onMaxTempError(const heater_id_t header_id) {}
+
+  void onPlayTone(const uint16_t frequency, const uint16_t duration/*=0*/) {
     TERN_(SPEAKER, ::tone(BEEPER_PIN, frequency, duration));
   }
-  void onPrintTimerStarted()  { AnycubicTFT.OnPrintTimerStarted(); }
-  void onPrintTimerPaused()   { AnycubicTFT.OnPrintTimerPaused(); }
-  void onPrintTimerStopped()  { AnycubicTFT.OnPrintTimerStopped(); }
-  void onFilamentRunout(const extruder_t extruder)   { AnycubicTFT.OnFilamentRunout(); }
-  void onUserConfirmRequired(const char * const msg) { AnycubicTFT.OnUserConfirmRequired(msg); }
+  void onPrintTimerStarted()  { anycubicTFT.onPrintTimerStarted(); }
+  void onPrintTimerPaused()   { anycubicTFT.onPrintTimerPaused(); }
+  void onPrintTimerStopped()  { anycubicTFT.onPrintTimerStopped(); }
+
+  void onFilamentRunout(const extruder_t extruder)   { anycubicTFT.onFilamentRunout(); }
+  void onUserConfirmRequired(const char * const msg) { anycubicTFT.onUserConfirmRequired(msg); }
+
+  // For fancy LCDs include an icon ID, message, and translated button title
+  void onUserConfirmRequired(const int icon, const char * const cstr, FSTR_P const fBtn) {
+    onUserConfirmRequired(cstr);
+    UNUSED(icon); UNUSED(fBtn);
+  }
+  void onUserConfirmRequired(const int icon, FSTR_P const fstr, FSTR_P const fBtn) {
+    onUserConfirmRequired(fstr);
+    UNUSED(icon); UNUSED(fBtn);
+  }
+
+  #if ENABLED(ADVANCED_PAUSE_FEATURE)
+    void onPauseMode(
+      const PauseMessage message,
+      const PauseMode mode/*=PAUSE_MODE_SAME*/,
+      const uint8_t extruder/*=active_extruder*/
+    ) {
+      stdOnPauseMode(message, mode, extruder);
+    }
+  #endif
+
   void onStatusChanged(const char * const msg) {}
 
   void onHomingStart() {}
   void onHomingDone() {}
+
   void onPrintDone() {}
 
   void onFactoryReset() {}
@@ -81,21 +110,25 @@ namespace ExtUI {
     // Called after loading or resetting stored settings
   }
 
-  void onSettingsStored(bool success) {
+  void onSettingsStored(const bool success) {
     // Called after the entire EEPROM has been written,
     // whether successful or not.
   }
 
-  void onSettingsLoaded(bool success) {
+  void onSettingsLoaded(const bool success) {
     // Called after the entire EEPROM has been read,
     // whether successful or not.
   }
 
-  #if HAS_MESH
-
+  #if HAS_LEVELING
     void onLevelingStart() {}
     void onLevelingDone() {}
+    #if ENABLED(PREHEAT_BEFORE_LEVELING)
+      celsius_t getLevelingBedTemp() { return LEVELING_BED_TEMP; }
+    #endif
+  #endif
 
+  #if HAS_MESH
     void onMeshUpdate(const int8_t xpos, const int8_t ypos, const_float_t zval) {
       // Called when any mesh points are updated
     }
@@ -105,20 +138,45 @@ namespace ExtUI {
     }
   #endif
 
+  #if ENABLED(PREVENT_COLD_EXTRUSION)
+    void onSetMinExtrusionTemp(const celsius_t) {}
+  #endif
+
   #if ENABLED(POWER_LOSS_RECOVERY)
+    void onSetPowerLoss(const bool onoff) {
+      // Called when power-loss is enabled/disabled
+    }
+    void onPowerLoss() {
+      // Called when power-loss state is detected
+    }
     void onPowerLossResume() {
       // Called on resume from power-loss
     }
   #endif
 
   #if HAS_PID_HEATING
-    void onPidTuning(const result_t rst) {
+    void onPIDTuning(const pidresult_t rst) {
       // Called for temperature PID tuning result
+    }
+    void onStartM303(const int count, const heater_id_t hid, const celsius_t temp) {
+      // Called by M303 to update the UI
     }
   #endif
 
+  #if ENABLED(MPC_AUTOTUNE)
+    void onMPCTuning(const mpcresult_t rst) {
+      // Called for temperature MPC tuning result
+    }
+  #endif
+
+  #if ENABLED(PLATFORM_M997_SUPPORT)
+    void onFirmwareFlash() {}
+  #endif
+
   void onSteppersDisabled() {}
-  void onSteppersEnabled()  {}
+  void onSteppersEnabled() {}
+  void onAxisDisabled(const axis_t) {}
+  void onAxisEnabled(const axis_t) {}
 }
 
 #endif // ANYCUBIC_LCD_I3MEGA

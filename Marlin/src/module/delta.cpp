@@ -101,7 +101,7 @@ void recalc_delta_settings() {
  *
  * Suggested optimizations include:
  *
- * - Disable the home_offset (M206) and/or position_shift (G92)
+ * - Disable the home_offset (M206) and/or workspace_offset (G92)
  *   features to remove up to 12 float additions.
  */
 
@@ -132,7 +132,7 @@ float delta_safe_distance_from_top() {
   xyz_pos_t cartesian{0};
   inverse_kinematics(cartesian);
   const float centered_extent = delta.a;
-  cartesian.y = DELTA_PRINTABLE_RADIUS;
+  cartesian.y = PRINTABLE_RADIUS;
   inverse_kinematics(cartesian);
   return ABS(centered_extent - delta.a);
 }
@@ -241,11 +241,17 @@ void home_delta() {
     #endif
   #endif
 
+  // Set homing current for all motors
+  TERN_(HAS_HOMING_CURRENT, set_homing_current(Z_AXIS));
+
   // Move all carriages together linearly until an endstop is hit.
   current_position.z = DIFF_TERN(HAS_BED_PROBE, delta_height + 10, probe.offset.z);
   line_to_current_position(homing_feedrate(Z_AXIS));
   planner.synchronize();
   TERN_(HAS_DELTA_SENSORLESS_PROBING, endstops.report_states());
+
+  // Restore the homing current for all motors
+  TERN_(HAS_HOMING_CURRENT, restore_homing_current(Z_AXIS));
 
   // Re-enable stealthChop if used. Disable diag1 pin on driver.
   #if ENABLED(SENSORLESS_HOMING) && DISABLED(ENDSTOPS_ALWAYS_ON_DEFAULT)

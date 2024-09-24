@@ -34,12 +34,12 @@
   #include "../../feature/probe_temp_comp.h"
 #endif
 
-#if HAS_MULTI_HOTEND
-  #include "../../module/tool_change.h"
+#if ANY(DWIN_CREALITY_LCD_JYERSUI, EXTENSIBLE_UI)
+  #define VERBOSE_SINGLE_PROBE
 #endif
 
 /**
- * G30: Do a single Z probe at the current XY
+ * G30: Do a single Z probe at the given XY (default: current)
  *
  * Parameters:
  *
@@ -50,44 +50,55 @@
  */
 void GcodeSuite::G30() {
 
-  #if HAS_MULTI_HOTEND
-    const uint8_t old_tool_index = active_extruder;
-    tool_change(0);
-  #endif
+  xy_pos_t probepos = current_position;
 
-  // Convert the given logical position to native position
-  const xy_pos_t pos = {
-    parser.seenval('X') ? RAW_X_POSITION(parser.value_linear_units()) : current_position.x,
-    parser.seenval('Y') ? RAW_Y_POSITION(parser.value_linear_units()) : current_position.y
-  };
+  const bool seenX = parser.seenval('X');
+  if (seenX) probepos.x = RAW_X_POSITION(parser.value_linear_units());
+  const bool seenY = parser.seenval('Y');
+  if (seenY) probepos.y = RAW_Y_POSITION(parser.value_linear_units());
 
-  if (probe.can_reach(pos)) {
+  probe.use_probing_tool();
+
+  if (probe.can_reach(probepos)) {
+
     // Disable leveling so the planner won't mess with us
     TERN_(HAS_LEVELING, set_bed_leveling_enabled(false));
 
+    // Disable feedrate scaling so movement speeds are correct
     remember_feedrate_scaling_off();
 
-    TERN_(DWIN_CREALITY_LCD_JYERSUI, process_subcommands_now(F("G28O")));
+    // With VERBOSE_SINGLE_PROBE home only if needed
+    TERN_(VERBOSE_SINGLE_PROBE, process_subcommands_now(F("G28O")));
 
+    // Raise after based on the 'E' parameter
     const ProbePtRaise raise_after = parser.boolval('E', true) ? PROBE_PT_STOW : PROBE_PT_NONE;
 
-    TERN_(HAS_PTC, ptc.set_enabled(!parser.seen('C') || parser.value_bool()));
-    const float measured_z = probe.probe_at_point(pos, raise_after, 1);
+    // Use 'C' to set Probe Temperature Compensation ON/OFF (on by default)
+    TERN_(HAS_PTC, ptc.set_enabled(parser.boolval('C', true)));
+
+    // Probe the bed, optionally raise, and return the measured height
+    const float measured_z = probe.probe_at_point(probepos, raise_after);
+
+    // After probing always re-enable Probe Temperature Compensation
     TERN_(HAS_PTC, ptc.set_enabled(true));
+
+    // Report a good probe result to the host and LCD
     if (!isnan(measured_z)) {
-      SERIAL_ECHOLNPGM("Bed X: ", pos.asLogical().x, " Y: ", pos.asLogical().y, " Z: ", measured_z);
-      #if EITHER(DWIN_LCD_PROUI, DWIN_CREALITY_LCD_JYERSUI)
-        char msg[31], str_1[6], str_2[6], str_3[6];
-        sprintf_P(msg, PSTR("X:%s, Y:%s, Z:%s"),
-          dtostrf(pos.x, 1, 1, str_1),
-          dtostrf(pos.y, 1, 1, str_2),
-          dtostrf(measured_z, 1, 2, str_3)
-        );
-        ui.set_status(msg);
-      #endif
+      const xy_pos_t lpos = probepos.asLogical();
+      SString<30> msg(
+        F("Bed X:"), p_float_t(lpos.x, 2),
+        F(  " Y:"), p_float_t(lpos.y, 2),
+        F(  " Z:"), p_float_t(measured_z, 3)
+      );
+      msg.echoln();
+      TERN_(VERBOSE_SINGLE_PROBE, ui.set_status(msg));
     }
 
+    // Restore feedrate scaling
     restore_feedrate_and_scaling();
+
+    // Move the nozzle to the position of the probe
+    do_blocking_move_to(probepos);
 
     if (raise_after == PROBE_PT_STOW)
       probe.move_z_after_probing();
@@ -95,12 +106,11 @@ void GcodeSuite::G30() {
     report_current_position();
   }
   else {
-    SERIAL_ECHOLNF(GET_EN_TEXT_F(MSG_ZPROBE_OUT));
+    SERIAL_ECHOLN(GET_EN_TEXT_F(MSG_ZPROBE_OUT));
     LCD_MESSAGE(MSG_ZPROBE_OUT);
   }
 
-  // Restore the active tool
-  TERN_(HAS_MULTI_HOTEND, tool_change(old_tool_index));
+  probe.use_probing_tool(false);
 }
 
 #endif // HAS_BED_PROBE

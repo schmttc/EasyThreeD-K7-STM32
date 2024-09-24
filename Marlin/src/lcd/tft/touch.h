@@ -22,13 +22,7 @@
 #pragma once
 
 #include "../../inc/MarlinConfigPre.h"
-
-#include "tft_color.h"
-#include "tft_image.h"
-
-#if ENABLED(TOUCH_SCREEN_CALIBRATION)
-  #include "../tft_io/touch_calibration.h"
-#endif
+#include "../tft_io/touch_calibration.h"
 
 #if ENABLED(TFT_TOUCH_DEVICE_GT911)
   #include HAL_PATH(../.., tft/gt911.h)
@@ -46,33 +40,20 @@ extern int8_t encoderTopLine, encoderLine, screen_items;
 enum TouchControlType : uint16_t {
   NONE = 0x0000,
   CALIBRATE,
-  MENU_SCREEN,
-  MENU_ITEM,
+  MENU_SCREEN, MENU_ITEM,
   BACK,
-  PAGE_UP,
-  PAGE_DOWN,
-  CLICK,
-  MENU_CLICK,
+  PAGE_UP, PAGE_DOWN,
+  CLICK, MENU_CLICK,
   RESUME_CONTINUE,
   SLIDER,
-  INCREASE,
-  DECREASE,
-  CANCEL,
-  CONFIRM,
-  HEATER,
-  FAN,
-  FEEDRATE,
-  FLOWRATE,
+  INCREASE, DECREASE,
+  CANCEL, CONFIRM,
+  HEATER, FAN,
+  FEEDRATE, FLOWRATE,
   UBL,
-  MOVE_AXIS,
-  BUTTON,
+  STOP,
+  BUTTON
 };
-
-typedef void (*screenFunc_t)();
-
-void add_control(uint16_t x, uint16_t y, TouchControlType control_type, intptr_t data, MarlinImage image, bool is_enabled = true, uint16_t color_enabled = COLOR_CONTROL_ENABLED, uint16_t color_disabled = COLOR_CONTROL_DISABLED);
-inline void add_control(uint16_t x, uint16_t y, TouchControlType control_type, MarlinImage image, bool is_enabled = true, uint16_t color_enabled = COLOR_CONTROL_ENABLED, uint16_t color_disabled = COLOR_CONTROL_DISABLED) { add_control(x, y, control_type, 0, image, is_enabled, color_enabled, color_disabled); }
-inline void add_control(uint16_t x, uint16_t y, screenFunc_t screen, MarlinImage image, bool is_enabled = true, uint16_t color_enabled = COLOR_CONTROL_ENABLED, uint16_t color_disabled = COLOR_CONTROL_DISABLED) { add_control(x, y, MENU_SCREEN, (intptr_t)screen, image, is_enabled, color_enabled, color_disabled); }
 
 typedef struct __attribute__((__packed__)) {
   TouchControlType type;
@@ -90,7 +71,6 @@ typedef struct __attribute__((__packed__)) {
 #define UBL_REPEAT_DELAY    125
 #define FREE_MOVE_RANGE     32
 
-#define TSLP_PREINIT  0
 #define TSLP_SLEEPING 1
 
 class Touch {
@@ -106,9 +86,9 @@ class Touch {
     static millis_t next_touch_ms, time_to_hold, repeat_delay, touch_time;
     static TouchControlType touch_control_type;
 
-    static bool get_point(int16_t *x, int16_t *y);
+    static bool get_point(int16_t * const x, int16_t * const y);
     static void touch(touch_control_t *control);
-    static void hold(touch_control_t *control, millis_t delay = 0);
+    static void hold(touch_control_t *control, millis_t delay=0);
 
   public:
     static void init();
@@ -124,13 +104,16 @@ class Touch {
     }
     static void disable() { enabled = false; }
     static void enable() { enabled = true; }
-    #if HAS_TOUCH_SLEEP
+    #if HAS_DISPLAY_SLEEP
       static millis_t next_sleep_ms;
       static bool isSleeping() { return next_sleep_ms == TSLP_SLEEPING; }
       static void sleepTimeout();
       static void wakeUp();
     #endif
-    static void add_control(TouchControlType type, uint16_t x, uint16_t y, uint16_t width, uint16_t height, intptr_t data = 0);
+    static void add_control(TouchControlType type, uint16_t x, uint16_t y, uint16_t width, uint16_t height, intptr_t data=0);
+    static void add_control(TouchControlType type, uint16_t x, uint16_t y, uint16_t width, uint16_t height, void (*handler)()) {
+      add_control(type, x, y, width, height, intptr_t(handler));
+    }
 };
 
 extern Touch touch;

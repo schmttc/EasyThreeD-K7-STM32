@@ -33,11 +33,6 @@
 #define BOARD_INFO_NAME "MKS BASE 1.4"
 #define MKS_BASE_VERSION                      14
 
-//
-// Heaters / Fans
-//
-#define FAN_PIN                                9  // PH6 ** Pin18 ** PWM9
-
 // Other Mods
 
 #define SERVO3_PIN                            12  // PB6 ** Pin25 ** D12
@@ -48,10 +43,10 @@
 #ifndef RGB_LED_R_PIN
   #define RGB_LED_R_PIN                       50
 #endif
-#ifndef RGB_LED_R_PIN
+#ifndef RGB_LED_G_PIN
   #define RGB_LED_G_PIN                       51
 #endif
-#ifndef RGB_LED_R_PIN
+#ifndef RGB_LED_B_PIN
   #define RGB_LED_B_PIN                       52
 #endif
 

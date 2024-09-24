@@ -25,7 +25,9 @@
 
 #include "DGUS_Addr.h"
 
-static_assert((DGUS_LEVEL_GRID_SIZE == GRID_MAX_POINTS_X * GRID_MAX_POINTS_Y), "DGUS_LEVEL_GRID_SIZE incompatible with current mesh.");
+#if DGUS_LEVEL_GRID_SIZE != GRID_MAX_POINTS
+  #error "DGUS_LEVEL_GRID_SIZE is incompatible with current mesh."
+#endif
 
 #ifndef DGUS_DEFAULT_VOLUME
   #define DGUS_DEFAULT_VOLUME 50
@@ -70,16 +72,6 @@ static_assert((DGUS_LEVEL_GRID_SIZE == GRID_MAX_POINTS_X * GRID_MAX_POINTS_Y), "
 #ifndef DGUS_DEFAULT_FILAMENT_LEN
   #define DGUS_DEFAULT_FILAMENT_LEN 10
 #endif
-
-#ifndef BED_TRAMMING_Z_HOP
-  #define BED_TRAMMING_Z_HOP 4.0
-#endif
-
-#ifndef BED_TRAMMING_HEIGHT
-  #define BED_TRAMMING_HEIGHT 0.0
-#endif
-
-static_assert(BED_TRAMMING_Z_HOP >= 0, "BED_TRAMMING_Z_HOP must be >= 0. Please update your configuration.");
 
 #ifndef DGUS_LEVEL_CENTER_X
   #define DGUS_LEVEL_CENTER_X ((X_BED_SIZE) / 2)
